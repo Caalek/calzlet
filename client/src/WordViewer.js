@@ -56,3 +56,4 @@ const WordViewer = (props) => {
     </div>
   );
 };
+export default WordViewer;

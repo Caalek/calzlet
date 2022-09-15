@@ -6,6 +6,8 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import WordViewer from "./WordViewer";
 import learnImage from "./img/learn.png";
+import  { Link } from "react-router-dom"
+import MainNavbar from "./MainNavbar";
 
 const ViewSet = () => {
   const [flashcards, setFlashcards] = useState({
@@ -29,6 +31,8 @@ const ViewSet = () => {
   const [canEdit, setCanEdit] = useState(false);
 
   return (
+    <div>
+    <MainNavbar />
     <Container className="mt-5">
       <Row>
         <Col sm={12} md={{ span: 8, offset: 2 }}>
@@ -38,18 +42,28 @@ const ViewSet = () => {
       <Row>
         <Col md={{ span: 3, offset: 2 }}>
           <div className="learn-button p-2">
-            <img src={learnImage} height="40"></img>
+            {/* <img src={learnImage} height="40"></img> */}
             <span className="m-3" style={{ fontSize: 17 }}>
-              Ucz się
+              Ucz się (tryb Eli)
             </span>
           </div>
         </Col>
+        <Col md={{ span: 3 }}>
+          <Link to="/flashcards">
+            <div className="learn-button p-2">
+            {/* <img src={learnImage} height="40"></img> */}
+            <span className="m-3" style={{ fontSize: 17 }}>
+              Fiszki
+            </span>
+            </div>
+          </Link>
+        </Col>
       </Row>
-      <Row>
+      {/* <Row>
         <Col sm={12} md={{ span: 8, offset: 2 }}>
           <WordViewer words={flashcards.words} />
         </Col>
-      </Row>
+      </Row> */}
       <Row>
         {flashcards.words.map((pair) => {
           return (
@@ -62,6 +76,7 @@ const ViewSet = () => {
         })}
       </Row>
     </Container>
+  </div>
   );
 }
 export default ViewSet;

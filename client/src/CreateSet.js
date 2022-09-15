@@ -1,4 +1,3 @@
-import MainNavbar from "./MainNavbar";
 import Form from "react-bootstrap/Form";
 import CreatePhrase from "./CreatePhrase";
 import Container from "react-bootstrap/Container";
@@ -7,8 +6,9 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import MainNavbar from "./MainNavbar";
 
-export default function CreateSet() {
+const CreateSet = () => {
   const [word, setWord] = useState();
   const [translation, setTranslation] = useState();
 
@@ -56,7 +56,7 @@ export default function CreateSet() {
   }
   return (
     <div>
-    <MainNavbar />
+      <MainNavbar />
     <div className="mt-5">
       <Container>
         <h1>Stwórz zestaw</h1>
@@ -111,15 +111,14 @@ export default function CreateSet() {
           </Form>
         </div>
         <div className="m-2">
-          <h3>Hasło do edycji</h3>
+          <h3>Hasło</h3>
           <p>
-            Znający to hasło będą mogli edytować ten zestaw. Zapamiętaj je, bo
-            nie można go potem odzyskać.
+            Możesz zabezpieczyć swój zestaw hasłem.
           </p>
           <Form.Control
             className="fraza-normal"
             type="password"
-            placeholder="Hasło do edycji"
+            placeholder="Hasło"
             onChange={(e) => setEditPassword(e.target.value)}
           ></Form.Control>
         </div>
@@ -139,3 +138,4 @@ export default function CreateSet() {
   </div>
   );
 }
+export default CreateSet
