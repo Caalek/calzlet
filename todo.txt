@@ -1,0 +1,6 @@
+1. tryb ucz się
+2. google login
+3. page gdzie widzisz wszystkie swoje rzeczy
+4. ogarnąć databazę (przepisac backend na mongo...?)
+
+
