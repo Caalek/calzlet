@@ -14,10 +14,10 @@ p {
     letter-spacing: 2px;
 }
 
-/* .fraza {
+.fraza {
     background-color: #2e3856;
     border-radius: 5px
-} */
+}
 
 .form-control {
     background-color: #2e3856;
@@ -25,10 +25,13 @@ p {
     border: 0;
 }
 
-.from-control .fraza-input {
-    border-bottom: 2px;
-    border-color: #f6f7fb;
+.upper-fraza {
+    border-bottom: 1px solid black;
 }
+
+/* .form-control .fraza-input {
+    border-bottom: 2px solid #f6f7fb;
+} */
 
 .form-control:focus {
     background-color: #2e3856;
@@ -36,15 +39,18 @@ p {
     border-bottom: 2px;
     border-style: solid;
     border-color: #ffcd1f;
+    border-radius: 0px;
 }
 
 .btn {
     background-color: #4255ff;
     color: white;
+    border: 0ex;
 }
 
 .btn:hover {
     background-color: #4255ff;
+    border: 0;
 }
 
 .btn:focus {
@@ -55,6 +61,7 @@ p {
 
 .fraza {
     font-size: 20;
+    background-color: #2e3856;
 }
 
 .word-pair {
@@ -121,6 +128,11 @@ p {
 
 .set-card {
     background-color: #2e3856;
+}
+
+a {
+    color: white;
+    text-decoration: none;
 }
 
 @font-face {

@@ -7,7 +7,6 @@ import arrowRight from "./img/arrow-right.png";
 const WordViewer = (props) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isViewingWord, setIsViewingWord] = useState(true);
-  console.log(currentWordIndex);
 
   const changeTextViewed = () => {
     isViewingWord ? setIsViewingWord(false) : setIsViewingWord(true);
@@ -17,14 +16,12 @@ const WordViewer = (props) => {
     if (currentWordIndex - 1 >= 0) {
       setCurrentWordIndex(currentWordIndex - 1);
     }
-    console.log(currentWordIndex);
   };
 
   const moveForward = () => {
     if (currentWordIndex + 1 < props.words.length) {
       setCurrentWordIndex(currentWordIndex + 1);
     }
-    console.log(currentWordIndex);
   };
 
   return (

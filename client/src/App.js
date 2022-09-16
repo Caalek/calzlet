@@ -5,22 +5,64 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import ViewSet from "./ViewSet";
 import FullScreenFlashcards from "./FullScreenFlashcards";
-import MainNavbar from "./MainNavbar";
 import YourSets from "./YourSets"
-// flashcards - learn on fullscreen
+import { useEffect, React, useState } from "react";
+import jwt_decode from "jwt-decode"
+import UserContext from "./UserContext";
+
+const loadScript = (src) =>
+  new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) return resolve()
+    const script = document.createElement('script')
+    script.src = src
+    script.onload = () => resolve()
+    script.onerror = (err) => reject(err)
+    document.body.appendChild(script)
+  })
 
 const App = () => {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route path="/create-set" element={<CreateSet />} />
-        <Route path="/view-set" element={<ViewSet />} />
-        <Route path="/your-sets" element={<YourSets />} />
-        <Route path="/flashcards" element={<FullScreenFlashcards />} />
+  // const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")))
+  const [user, setUser] = useState()
 
-      </Routes>
-    </BrowserRouter>
+  function handleLogin(response) {
+    const user = jwt_decode(response.credential)
+    setUser(user)
+    // localStorage.setItem("user", JSON.stringify(user))
+  }
+
+  useEffect(() => {
+    /* global google */
+    const src = 'https://accounts.google.com/gsi/client'
+    const id = "719943597842-6kbc1mcjr71uce42o5td9o0ll316521o.apps.googleusercontent.com"
+
+    loadScript(src).then(() => {
+      google.accounts.id.initialize({
+        client_id: id,
+        callback: handleLogin
+      })
+
+      google.accounts.id.renderButton(
+        document.getElementById("googleSignIn"),
+        { theme: "outline", size: "large"}
+      );
+      })
+      .catch(console.err)
+      
+  }, [])
+
+  return (
+    <UserContext.Provider value={{user, setUser}}>
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
+          <Route path="/create-set" element={<CreateSet />} />
+          <Route path="/view-set" element={<ViewSet />} />
+          <Route path="/your-sets" element={<YourSets />} />
+          <Route path="/flashcards" element={<FullScreenFlashcards />} />
+
+        </Routes>
+      </BrowserRouter>
+    </UserContext.Provider>
   );
 }
 

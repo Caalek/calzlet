@@ -32,7 +32,6 @@ const YourSets = () => {
         <Container>
             <h1 className="mt-5">Twoje zestawy</h1>
             {sets.map(set => {
-                console.log(set)
                 return <SetCard key={uuidv4()} set={set}></SetCard>
             })}
         </Container>
