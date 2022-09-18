@@ -13,7 +13,7 @@ const ViewSet = () => {
   const [flashcards, setFlashcards] = useState({
     title: "Hiszpański słówka",
     description: "Test desc",
-    words: [
+    flashcards: [
       {
         word: "el tiburón",
         translation: "rekin",
@@ -28,7 +28,6 @@ const ViewSet = () => {
       },
     ],
   });
-  const [canEdit, setCanEdit] = useState(false);
 
   return (
     <div>
@@ -65,7 +64,7 @@ const ViewSet = () => {
         </Col>
       </Row> */}
       <Row>
-        {flashcards.words.map((pair) => {
+        {flashcards.flashcards.map((pair) => {
           return (
             <WordPair
               key={uuidv4()}

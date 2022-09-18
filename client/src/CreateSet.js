@@ -2,18 +2,21 @@ import Form from "react-bootstrap/Form";
 import CreatePhrase from "./CreatePhrase";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import MainNavbar from "./MainNavbar";
+import UserContext from "./UserContext";
+import axios from 'axios'
 
 const CreateSet = () => {
   const [flashcards, setFlashcards] = useState([
     { word: "", translation: "", index: 0 },
   ]);
-  const [name, setName] = useState();
-  const [desc, setDesc] = useState();
-  const [editPassword, setEditPassword] = useState();
+  const [title, setTitle] = useState();
+  const [description, setDescription] = useState();
+  const [password, setPassword] = useState(null);
+  const { user, setUser } = useContext(UserContext)
 
   const createFlashcard = () => {
     let newArray = flashcards.concat([
@@ -35,16 +38,25 @@ const CreateSet = () => {
   };
 
   async function createSet() {
-    let response = await fetch("http://localhost:5000/studysets", {
-      method: "CREATE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        studyset_name: name,
-        studyset_desc: desc,
-        edit_password: editPassword,
-      }),
-    });
+    const newFlashcardArray = []
+    for (let i of flashcards) {
+      let newFlashcard = i
+      delete newFlashcard["index"]
+      newFlashcardArray.push(newFlashcard)
+    }
+
+    const data = {
+      userId: user.sub, //id usera od googla
+      title: title,
+      description: description,
+      flashcards: newFlashcardArray,
+      password: password,
+    }
+    const response = await axios.post("http://localhost:5000/api/set", data)
+    console.log(response.data)
   }
+
+
   return (
     <div>
       <MainNavbar />
@@ -56,13 +68,13 @@ const CreateSet = () => {
               <Form.Label>Tytuł</Form.Label>
               <Form.Control
                 type="text"
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setTitle(e.target.value)}
               ></Form.Control>
               <Form.Label>Opis</Form.Label>
               <Form.Control
                 as="textarea"
                 rows={5}
-                onChange={(e) => setDesc(e.target.value)}
+                onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
             Fiszki
@@ -90,15 +102,13 @@ const CreateSet = () => {
               className="fraza-normal"
               type="password"
               placeholder="Hasło"
-              onChange={(e) => setEditPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
             ></Form.Control>
           </div>
 
           <div className="mt-4">
             <Button
-              onClick={() => {
-                createSet();
-              }}
+              onClick={createSet}
               variant="outline-success"
             >
               Zapisz i kontynuuj
