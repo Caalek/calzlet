@@ -1,12 +1,19 @@
 import Card from "react-bootstrap/Card";
+import { useNavigate } from "react-router-dom";
 
 const SetCard = (props) => {
+  const navigate = useNavigate();
+  console.log("props", props)
+
   return (
-    <Card className="set-card">
+    <Card
+      onClick={() => navigate(`/view-set/${props.set._id}`)}
+      className="set-card m-3 learn-button"
+    >
       <Card.Body>
-        <Card.Title>{props.set.name}</Card.Title>
-        {props.set.words.length} pojęć
-        {props.set.description}
+        <Card.Title>{props.set.title}</Card.Title>
+        <span className="font-background">{props.set.flashcards.length} pojęć</span>
+        <Card.Text className="font-regular">{props.set.description}</Card.Text>
       </Card.Body>
     </Card>
   );

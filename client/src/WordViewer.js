@@ -5,6 +5,7 @@ import arrowLeft from "./img/arrow-left.png";
 import arrowRight from "./img/arrow-right.png";
 
 const WordViewer = (props) => {
+  console.log(props.flashcards)
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isViewingWord, setIsViewingWord] = useState(true);
 
@@ -19,7 +20,7 @@ const WordViewer = (props) => {
   };
 
   const moveForward = () => {
-    if (currentWordIndex + 1 < props.words.length) {
+    if (currentWordIndex + 1 < props.flashcards.length) {
       setCurrentWordIndex(currentWordIndex + 1);
     }
   };
@@ -27,7 +28,7 @@ const WordViewer = (props) => {
   return (
     <div className="word-viewer p-5 m-5">
       <div style={{ textAlign: "center" }}>
-        {currentWordIndex + 1 + "/" + props.words.length}
+        {currentWordIndex + 1 + "/" + props.flashcards.length}
       </div>
       <div
         className="p-5"
@@ -35,8 +36,8 @@ const WordViewer = (props) => {
         onClick={changeTextViewed}
       >
         {isViewingWord
-          ? props.words[currentWordIndex].word
-          : props.words[currentWordIndex].translation}
+          ? props.flashcards[currentWordIndex].word
+          : props.flashcards[currentWordIndex].translation}
       </div>
       <Row>
         <Col>

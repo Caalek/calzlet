@@ -1,33 +1,24 @@
 import Container from "react-bootstrap/Container"
-import WordViewer from "./WordViewer";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FlashcardViewer from "./FlashCardViewer";
-import Row from "react-bootstrap/Row"
-import Col from "react-bootstrap/Col"
-import MainNavbar from "./MainNavbar";
-
+import { useParams } from "react-router-dom";
+import axios from "axios"
+ 
 const FullScreenFlashcards = () => {
-    const [flashcards, setFlashcards] = useState({
-        title: "Hiszpański słówka",
-        description: "Test desc",
-        words: [
-          {
-            word: "el tiburón",
-            translation: "rekin",
-          },
-          {
-            word: "la calefacción",
-            translation: "ogrzewanie",
-          },
-          {
-            word: "el lavaplatos",
-            translation: "zmywarka",
-          },
-        ],
-      });
+  const { setId } = useParams()
+  const [set, setSet] = useState()
+
+  useEffect(() => {
+    const fetchSets = async () => {
+      const fetchedSet = await axios.get(`http://localhost:5000/api/set/${setId}`)
+      setSet(fetchedSet.data)
+      console.log(set)
+    }
+    fetchSets()
+  }, [])
     return (
         <Container>
-            <FlashcardViewer title={flashcards.title} words={flashcards.words} />
+            {set && <FlashcardViewer title={set.title} words={set.flashcards} />}
         </Container>
     )
 }

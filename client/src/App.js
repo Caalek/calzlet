@@ -21,13 +21,11 @@ const loadScript = (src) =>
   })
 
 const App = () => {
-  // const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")))
-  const [user, setUser] = useState()
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")))
 
   function handleLogin(response) {
     const user = jwt_decode(response.credential)
     setUser(user)
-    // localStorage.setItem("user", JSON.stringify(user))
   }
 
   useEffect(() => {
@@ -50,15 +48,20 @@ const App = () => {
       
   }, [])
 
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(user))
+
+  }, [user])
+
   return (
     <UserContext.Provider value={{user, setUser}}>
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/create-set" element={<CreateSet />} />
-          <Route path="/view-set" element={<ViewSet />} />
+          <Route path="/view-set/:setId" element={<ViewSet />} />
           <Route path="/your-sets" element={<YourSets />} />
-          <Route path="/flashcards" element={<FullScreenFlashcards />} />
+          <Route path="/flashcards/:setId" element={<FullScreenFlashcards />} />
 
         </Routes>
       </BrowserRouter>

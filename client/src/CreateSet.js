@@ -53,7 +53,7 @@ const CreateSet = () => {
       password: password,
     }
     const response = await axios.post("http://localhost:5000/api/set", data)
-    console.log(response.data)
+    console.log(response)
   }
 
 

@@ -4,10 +4,6 @@ body {
     font-family: "HurmeGeometricSans1Bold";
 }
 
-p {
-    font-family: "HurmeGeometricSans1";
-}
-
 .podpis {
     color: #c2c3bd;
     font-size: 11px;
@@ -17,6 +13,18 @@ p {
 .fraza {
     background-color: #2e3856;
     border-radius: 5px
+}
+
+.font-bold {
+    font-family: "HurmeGeometricSans1Bold";
+}
+
+.font-regular {
+    font-family: "HurmeGeometricSans1";
+}
+
+.font-background {
+    color: #9297a9;
 }
 
 .form-control {

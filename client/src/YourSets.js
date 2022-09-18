@@ -1,37 +1,30 @@
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { v4 as uuidv4 } from "uuid";
 import SetCard from "./SetCard";
 import Container from "react-bootstrap/Container"
 import MainNavbar from "./MainNavbar";
+import UserContext from "./UserContext";
+import axios from "axios"
 
 const YourSets = () => {
-    const [sets, setSets] = useState([
-        {
-            name: "Set 1",
-            desc: "great super set",
-            words: [
-                {
-                  word: "el tiburón",
-                  translation: "rekin",
-                },
-                {
-                  word: "la calefacción",
-                  translation: "ogrzewanie",
-                },
-                {
-                  word: "el lavaplatos",
-                  translation: "zmywarka",
-                },
-              ],
-        }
-    ])
+    const {user, setUser} = useContext(UserContext)
+    const [sets, setSets] = useState([])
+
+    useEffect(() => {
+      const fetchSets = async () => {
+        const userId = user.sub
+        const fetchedSets = await axios.get(`http://localhost:5000/api/sets/${userId}`)
+        setSets(fetchedSets.data)
+      }
+      fetchSets()
+    }, [])
 
     return (
       <div>
         <MainNavbar />
         <Container>
             <h1 className="mt-5">Twoje zestawy</h1>
-            {sets.map(set => {
+            {sets !== [] && sets.map(set => {
                 return <SetCard key={uuidv4()} set={set}></SetCard>
             })}
         </Container>

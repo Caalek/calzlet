@@ -1,6 +1,14 @@
-1. tryb ucz się
-2. make button appear again
-3. page gdzie widzisz wszystkie swoje rzeczy
-4. ogarnąć databazę (przepisac backend na mongo...?)
+1. deleting sets
+2. profile picture on navbar
+3. real time update of set (like quizlet)
+4. editing flashcards in view set page
+5. own auth
+6. session tokens
+7. auth on api
+8. public/private mode (with password/without password) + checkbox in createset
+9. share button next to set
+10. adding images in createset
+11. ela mode
+
 
 

@@ -6,13 +6,15 @@ router.get("/sets/:userId", async (req, res) => { //for YourSets page
   const results = await FlashcardSet.find({ userId: req.params.userId });
 
   let responseArray = [];
-  for (i in results) {
-    responseArray.push({
-      title: results[i].title,
-      description: results[i].description,
-    });
-  }
-  res.send(responseArray);
+  // for (i in results) {
+  //   responseArray.push({
+  //     title: results[i].title,
+  //     description: results[i].description,
+  //     flashcards: results[i].flashcards
+  //   });
+  // }
+  // console.log(responseArray)
+  res.send(results);
 });
 
 router.post("/set", async (req, res) => { //for create-set page
@@ -33,6 +35,7 @@ router.patch("/set/:setId", async (req, res) => {
 // get one set
 router.get("/set/:setId" , async (req, res) => {
   const result = await FlashcardSet.findOne({_id: req.params.setId})
+  console.log(result)
   res.send(result)
 })
 
