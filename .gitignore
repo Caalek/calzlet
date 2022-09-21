@@ -1,6 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignor
 server/.env
 node_modules
+/server/images/**
 venv
 /build
 .env

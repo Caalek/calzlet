@@ -18,10 +18,14 @@ router.get("/sets/:userId", async (req, res) => { //for YourSets page
 });
 
 router.post("/set", async (req, res) => { //for create-set page
-  console.log(req.body);
   const result = await FlashcardSet.create(req.body);
   res.sendStatus(201)
 });
+
+router.put("/set/:setId", async (req, res) => {
+  const result = await FlashcardSet.findOneAndReplace({_id: req.params.setId}, req.body)
+  res.send({})
+})
 
 //edit
 // jak chce editowac flashcardy to np flashcard.0.word
@@ -35,7 +39,6 @@ router.patch("/set/:setId", async (req, res) => {
 // get one set
 router.get("/set/:setId" , async (req, res) => {
   const result = await FlashcardSet.findOne({_id: req.params.setId})
-  console.log(result)
   res.send(result)
 })
 

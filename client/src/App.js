@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import CreateSet from "./CreateSet";
+import CreateSetPage from "./CreateSetPage";
 import Home from "./Home";
 import { BrowserRouter } from "react-router-dom";
 import "./index.css";
@@ -9,6 +9,7 @@ import YourSets from "./YourSets"
 import { useEffect, React, useState } from "react";
 import jwt_decode from "jwt-decode"
 import UserContext from "./UserContext";
+import EditFullSetPage from "./EditFullSetPage";
 
 const loadScript = (src) =>
   new Promise((resolve, reject) => {
@@ -58,8 +59,9 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/create-set" element={<CreateSet />} />
+          <Route path="/create-set" element={<CreateSetPage />} />
           <Route path="/view-set/:setId" element={<ViewSet />} />
+          <Route path="/edit-set/:setId" element={<EditFullSetPage />} />
           <Route path="/your-sets" element={<YourSets />} />
           <Route path="/flashcards/:setId" element={<FullScreenFlashcards />} />
 

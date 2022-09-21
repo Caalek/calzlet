@@ -1,15 +1,16 @@
 1. deleting sets
 2. profile picture on navbar
 3. real time update of set (like quizlet)
-4. editing flashcards in view set page
 5. own auth
 6. session tokens
 7. auth on api
 8. public/private mode (with password/without password) + checkbox in createset
 9. share button next to set
-10. adding images in createset
 11. ela mode
-12. fix the .env
+12. fix apperance of images in flashcards
+13. add images in wordviewer
+14. images to fetch in editset
+
 
 
 

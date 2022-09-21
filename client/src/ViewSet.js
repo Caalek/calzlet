@@ -9,10 +9,13 @@ import  { Link, useParams } from "react-router-dom"
 import MainNavbar from "./MainNavbar";
 import axios from "axios"
 import UserContext from "./UserContext";
+import Button from "react-bootstrap/Button"
+import { useNavigate } from "react-router-dom";
 
 const ViewSet = () => {
   const { setId } = useParams()
   const [set, setSet] = useState()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchSets = async () => {
@@ -56,6 +59,7 @@ const ViewSet = () => {
             <div>
               <WordViewer flashcards={set.flashcards} />
             </div>
+            <Button onClick={() => navigate(`/edit-set/${setId}`)}>Edytuj</Button>
           </Col>
         </Row>
         <Row>

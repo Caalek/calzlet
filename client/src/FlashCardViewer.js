@@ -49,7 +49,11 @@ const FlashcardViewer = (props) => {
         >
           {isViewingWord
             ? props.words[currentWordIndex].word
-            : props.words[currentWordIndex].translation}
+            : <div>
+              {props.words[currentWordIndex].translation}
+              <img src={props.words[currentWordIndex].imageUrl} height="100" />
+              </div>
+            }
         </div>
         <Row>
           <Col>

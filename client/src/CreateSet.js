@@ -8,19 +8,23 @@ import Col from "react-bootstrap/Col";
 import MainNavbar from "./MainNavbar";
 import UserContext from "./UserContext";
 import axios from 'axios'
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const CreateSet = () => {
-  const [flashcards, setFlashcards] = useState([
-    { word: "", translation: "", index: 0 },
-  ]);
-  const [title, setTitle] = useState();
-  const [description, setDescription] = useState();
-  const [password, setPassword] = useState(null);
+const CreateSet = (props) => {
   const { user, setUser } = useContext(UserContext)
+  const { setId } = useParams()
+
+  const [flashcards, setFlashcards] = useState(props.flashcards)
+  const [title, setTitle] = useState(props.title);
+  const [description, setDescription] = useState(props.description);
+  const [password, setPassword] = useState(null);
+
+  const navigate = useNavigate()
 
   const createFlashcard = () => {
     let newArray = flashcards.concat([
-      { word: "", translation: "", index: flashcards.length },
+      { word: "", translation: "", imageUrl: "", index: flashcards.length },
     ]);
     setFlashcards(newArray);
   };
@@ -28,58 +32,67 @@ const CreateSet = () => {
   const editFlashcard = (index, field, change) => {
     for (let i = 0; i < flashcards.length; i++) {
       if (flashcards[i].index === index) {
-        if (field === "word") {
-          flashcards[i].word = change;
-        } else {
-          flashcards[i].translation = change;
-        }
+        flashcards[i][field] = change;
       }
     }
   };
 
   async function createSet() {
-    const newFlashcardArray = []
-    for (let i of flashcards) {
-      let newFlashcard = i
-      delete newFlashcard["index"]
-      newFlashcardArray.push(newFlashcard)
-    }
-
     const data = {
       userId: user.sub, //id usera od googla
       title: title,
       description: description,
-      flashcards: newFlashcardArray,
+      flashcards: flashcards,
       password: password,
     }
     const response = await axios.post("http://localhost:5000/api/set", data)
     console.log(response)
   }
 
+  async function replaceSet() {
+    const data = {
+      userId: user.sub, //id usera od googla
+      title: title,
+      description: description,
+      flashcards: flashcards,
+      password: password,
+      _id: setId
+    }
+    const response = await axios.put(`http://localhost:5000/api/set/${setId}`, data)
+    console.log(response)
+
+  }
+
+  function handleSubmit() {
+    setId ? replaceSet() : createSet()
+    navigate("/your-sets")
+  }
+
 
   return (
     <div>
-      <MainNavbar />
       <div className="mt-5">
         <Container>
-          <h1>Stwórz zestaw</h1>
+          <h1>{setId ? "Edytuj zestaw" : "Stwórz zestaw"}</h1>
           <Form>
             <Form.Group>
               <Form.Label>Tytuł</Form.Label>
               <Form.Control
                 type="text"
                 onChange={(e) => setTitle(e.target.value)}
+                defaultValue={props.title}
               ></Form.Control>
               <Form.Label>Opis</Form.Label>
               <Form.Control
                 as="textarea"
-                rows={5}
+                rows={3}
                 onChange={(e) => setDescription(e.target.value)}
+                defaultValue={props.description}
               ></Form.Control>
             </Form.Group>
             Fiszki
           </Form>
-          {flashcards.map((flashcard, index) => {
+          {flashcards && flashcards.map((flashcard, index) => {
             return (
               <CreatePhrase
                 key={index}
@@ -108,8 +121,7 @@ const CreateSet = () => {
 
           <div className="mt-4">
             <Button
-              onClick={createSet}
-              variant="outline-success"
+              onClick={handleSubmit}
             >
               Zapisz i kontynuuj
             </Button>

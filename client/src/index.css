@@ -143,6 +143,12 @@ a {
     text-decoration: none;
 }
 
+/* .add-image-input {
+    border: white 1px;
+    border-style: dashed;
+    height: 20px;
+} */
+
 @font-face {
     font-family: "HurmeGeometricSans1";
     src: url(fonts/HurmeGeometricSans1.otf);

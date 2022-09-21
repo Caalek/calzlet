@@ -6,7 +6,9 @@ const FlashcardSetSchema = new mongoose.Schema({
   description: {type: String, required: false},
   flashcards: [{
     word: {type: String, required: true},
-    translation: {type: String, required: true}
+    translation: {type: String, required: true},
+    imageUrl: {type: String, required: false},
+    index: {type: Number, required: true}
   }],
   password: {type: String, required: false},
   created: {type: Date, default: Date.now}
