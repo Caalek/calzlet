@@ -1,5 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignor
-/server/.env
+server/.env
 node_modules
 venv
 /build
