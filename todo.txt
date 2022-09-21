@@ -9,6 +9,7 @@
 9. share button next to set
 10. adding images in createset
 11. ela mode
+12. fix the .env
 
 
 
