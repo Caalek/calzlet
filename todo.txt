@@ -1,4 +1,3 @@
-1. deleting sets
 2. profile picture on navbar
 3. real time update of set (like quizlet)
 5. own auth
@@ -7,9 +6,11 @@
 8. public/private mode (with password/without password) + checkbox in createset
 9. share button next to set
 11. ela mode
-12. fix apperance of images in flashcards
 13. add images in wordviewer
-14. images to fetch in editset
+14. test for xss
+
+1. DOKOŃCZYĆ TRYB ELI
+2. w trybie eli navbar się przesuwa
 
 
 

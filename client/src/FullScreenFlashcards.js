@@ -18,7 +18,7 @@ const FullScreenFlashcards = () => {
   }, [])
     return (
         <Container>
-            {set && <FlashcardViewer title={set.title} words={set.flashcards} />}
+            {set && <FlashcardViewer title={set.title} words={set.flashcards} setId={set._id} />}
         </Container>
     )
 }

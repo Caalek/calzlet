@@ -10,6 +10,7 @@ import { useEffect, React, useState } from "react";
 import jwt_decode from "jwt-decode"
 import UserContext from "./UserContext";
 import EditFullSetPage from "./EditFullSetPage";
+import ElaMode from "./ElaMode";
 
 const loadScript = (src) =>
   new Promise((resolve, reject) => {
@@ -64,7 +65,7 @@ const App = () => {
           <Route path="/edit-set/:setId" element={<EditFullSetPage />} />
           <Route path="/your-sets" element={<YourSets />} />
           <Route path="/flashcards/:setId" element={<FullScreenFlashcards />} />
-
+          <Route path="/ela-mode/:setId" element={<ElaMode />} />
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>

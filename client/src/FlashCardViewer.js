@@ -3,11 +3,12 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import arrowLeft from "./img/arrow-left.png";
 import arrowRight from "./img/arrow-right.png";
-// import { Text } from "react"
+import { useNavigate } from "react-router-dom";
 
-const FlashcardViewer = (props) => {
+const FlashcardViewer = ({title, words, setId}) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isViewingWord, setIsViewingWord] = useState(true);
+  const navigate = useNavigate()
 
   const changeTextViewed = () => {
     isViewingWord ? setIsViewingWord(false) : setIsViewingWord(true);
@@ -20,23 +21,26 @@ const FlashcardViewer = (props) => {
   };
 
   const moveForward = () => {
-    if (currentWordIndex + 1 < props.words.length) {
+    if (currentWordIndex + 1 < words.length) {
       setCurrentWordIndex(currentWordIndex + 1);
     }
   };
   return (
-    <div>
-      <div className="p-3" style={{textAlign: "center"}}>
-      {currentWordIndex + 1 + "/" + props.words.length}
+    <>
+      <div className="p-2" style={{justifyContent: "space-between", display: "flex", alignItems: "center"}}>
+      <img src={arrowLeft} onClick={() => navigate(`/view-set/${setId}`)} height="25"></img>
+        {currentWordIndex + 1 + "/" + words.length}
+        <h4>{title}</h4>
       </div>
       <span
         className="progress-bar"
         style={{
           width: `${Math.round(
-            ((currentWordIndex + 1) / props.words.length) * 100
+            ((currentWordIndex + 1) / words.length) * 100
           )}%`,
         }}
       ></span>
+
       <div className="flashcard-viewer p-5 m-2">
         <span className="progress-bar"></span>
         <div className="justify-content-begin">
@@ -44,16 +48,17 @@ const FlashcardViewer = (props) => {
         </div>
         <div
           className="upper-fiszka p-5"
-          style={{ fontSize: 35, textAlign: "center" }}
+          style={{ fontSize: 45, display: "flex", alignItems: "center", justifyContent: "center"}}
           onClick={changeTextViewed}
         >
-          {isViewingWord
-            ? props.words[currentWordIndex].word
-            : <div>
-              {props.words[currentWordIndex].translation}
-              <img src={props.words[currentWordIndex].imageUrl} height="100" />
-              </div>
-            }
+            {isViewingWord
+              ? words[currentWordIndex].word
+              : <div>
+                {words[currentWordIndex].translation}
+                <br />
+                {words[currentWordIndex].imageUrl && <img src={words[currentWordIndex].imageUrl} height="200" />}
+                </div>
+              }
         </div>
         <Row>
           <Col>
@@ -68,7 +73,7 @@ const FlashcardViewer = (props) => {
           </Col>
         </Row>
       </div>
-    </div>
+    </>
   );
 };
 export default FlashcardViewer;

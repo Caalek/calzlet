@@ -2,7 +2,7 @@ import Form from "react-bootstrap/Form";
 import CreatePhrase from "./CreatePhrase";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import MainNavbar from "./MainNavbar";
@@ -10,6 +10,7 @@ import UserContext from "./UserContext";
 import axios from 'axios'
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Popup from "./Popup"
 
 const CreateSet = (props) => {
   const { user, setUser } = useContext(UserContext)
@@ -19,6 +20,10 @@ const CreateSet = (props) => {
   const [title, setTitle] = useState(props.title);
   const [description, setDescription] = useState(props.description);
   const [password, setPassword] = useState(null);
+
+  const [errorText, setErrorText] = useState()
+
+  console.log("rerendered")
 
   const navigate = useNavigate()
 
@@ -32,7 +37,9 @@ const CreateSet = (props) => {
   const editFlashcard = (index, field, change) => {
     for (let i = 0; i < flashcards.length; i++) {
       if (flashcards[i].index === index) {
-        flashcards[i][field] = change;
+        let newFlashcards = flashcards
+        newFlashcards[i][field] = change;
+        setFlashcards(newFlashcards)
       }
     }
   };
@@ -46,7 +53,6 @@ const CreateSet = (props) => {
       password: password,
     }
     const response = await axios.post("http://localhost:5000/api/set", data)
-    console.log(response)
   }
 
   async function replaceSet() {
@@ -63,14 +69,37 @@ const CreateSet = (props) => {
 
   }
 
+  function deleteFlashcard(indexToDelete) {
+    let array = flashcards.filter((flashcard) => {return flashcard.index !== indexToDelete})
+    for (let i = indexToDelete; i < array.length; i ++) {
+      array[i].index = array[i].index - 1
+    }
+    setFlashcards(array)
+  }
+
+  // function setFlashcardIndex(initialIndex, indexToSet) {
+  //   let array = flashcards
+  //   const element = flashcards[indexToSet]
+  //   flashcards[indexToSet] = flashcards[initialIndex]
+  //   flashcards[initialIndex] = element
+  //   setFlashcards(array)
+  //   console.log(flashcards)
+  // }
+
   function handleSubmit() {
+    if (!title || flashcards.length == 0) {
+      setErrorText("Twój zestaw musi mieć przynajmniej tytuł i jedną fiszkę.")
+      return
+    }
     setId ? replaceSet() : createSet()
     navigate("/your-sets")
   }
 
 
+
   return (
-    <div>
+    <>
+      <Popup show={errorText ? true : false} text={errorText} onHide={() => setErrorText(null)} />
       <div className="mt-5">
         <Container>
           <h1>{setId ? "Edytuj zestaw" : "Stwórz zestaw"}</h1>
@@ -99,7 +128,10 @@ const CreateSet = (props) => {
                 index={index}
                 word={flashcard.word}
                 translation={flashcard.translation}
+                imageUrl={flashcard.imageUrl}
                 editFlashcard={editFlashcard}
+                deleteFlashcard={deleteFlashcard}
+                // setFlashcardIndex={setFlashcardIndex}
               />
             );
           })}
@@ -108,7 +140,7 @@ const CreateSet = (props) => {
               Dodaj fiszkę
             </Button>
           </div>
-          <div className="m-2">
+          {/* <div className="m-2">
             <h3>Hasło</h3>
             <p>Możesz zabezpieczyć swój zestaw hasłem.</p>
             <Form.Control
@@ -117,18 +149,19 @@ const CreateSet = (props) => {
               placeholder="Hasło"
               onChange={(e) => setPassword(e.target.value)}
             ></Form.Control>
-          </div>
+          </div> */}
 
-          <div className="mt-4">
+          <div className="mt-4" style={{justifyContent: "center", display: "flex"}}>
             <Button
               onClick={handleSubmit}
+              size="lg"
             >
               Zapisz i kontynuuj
             </Button>
           </div>
         </Container>
       </div>
-    </div>
+    </>
   );
 };
 export default CreateSet;

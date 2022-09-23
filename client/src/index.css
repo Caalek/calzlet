@@ -4,6 +4,10 @@ body {
     font-family: "HurmeGeometricSans1Bold";
 }
 
+.modal-content {
+    background: #0a092d;
+}
+
 .podpis {
     color: #c2c3bd;
     font-size: 11px;
@@ -89,7 +93,7 @@ body {
     background-color: #2e3856;
     font-family: "HurmeGeometricSans1";
     border-radius: 10px;
-    height: 75vh;
+    height: 80vh;
 }
 
 .fiszki {
@@ -106,7 +110,7 @@ body {
 }
 
 .upper-fiszka {
-    height: 75%;
+    height: 80%;
 }
 
 .next-button:hover {
@@ -114,7 +118,7 @@ body {
 }
 
 .progress-bar {
-    height: 5px;
+    height: 3px;
     width: 0%;
     background-color: #7b89c9;
 }
@@ -137,6 +141,24 @@ body {
 .set-card {
     background-color: #2e3856;
 }
+
+.ela-mode {
+    background-color: #2e3856;
+    border-radius: 10px;
+}
+
+.ela-answer {
+    font-family: "HurmeGeometricSans1";
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: #646f90;
+
+}
+
+.ela-answer:hover {
+    border-color: #939bb4;
+} 
 
 a {
     color: white;

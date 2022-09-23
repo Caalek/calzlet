@@ -4,16 +4,6 @@ const FlashcardSet = require("../models/flashcardSet");
 
 router.get("/sets/:userId", async (req, res) => { //for YourSets page
   const results = await FlashcardSet.find({ userId: req.params.userId });
-
-  let responseArray = [];
-  // for (i in results) {
-  //   responseArray.push({
-  //     title: results[i].title,
-  //     description: results[i].description,
-  //     flashcards: results[i].flashcards
-  //   });
-  // }
-  // console.log(responseArray)
   res.send(results);
 });
 
@@ -24,6 +14,11 @@ router.post("/set", async (req, res) => { //for create-set page
 
 router.put("/set/:setId", async (req, res) => {
   const result = await FlashcardSet.findOneAndReplace({_id: req.params.setId}, req.body)
+  res.send({})
+})
+
+router.delete("/set/:setId", async (req, res) => {
+  const result = await FlashcardSet.deleteOne({_id: req.params.setId}, req.body)
   res.send({})
 })
 

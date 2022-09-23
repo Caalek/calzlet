@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 const SetCard = (props) => {
   const navigate = useNavigate();
-  console.log("props", props)
 
   return (
     <Card

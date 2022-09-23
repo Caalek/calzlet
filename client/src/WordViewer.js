@@ -5,7 +5,6 @@ import arrowLeft from "./img/arrow-left.png";
 import arrowRight from "./img/arrow-right.png";
 
 const WordViewer = (props) => {
-  console.log(props.flashcards)
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isViewingWord, setIsViewingWord] = useState(true);
 
