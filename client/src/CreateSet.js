@@ -87,7 +87,7 @@ const CreateSet = (props) => {
   // }
 
   function handleSubmit() {
-    if (!title || flashcards.length == 0) {
+    if (!title || flashcards.length === 0) {
       setErrorText("Twój zestaw musi mieć przynajmniej tytuł i jedną fiszkę.")
       return
     }
@@ -106,18 +106,18 @@ const CreateSet = (props) => {
           <Form>
             <Form.Group>
               <Form.Label>Tytuł</Form.Label>
-              <Form.Control
+              <input
                 type="text"
                 onChange={(e) => setTitle(e.target.value)}
                 defaultValue={props.title}
-              ></Form.Control>
+              ></input>
               <Form.Label>Opis</Form.Label>
-              <Form.Control
+              <textarea
                 as="textarea"
                 rows={3}
                 onChange={(e) => setDescription(e.target.value)}
                 defaultValue={props.description}
-              ></Form.Control>
+              ></textarea>
             </Form.Group>
             Fiszki
           </Form>

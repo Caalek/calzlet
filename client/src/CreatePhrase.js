@@ -77,7 +77,7 @@ const CreatePhrase = (props) => {
         </div>
         <Row>
           <Col sm={12} md={5}>
-            <Form.Control
+            <input
               type="text"
               placeholder="Pojęcie"
               className="fraza-input"
@@ -85,11 +85,11 @@ const CreatePhrase = (props) => {
               onChange={(e) => {
                 props.editFlashcard(props.index, "word", e.target.value);
               }}
-            ></Form.Control>
+            ></input>
             <div className="podpis mt-1">POJĘCIE</div>
           </Col>
           <Col sm={12} md={5}>
-            <Form.Control
+            <input
               className="fraza-input"
               type="text"
               placeholder="Definicja"
@@ -97,7 +97,7 @@ const CreatePhrase = (props) => {
               onChange={(e) => {
                 props.editFlashcard(props.index, "translation", e.target.value);
               }}
-            ></Form.Control>
+            ></input>
             <div className="podpis mt-1">DEFINICJA</div>
           </Col>
           <Col md={1}>

@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react"
-import { v4 as uuidv4 } from "uuid";
 import SetCard from "./SetCard";
 import Container from "react-bootstrap/Container"
 import MainNavbar from "./MainNavbar";
@@ -24,8 +23,8 @@ const YourSets = () => {
         <MainNavbar />
         <Container>
             <h1 className="mt-5">Twoje zestawy</h1>
-            {sets !== [] && sets.map(set => {
-                return <SetCard key={uuidv4()} set={set}></SetCard>
+            {sets !== [] && sets.map((set, index) => {
+                return <SetCard key={index} set={set} />
             })}
         </Container>
     </div>

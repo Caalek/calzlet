@@ -4,6 +4,33 @@ body {
     font-family: "HurmeGeometricSans1Bold";
 }
 
+/* CSS ukradnięte z boostrapa */
+input, textarea {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    /* line-height: 1.5; */
+    color: #f6f7fb;;
+    background-color: #2e3856;
+    background-clip: padding-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+  /* Poniżej moje dodane */
+
+}
+
+input:focus, textarea:focus {
+    background-color: #2e3856;
+    border-bottom: 2px solid #ffcd1f;
+}
+
+input .ela-input {
+    font-size: larger;
+}
+
 .modal-content {
     background: #0a092d;
 }
