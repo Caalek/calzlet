@@ -10,8 +10,8 @@ import Popup from "./Popup";
 const CreatePhrase = (props) => {
   const filePicker = useRef();
   const [imgSrc, setImgSrc] = useState(props.imageUrl);
-  const [errorText, setErrorText] = useState(); 
-  const [index, setIndex] = useState(props.index)
+  const [errorText, setErrorText] = useState();
+  const [index, setIndex] = useState(props.index);
 
   const uploadImage = async (image) => {
     if (image.size >= 2000000) {
@@ -80,22 +80,26 @@ const CreatePhrase = (props) => {
             <input
               type="text"
               placeholder="Pojęcie"
-              className="fraza-input"
+              className="text-input"
               defaultValue={props.word}
               onChange={(e) => {
-                props.editFlashcard(props.index, "word", e.target.value);
+                props.editFlashcard(props.index, "word", e.target.value.trim());
               }}
             ></input>
             <div className="podpis mt-1">POJĘCIE</div>
           </Col>
           <Col sm={12} md={5}>
             <input
-              className="fraza-input"
+              className="text-input"
               type="text"
               placeholder="Definicja"
               defaultValue={props.translation}
               onChange={(e) => {
-                props.editFlashcard(props.index, "translation", e.target.value);
+                props.editFlashcard(
+                  props.index,
+                  "translation",
+                  e.target.value.trim()
+                );
               }}
             ></input>
             <div className="podpis mt-1">DEFINICJA</div>
@@ -104,7 +108,9 @@ const CreatePhrase = (props) => {
             {imgSrc ? (
               <div>
                 <img src={imgSrc} height="50" width="50"></img>
-                <Button onClick={(e) => deleteImage(e)}>Usuń obraz</Button>
+                <Button className="mt-2" onClick={(e) => deleteImage(e)}>
+                  Usuń obraz
+                </Button>
               </div>
             ) : (
               <div>

@@ -10,7 +10,10 @@ const FlashcardSetSchema = new mongoose.Schema({
     imageUrl: {type: String, required: false},
     index: {type: Number, required: true}
   }],
-  password: {type: String, required: false},
+  viewAccess: {type: String, required: true},
+  editAccess: {type: String, required: true},
+  viewPassword: {type: String, required: false},
+  editPassword: {type: String, required: false},
   created: {type: Date, default: Date.now}
 })
 

@@ -5,21 +5,22 @@ import WordPair from "./WordPair";
 import { useState, useEffect, useContext } from "react";
 import WordViewer from "./WordViewer";
 import learnImage from "./img/learn.png";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import MainNavbar from "./MainNavbar";
 import axios from "axios";
 import UserContext from "./UserContext";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import ConfirmDialogue from "./ConfirmDialogue";
-import Popup from "./Popup"
+import Popup from "./Popup";
 
 const ViewSet = () => {
+  const { user, setUser } = useContext(UserContext);
   const { setId } = useParams();
   const [set, setSet] = useState();
   const [showDialogue, setShowDialogue] = useState();
   const navigate = useNavigate();
-  const [errorText, setErrorText] = useState()
+  const [errorText, setErrorText] = useState();
 
   useEffect(() => {
     const fetchSets = async () => {
@@ -38,17 +39,23 @@ const ViewSet = () => {
   }
 
   function navigateToEla() {
-    if (set.flashcards.length < 3) {
-      setErrorText("Twój zestaw musi mieć minimum 4 fiszki, aby móc się go uczyć trybem Eli.")
+    if (set.flashcards.length < 4) {
+      setErrorText(
+        "Twój zestaw musi mieć minimum 4 fiszki, aby móc się go uczyć trybem Eli."
+      );
     } else {
-      navigate(`/ela-mode/${set._id}`)
+      navigate(`/ela-mode/${set._id}`);
     }
   }
 
-  if (set) {
+  if (set && user && set.userId === user.sub || set && !set.viewPassword) {
     return (
       <>
-      <Popup show={errorText ? true : false} text={errorText} onHide={() => setErrorText(null)} />
+        <Popup
+          show={errorText ? true : false}
+          text={errorText}
+          onHide={() => setErrorText(null)}
+        />
         <ConfirmDialogue
           show={showDialogue}
           text={
@@ -67,9 +74,9 @@ const ViewSet = () => {
           <Row>
             <Col md={{ span: 3, offset: 2 }}>
               <div onClick={navigateToEla} className="learn-button p-2">
-              <span className="m-3" style={{ fontSize: 17 }}>
-                Tryb Eli
-              </span>
+                <span className="m-3" style={{ fontSize: 17 }}>
+                  Tryb Eli
+                </span>
               </div>
             </Col>
             <Col md={{ span: 3 }}>
@@ -88,10 +95,15 @@ const ViewSet = () => {
               <div>
                 <WordViewer flashcards={set.flashcards} />
               </div>
-                <Button className="m-1" onClick={() => setShowDialogue(true)}>Usuń zestaw</Button>
-                <Button className="m-1" onClick={() => navigate(`/edit-set/${setId}`)}>
-                  Edytuj zestaw
-                </Button>
+              <Button className="m-1" onClick={() => setShowDialogue(true)}>
+                Usuń zestaw
+              </Button>
+              <Button
+                className="m-1"
+                onClick={() => navigate(`/edit-set/${setId}`)}
+              >
+                Edytuj zestaw
+              </Button>
             </Col>
           </Row>
           <Row>
@@ -108,8 +120,12 @@ const ViewSet = () => {
         </Container>
       </>
     );
+  } else if (!user && set && set.viewPassword) {
+    return <div>Give password</div>;
+  } else if (set && set.viewPassword && set.userId !== user.sub) {
+    return <div>Give password</div>;
   } else {
-    return <div></div>;
+    return <></>;
   }
 };
 export default ViewSet;

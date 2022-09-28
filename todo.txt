@@ -12,13 +12,14 @@
 4. ladniejszy progress bar
 
 Najwazniejsze teraz:
-1. folder structure i component renaming
-2. czemu sie ten navabr przesuwa w ElaMode
-3. dodac image na wordviewerze
+1. ten access z zewnątrz naprawić
+2. import plików z csv
+1. czemu sie ten navabr przesuwa w ElaMode
+2. acces manager
 4. przesuwanie zestawow
 5. haslo na zestaw i prywatne zestawy
 6. kwestia kont, własne auth i auth na requestach api
-7. cleanup kodu, poprawa mniejszych błędów (np tej spacji cholernej) i release bety
+7. cleanup kodu i release bety
 
 
 

@@ -26,6 +26,10 @@ const EditFullSet = (props) => {
         <CreateSet
           title={set.title}
           description={set.description}
+          viewAccess={set.viewAccess}
+          editAccess={set.editAccess}
+          viewPassword={set.viewPassword}
+          editPassword={set.editPassword}
           flashcards={set.flashcards}
         />
       )}

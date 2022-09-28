@@ -114,7 +114,7 @@ const ElaMode = () => {
                   <div className="mt-5">Teraz wpisz tłumaczenie: </div>
                   <input
                     type="text"
-                    className="ela-input"
+                    className="text-input"
                     placeholder="Tłumaczenie"
                     onChange={(e) => setInput(e.target.value)}
                   ></input>

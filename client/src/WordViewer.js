@@ -34,9 +34,17 @@ const WordViewer = (props) => {
         style={{ fontSize: 35, textAlign: "center" }}
         onClick={changeTextViewed}
       >
-        {isViewingWord
-          ? props.flashcards[currentWordIndex].word
-          : props.flashcards[currentWordIndex].translation}
+        {isViewingWord ? (
+          props.flashcards[currentWordIndex].word
+        ) : (
+          <div>
+            {props.flashcards[currentWordIndex].translation}
+            <br />
+            {props.flashcards[currentWordIndex].imageUrl && (
+              <img src={props.flashcards[currentWordIndex].imageUrl} height="100" />
+            )}
+          </div>
+        )}
       </div>
       <Row>
         <Col>
