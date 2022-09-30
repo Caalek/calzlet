@@ -44,7 +44,7 @@ const FlashcardViewer = ({title, words, setId}) => {
       <div className="flashcard-viewer p-5 m-2">
         <span className="progress-bar"></span>
         <div className="justify-content-begin">
-          {isViewingWord ? "Pojęcie" : "Definicja"}
+          {isViewingWord ? <span className="font-background">Pojęcie</span>:  <span className="font-background">Definicja</span>}
         </div>
         <div
           className="upper-fiszka p-5"

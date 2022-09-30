@@ -4,6 +4,10 @@ body {
     font-family: "HurmeGeometricSans1Bold";
 }
 
+p, ul {
+    font-family: "HurmeGeometricSans1";
+}
+
 /* CSS ukradnięte z boostrapa */
 .text-input {
     display: block;
@@ -93,6 +97,7 @@ body {
 }
 
 .font-background {
+    display: flex;
     color: #9297a9;
 }
 
@@ -156,7 +161,6 @@ body {
 
 .flashcard-viewer {
     background-color: #2e3856;
-    font-family: "HurmeGeometricSans1";
     border-radius: 10px;
     height: 80vh;
 }
@@ -175,6 +179,7 @@ body {
 }
 
 .upper-fiszka {
+    font-family: "HurmeGeometricSans1";
     height: 80%;
 }
 
@@ -226,8 +231,8 @@ body {
 } 
 
 a {
-    color: white;
     text-decoration: none;
+    color: inherit;
 }
 
 .link-text {
@@ -236,6 +241,17 @@ a {
 
 .link-text:hover {
     color: #4255ff;
+}
+
+.font-green {
+    color: #1c7750
+}
+
+footer {
+    width: 100%;
+    bottom: 0;
+    position: fixed;
+    margin: 20px;
 }
 
 /* .add-image-input {

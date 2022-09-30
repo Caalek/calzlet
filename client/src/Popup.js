@@ -15,9 +15,9 @@ function Popup(props) {
         <Modal.Body>
           {props.text}
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide}>Ok</Button>
-        </Modal.Footer>
+        <div style={{display: "flex", justifyContent: "flex-end"}}>
+          <Button className="m-2" onClick={props.onHide}>Ok</Button>
+        </div>
       </Modal>
     </div>
   );

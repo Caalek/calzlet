@@ -13,6 +13,7 @@ import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import ConfirmDialogue from "./ConfirmDialogue";
 import Popup from "./Popup";
+import PasswordPrompt from "./PasswordPrompt";
 
 const ViewSet = () => {
   const { user, setUser } = useContext(UserContext);
@@ -21,6 +22,8 @@ const ViewSet = () => {
   const [showDialogue, setShowDialogue] = useState();
   const navigate = useNavigate();
   const [errorText, setErrorText] = useState();
+  const [canAccess, setCanAccess] = useState(false)
+
 
   useEffect(() => {
     const fetchSets = async () => {
@@ -48,7 +51,11 @@ const ViewSet = () => {
     }
   }
 
-  if (set && user && set.userId === user.sub || set && !set.viewPassword) {
+  function setHasPassword(value) {
+    setCanAccess(value)
+  }
+
+  if ((set && user && set.userId === user.sub) || (set && !set.viewPassword) || canAccess) {
     return (
       <>
         <Popup
@@ -95,14 +102,22 @@ const ViewSet = () => {
               <div>
                 <WordViewer flashcards={set.flashcards} />
               </div>
-              <Button className="m-1" onClick={() => setShowDialogue(true)}>
-                Usuń zestaw
-              </Button>
+              {user && user.sub === set.userId && (
+                <Button className="m-1" onClick={() => setShowDialogue(true)}>
+                  Usuń zestaw
+                </Button>
+              )}
               <Button
                 className="m-1"
                 onClick={() => navigate(`/edit-set/${setId}`)}
               >
                 Edytuj zestaw
+              </Button>
+              <Button
+                className="m-1"
+                onClick={() => navigator.clipboard.writeText(`http://localhost:3000/view-set/${set._id}`)}
+              >
+                Skopiuj link 
               </Button>
             </Col>
           </Row>
@@ -121,7 +136,7 @@ const ViewSet = () => {
       </>
     );
   } else if (!user && set && set.viewPassword) {
-    return <div>Give password</div>;
+    return <PasswordPrompt setHasPassword={setHasPassword} passwordType="view" setId={set._id}></PasswordPrompt>
   } else if (set && set.viewPassword && set.userId !== user.sub) {
     return <div>Give password</div>;
   } else {

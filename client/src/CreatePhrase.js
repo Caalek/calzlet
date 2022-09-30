@@ -48,11 +48,6 @@ const CreatePhrase = (props) => {
     props.editFlashcard(props.index, "imageUrl", null);
   };
 
-  // const changeOrder = () => {
-  //   setIndex(index + 1)
-  //   props.setFlashcardIndex(props.index, props.index + 1)
-  // }
-
   return (
     <div className="p-3 mt-3 fraza">
       <Popup

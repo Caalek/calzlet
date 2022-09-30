@@ -11,6 +11,7 @@ import jwt_decode from "jwt-decode"
 import UserContext from "./UserContext";
 import EditFullSetPage from "./EditFullSetPage";
 import ElaMode from "./ElaMode";
+import LoginForm from "./LoginForm";
 
 const loadScript = (src) =>
   new Promise((resolve, reject) => {
@@ -60,6 +61,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Home />} />
+          <Route path="/login" element={<LoginForm />}></Route>
           <Route path="/create-set" element={<CreateSetPage />} />
           <Route path="/view-set/:setId" element={<ViewSet />} />
           <Route path="/edit-set/:setId" element={<EditFullSetPage />} />

@@ -12,13 +12,19 @@ const AccessManager = (props) => {
 
   const handleSubmit = () => {
     props.setAccess(viewAccess, editAccess);
+    let viewPassToSet;
+    let editPassToSet;
     if (editAccess === "all" || editAccess === "me") {
-      setEditPassword("")
+      editPassToSet = ""
+    } else {
+      editPassToSet = editPassword
     }
     if (viewAccess === "all" || viewAccess === "me") {
-      setViewPassword("")
+      viewPassToSet = ""
+    } else {
+      viewPassToSet = viewPassword
     }
-    props.setPasswords(viewPassword, editPassword)
+    props.setPasswords(viewPassToSet, editPassToSet)
     props.onHide();
   };
   return (
@@ -62,8 +68,7 @@ const AccessManager = (props) => {
                 <select
                   defaultValue={props.editAccess}
                   className="select-input"
-                  onChange={(e) => setEditAccess(e.target.value)}
-                  selected="tylko mnie"
+                  onChange={(e) => setEditAccess(e.target.value)}s
                 >
                   <option value="all">każdego</option>
                   <option value="me">tylko mnie</option>

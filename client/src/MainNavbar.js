@@ -20,25 +20,27 @@ const MainNavbar = () => {
         <Navbar.Brand style={{ fontSize: 30 }}>
           <Link to="/">Calzlet</Link>
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          {user && (
-            <Nav className="me-auto">
-              <Nav.Link as={Link} to="/your-sets">
-                Twoje zestawy
-              </Nav.Link>
-              <Nav.Link as={Link} to="/create-set">
-                Stwórz zestaw
-              </Nav.Link>
-            </Nav>
-          )}
-          <Nav className="justify-content-end m-3">
-            {user && `Zalogowano jako: ${user.email}`}
-          </Nav>
-          <Nav className="justify-content-end">
-            {user && <Button onClick={logoutUser}>Wyloguj</Button>}
-          </Nav>
-        </Navbar.Collapse>
+        {user ? (
+          <div>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="me-auto">
+                <Nav.Link as={Link} to="/your-sets">
+                  Twoje zestawy
+                </Nav.Link>
+                <Nav.Link as={Link} to="/create-set">
+                  Stwórz zestaw
+                </Nav.Link>
+              </Nav>
+              <Nav className="justify-content-end m-3">
+                {user && `Zalogowano jako: ${user.email}`}
+              </Nav>
+              <Nav className="justify-content-end">
+                {user && <Button onClick={logoutUser}>Wyloguj</Button>}
+              </Nav>
+            </Navbar.Collapse>
+          </div>
+        ) : <Button onClick={() => navigate("/login")}>Zaloguj się</Button>}
       </Container>
     </Navbar>
   );
