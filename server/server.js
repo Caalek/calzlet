@@ -8,6 +8,7 @@ const multer = require("multer")
 const upload = multer({ dest: 'images/' })
 
 const cors = require("cors");
+const FlashcardSet = require("./models/flashcardSet")
 app.use(cors());
 
 mongoose.connect(process.env.MONGODB_URI, {
@@ -41,6 +42,15 @@ app.get("/images/:imageId", (req, res) => {
   readStream.pipe(res)
 })
 
+app.post("/api/check-view-password/:setId", async (req, res) => {
+  const result = await FlashcardSet.findOne({_id: req.params.setId})
+  console.log(result)
+  if (req.body.password === result.viewPassword) {
+    res.send({"message": "success"})
+  } else {
+    res.send({"message": "password invalid"})
+  }
+})
 
 app.listen(port, () => {
   console.log("server running");
