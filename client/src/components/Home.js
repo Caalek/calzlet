@@ -5,7 +5,7 @@ import MainNavbar from "./MainNavbar";
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import { useContext } from "react";
-import UserContext from "./UserContext";
+import UserContext from "../context/UserContext";
 import RegisterForm from "./RegisterForm"
 import Footer from "./Footer";
 
@@ -25,7 +25,7 @@ const Home = () => {
               {!user && <div id="googleSignIn"></div>}
             </div>
           </Col> */}
-          <Col sm={12} md={6}>
+          {/* <Col sm={12} md={6}>
             <h3>To przecież kopia Quizleta!</h3>
             <p>I co z tego? Właściciele Quizleta i tak nigdy się nie dowiedzą o tej nic nie znaczącej stronce, a ci, którzy ją znają otrzymują znaczące korzyści. Jakie?</p>
             <ul>
@@ -34,7 +34,7 @@ const Home = () => {
             <li>Regularne aktualizacje z nowymi funkcjami.</li>
             </ul>
             <p>Gotowy na nowego, lepszego Quizleta? Zajerestruj się.</p>
-          </Col>
+          </Col> */}
           <Col sm={12} md={6}>
             <RegisterForm />
           </Col>

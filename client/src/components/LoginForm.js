@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Container from "react-bootstrap/esm/Container";
 import Footer from "./Footer";
@@ -6,20 +6,47 @@ import MainNavbar from "./MainNavbar";
 import Popup from "./Popup"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
+import axios from "axios"
+import UserContext from "../context/UserContext"
+import jwtDecode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [errorText, setErrorText] = useState()
+  const {user, setUser} = useContext(UserContext)
+  const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       setErrorText("Wypełnij formularz, zanim go wyślesz.")
       return
     }
-    //REGISTER/LOGIN API CALL
+    const data = {
+      email: email,
+      password: password,
+    }
+    const response = await axios.post("http://localhost:5000/api/login", data)
+    if (response.data.auth) {
+      setProfile(response)
+      navigate("/your-sets")
+    } else {
+      setErrorText("Niepoprawny email lub hasło.")
+    }
   };
+
+  const setProfile = (response) => {
+    let user = jwtDecode(response.data.token).user
+    console.log(user)
+    user.token = response.data.token;
+    user = JSON.stringify(user);
+    setUser(user);
+    localStorage.setItem("user", user);;
+  }
+
+
 
   return (
     <>

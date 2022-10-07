@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import arrowLeft from "./img/arrow-left.png";
-import arrowRight from "./img/arrow-right.png";
+import arrowLeft from "../img/arrow-left.png";
+import arrowRight from "../img/arrow-right.png";
 import { useNavigate } from "react-router-dom";
 
 const FlashcardViewer = ({title, words, setId}) => {

@@ -4,11 +4,11 @@ import Col from "react-bootstrap/Col";
 import WordPair from "./WordPair";
 import { useState, useEffect, useContext } from "react";
 import WordViewer from "./WordViewer";
-import learnImage from "./img/learn.png";
+import learnImage from "../img/learn.png";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import MainNavbar from "./MainNavbar";
 import axios from "axios";
-import UserContext from "./UserContext";
+import UserContext from "../context/UserContext";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import ConfirmDialogue from "./ConfirmDialogue";
@@ -22,7 +22,7 @@ const ViewSet = () => {
   const [showDialogue, setShowDialogue] = useState();
   const navigate = useNavigate();
   const [errorText, setErrorText] = useState();
-  const [canAccess, setCanAccess] = useState(false)
+  const [canAccess, setCanAccess] = useState()
 
 
   useEffect(() => {
@@ -34,6 +34,17 @@ const ViewSet = () => {
     };
     fetchSets();
   }, []);
+
+  useEffect(() => {
+    if (set) {
+      const setIdsPasswordAuthorizedArray = JSON.parse(sessionStorage.getItem("setIdsPasswordAuthorized"))
+      if (setIdsPasswordAuthorizedArray && setIdsPasswordAuthorizedArray.includes(set._id)) {
+        setCanAccess(true)
+      } else {
+        checkIfCanAccess(set)
+      }
+    }
+  }, [set])
 
   async function deleteSet() {
     await axios.delete(`http://localhost:5000/api/set/${setId}`);
@@ -55,7 +66,39 @@ const ViewSet = () => {
     setCanAccess(value)
   }
 
-  if ((set && user && set.userId === user.sub) || (set && !set.viewPassword) || canAccess) {
+  function checkIfCanAccess(setArg) {
+    if (setArg.viewAccess === "all") {
+      setCanAccess(true)
+    } else if (setArg.viewAccess === "me") {
+      if (user && user.userId === setArg.userId) {
+        setCanAccess(true)
+      } else {
+        navigate("/")
+      }
+    } else if (setArg.viewAccess === "password") {
+      if (user && user.userId === setArg.userId) {
+        setCanAccess(true)
+      }
+    }
+  }
+
+  function checkIfCanEdit(setArg) {
+    if (setArg.editAccess === "all") {
+      return true
+    } else if (setArg.editAccess === "me") {
+      if (user && user.userId === setArg.userId) {
+        return true
+      } else {
+        return false
+      }
+    } else if (setArg.editAccess === "password") {
+      if (user && user.userId === setArg.userId) {
+        return true
+      }
+    }
+  }
+
+  if (set && canAccess) {
     return (
       <>
         <Popup
@@ -102,17 +145,19 @@ const ViewSet = () => {
               <div>
                 <WordViewer flashcards={set.flashcards} />
               </div>
-              {user && user.sub === set.userId && (
+              {user && user.userId === set.userId && (
                 <Button className="m-1" onClick={() => setShowDialogue(true)}>
                   Usuń zestaw
                 </Button>
               )}
+              {checkIfCanEdit(set) &&
               <Button
                 className="m-1"
                 onClick={() => navigate(`/edit-set/${setId}`)}
               >
                 Edytuj zestaw
               </Button>
+              }
               <Button
                 className="m-1"
                 onClick={() => navigator.clipboard.writeText(`http://localhost:3000/view-set/${set._id}`)}
@@ -135,10 +180,8 @@ const ViewSet = () => {
         </Container>
       </>
     );
-  } else if (!user && set && set.viewPassword) {
-    return <PasswordPrompt setHasPassword={setHasPassword} passwordType="view" setId={set._id}></PasswordPrompt>
-  } else if (set && set.viewPassword && set.userId !== user.sub) {
-    return <div>Give password</div>;
+  } else if (set && !canAccess && set.viewAccess === "password") {
+    return <PasswordPrompt setHasPassword={setHasPassword} passwordType="view" setId={set._id} />
   } else {
     return <></>;
   }

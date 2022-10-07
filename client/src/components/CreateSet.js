@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import { useContext, useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import UserContext from "./UserContext";
+import UserContext from "../context/UserContext";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -13,13 +13,12 @@ import Popup from "./Popup";
 import AccessManager from "./AccessManager";
 
 const CreateSet = (props) => {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { setId } = useParams();
 
   const [flashcards, setFlashcards] = useState(props.flashcards);
   const [title, setTitle] = useState(props.title);
   const [description, setDescription] = useState(props.description);
-  const [isPrivate, setIsPrivate] = useState(props.isPrivate);
 
   const [errorText, setErrorText] = useState();
   const [showAccessManager, setShowAccessManager] = useState(false);
@@ -29,8 +28,6 @@ const CreateSet = (props) => {
 
   const [viewPassword, setViewPassword] = useState(props.viewPassword || "");
   const [editPassword, setEditPassword] = useState(props.editPassword || "");
-
-  console.log("rerendered");
 
   const navigate = useNavigate();
 
@@ -53,7 +50,7 @@ const CreateSet = (props) => {
 
   async function createSet() {
     const data = {
-      userId: user.sub, //id usera od googla
+      userId: user.userId, //id usera od googla
       title: title,
       description: description,
       flashcards: flashcards,
@@ -62,12 +59,12 @@ const CreateSet = (props) => {
       viewPassword: viewPassword,
       editPassword: editPassword,
     };
-    const response = await axios.post("http://localhost:5000/api/set", data);
+    await axios.post("http://localhost:5000/api/set", data);
   }
 
   async function replaceSet() {
     const data = {
-      userId: user.sub, //id usera od googla
+      userId: user.userId, //id usera od googla
       title: title,
       description: description,
       flashcards: flashcards,

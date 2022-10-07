@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import arrowLeft from "./img/arrow-left.png";
-import arrowRight from "./img/arrow-right.png";
+import arrowLeft from "../img/arrow-left.png";
+import arrowRight from "../img/arrow-right.png";
 
 const WordViewer = (props) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);

@@ -96,7 +96,7 @@ const AccessManager = (props) => {
               size="lg"
               className="m-2"
             >
-              Zapisz zmiany
+              Ok
             </Button>
           </div>
         </Modal>

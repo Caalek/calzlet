@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Nav from "react-bootstrap/Nav";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import UserContext from "./UserContext";
+import UserContext from "../context/UserContext";
 
 const MainNavbar = () => {
   const { user, setUser } = useContext(UserContext);
@@ -31,9 +31,12 @@ const MainNavbar = () => {
                 <Nav.Link as={Link} to="/create-set">
                   Stwórz zestaw
                 </Nav.Link>
+                <Nav.Link as={Link} to="/settings">
+                  Ustawienia
+                </Nav.Link>
               </Nav>
               <Nav className="justify-content-end m-3">
-                {user && `Zalogowano jako: ${user.email}`}
+                {user && `Zalogowano jako: ${user.username}`}
               </Nav>
               <Nav className="justify-content-end">
                 {user && <Button onClick={logoutUser}>Wyloguj</Button>}

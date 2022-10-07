@@ -4,6 +4,7 @@ import Container from "react-bootstrap/esm/Container";
 import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 import axios from "axios"
+import MainNavbar from "./MainNavbar";
 
 const PasswordPrompt = ({ passwordType, setId, setHasPassword }) => {
   const [typedPassword, setTypedPassword] = useState();
@@ -20,6 +21,8 @@ const PasswordPrompt = ({ passwordType, setId, setHasPassword }) => {
     );
     console.log(response)
     if (response.data.message === "success") {
+      const passwordsEntered = JSON.parse(sessionStorage.getItem("setIdsPasswordAuthorized"))
+      sessionStorage.setItem("setIdsPasswordAuthorized", JSON.stringify([setId].concat(passwordsEntered)))
       setHasPassword(true);
     } else {
       setErrorText("Błędne hasło.");
@@ -33,6 +36,7 @@ const PasswordPrompt = ({ passwordType, setId, setHasPassword }) => {
         text={errorText}
         onHide={() => setErrorText(null)}
       />
+      <MainNavbar />
       <Container className="mt-5">
         Aby
         {passwordType === "edit" && " edytować"}

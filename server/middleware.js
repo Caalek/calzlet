@@ -1,0 +1,1 @@
+// tu bedzie verify token i sprawdzanie spamowych maili

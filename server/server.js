@@ -24,6 +24,7 @@ app.use('/images', express.static('images'))
 const port = 5000;
 
 app.use("/api", require("./routes/sets"));
+app.use("/api", require("./routes/auth"));
 
 app.get("/test", (req, res) => {
   res.send("Hello, World!");

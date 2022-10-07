@@ -156,7 +156,6 @@ p, ul {
     background-color: #2e3856;
     font-family: "HurmeGeometricSans1";
     border-radius: 10px;
-    height: 100%;
 }
 
 .flashcard-viewer {
@@ -252,6 +251,12 @@ footer {
     bottom: 0;
     position: fixed;
     margin: 20px;
+}
+
+.settings-div {
+    background-color: #2e3856;
+    border: solid 1px #2e3856;
+    border-radius: 10px;
 }
 
 /* .add-image-input {
