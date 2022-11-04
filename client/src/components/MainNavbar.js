@@ -19,6 +19,7 @@ const MainNavbar = () => {
       <Container>
         <Navbar.Brand style={{ fontSize: 30 }}>
           <Link to="/">Calzlet</Link>
+          <span className="m-1 link-text" style={{fontSize: "small"}}>BETA</span>
         </Navbar.Brand>
         {user ? (
           <div>

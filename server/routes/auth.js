@@ -65,6 +65,11 @@ router.post("/login", (req, res) => {
   });
 });
 
-// password reset func here
+// router.post('/change-password', middleware.verifyToken, async (req, res) => {
+//   const hashedPassword = bcrypt.hashSync(req.body.password, 8)
+//   await User.updateOne({_id: req._id}, {password: hashedPassword})
+//   res.send({message: "success"})
+// })
+
 
 module.exports = router

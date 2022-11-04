@@ -3,11 +3,12 @@ import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import MainNavbar from "./MainNavbar";
 import ElaAnswer from "./ElaAnswer";
-import { useState, useEffect, useSyncExternalStore } from "react";
+import { useState, useEffect, useSyncExternalStore, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import ProgressBar from "./ProgressBar";
 import Popup from "./Popup";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../context/UserContext";
 
 const ElaMode = () => {
   const navigate = useNavigate();
@@ -23,11 +24,13 @@ const ElaMode = () => {
   const [errorCount, setErrorCount] = useState(0);
   const [hasFinished, setHasFinished] = useState(false);
 
+  const { user } = useContext(UserContext)
+
   useEffect(() => {
     const fetchSets = async () => {
       console.log("FETCHING SET");
       const fetchedSet = await axios.get(
-        `http://localhost:5000/api/set/${setId}`
+        `http://localhost:5000/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}}
       );
       setSet(fetchedSet.data);
       setAnswerArray(getAnswerArray(fetchedSet.data.flashcards, 0));

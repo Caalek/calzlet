@@ -1,14 +1,16 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/esm/Container";
 import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 import axios from "axios"
 import MainNavbar from "./MainNavbar";
+import UserContext from "../context/UserContext";
 
 const PasswordPrompt = ({ passwordType, setId, setHasPassword }) => {
   const [typedPassword, setTypedPassword] = useState();
   const [errorText, setErrorText] = useState();
+  const { user } = useContext(UserContext)
   const navigate = useNavigate();
 
   const checkPassword = async () => {
@@ -17,7 +19,7 @@ const PasswordPrompt = ({ passwordType, setId, setHasPassword }) => {
     };
     const response = await axios.post(
       `http://localhost:5000/api/check-view-password/${setId}`,
-      data
+      data, {headers: {'Authorization': `Bearer ${user.token}`}}
     );
     console.log(response)
     if (response.data.message === "success") {

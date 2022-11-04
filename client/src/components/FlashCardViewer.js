@@ -5,10 +5,10 @@ import arrowLeft from "../img/arrow-left.png";
 import arrowRight from "../img/arrow-right.png";
 import { useNavigate } from "react-router-dom";
 
-const FlashcardViewer = ({title, words, setId}) => {
+const FlashcardViewer = ({ title, words, setId }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isViewingWord, setIsViewingWord] = useState(true);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const changeTextViewed = () => {
     isViewingWord ? setIsViewingWord(false) : setIsViewingWord(true);
@@ -25,10 +25,22 @@ const FlashcardViewer = ({title, words, setId}) => {
       setCurrentWordIndex(currentWordIndex + 1);
     }
   };
+  console.log(words[currentWordIndex].imageUrls)
   return (
     <>
-      <div className="p-2" style={{justifyContent: "space-between", display: "flex", alignItems: "center"}}>
-      <img src={arrowLeft} onClick={() => navigate(`/view-set/${setId}`)} height="25"></img>
+      <div
+        className="p-2"
+        style={{
+          justifyContent: "space-between",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <img
+          src={arrowLeft}
+          onClick={() => navigate(`/view-set/${setId}`)}
+          height="25"
+        ></img>
         {currentWordIndex + 1 + "/" + words.length}
         <h4>{title}</h4>
       </div>
@@ -44,21 +56,33 @@ const FlashcardViewer = ({title, words, setId}) => {
       <div className="flashcard-viewer p-5 m-2">
         <span className="progress-bar"></span>
         <div className="justify-content-begin">
-          {isViewingWord ? <span className="font-background">Pojęcie</span>:  <span className="font-background">Definicja</span>}
+          {isViewingWord ? (
+            <span className="font-background">Pojęcie</span>
+          ) : (
+            <span className="font-background">Definicja</span>
+          )}
         </div>
         <div
           className="upper-fiszka p-5"
-          style={{ fontSize: 45, display: "flex", alignItems: "center", justifyContent: "center"}}
+          style={{
+            fontSize: 45,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
           onClick={changeTextViewed}
         >
-            {isViewingWord
-              ? words[currentWordIndex].word
-              : <div>
-                {words[currentWordIndex].translation}
-                <br />
-                {words[currentWordIndex].imageUrl && <img src={words[currentWordIndex].imageUrl} height="200" />}
-                </div>
-              }
+          {isViewingWord ? (
+            words[currentWordIndex].word
+          ) : (
+            <div>
+              {words[currentWordIndex].translation}
+              <br />
+              {words[currentWordIndex].imageUrls.map(imageUrl => {
+                return <img key={imageUrl} src={imageUrl} height="200" />
+              })}
+            </div>
+          )}
         </div>
         <Row>
           <Col>

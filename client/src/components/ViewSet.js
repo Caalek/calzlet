@@ -28,7 +28,7 @@ const ViewSet = () => {
   useEffect(() => {
     const fetchSets = async () => {
       const fetchedSet = await axios.get(
-        `http://localhost:5000/api/set/${setId}`
+        `http://localhost:5000/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}}
       );
       setSet(fetchedSet.data);
     };
@@ -47,7 +47,7 @@ const ViewSet = () => {
   }, [set])
 
   async function deleteSet() {
-    await axios.delete(`http://localhost:5000/api/set/${setId}`);
+    await axios.delete(`http://localhost:5000/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}});
     setShowDialogue(false);
     navigate("/your-sets");
   }

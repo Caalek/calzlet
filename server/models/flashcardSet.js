@@ -7,7 +7,7 @@ const FlashcardSetSchema = new mongoose.Schema({
   flashcards: [{
     word: {type: String, required: true},
     translation: {type: String, required: true},
-    imageUrl: {type: String, required: false},
+    imageUrls: [{type: String, required: false}],
     index: {type: Number, required: true}
   }],
   viewAccess: {type: String, required: true},

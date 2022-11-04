@@ -59,7 +59,7 @@ const CreateSet = (props) => {
       viewPassword: viewPassword,
       editPassword: editPassword,
     };
-    await axios.post("http://localhost:5000/api/set", data);
+    await axios.post("http://localhost:5000/api/set", data, {headers: {'Authorization': `Bearer ${user.token}`}});
   }
 
   async function replaceSet() {
@@ -76,7 +76,7 @@ const CreateSet = (props) => {
     };
     const response = await axios.put(
       `http://localhost:5000/api/set/${setId}`,
-      data
+      data, {headers: {'Authorization': `Bearer ${user.token}`}}
     );
     console.log(response);
   }
@@ -198,7 +198,7 @@ const CreateSet = (props) => {
                   index={index}
                   word={flashcard.word}
                   translation={flashcard.translation}
-                  imageUrl={flashcard.imageUrl}
+                  imageUrls={flashcard.imageUrls}
                   editFlashcard={editFlashcard}
                   deleteFlashcard={deleteFlashcard}
                 />
