@@ -50,7 +50,7 @@ const CreateSet = (props) => {
 
   async function createSet() {
     const data = {
-      userId: user.userId, //id usera od googla
+      userId: user.user.userId, //id usera od googla
       title: title,
       description: description,
       flashcards: flashcards,
@@ -59,12 +59,12 @@ const CreateSet = (props) => {
       viewPassword: viewPassword,
       editPassword: editPassword,
     };
-    await axios.post("http://localhost:5000/api/set", data, {headers: {'Authorization': `Bearer ${user.token}`}});
+    await axios.post("/api/set", data, {headers: {'Authorization': `Bearer ${user.token}`}});
   }
 
   async function replaceSet() {
     const data = {
-      userId: user.userId, //id usera od googla
+      userId: user.user.userId, //id usera od googla
       title: title,
       description: description,
       flashcards: flashcards,
@@ -75,7 +75,7 @@ const CreateSet = (props) => {
       editPassword: editPassword,
     };
     const response = await axios.put(
-      `http://localhost:5000/api/set/${setId}`,
+      `/api/set/${setId}`,
       data, {headers: {'Authorization': `Bearer ${user.token}`}}
     );
     console.log(response);

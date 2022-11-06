@@ -15,9 +15,9 @@ const MainNavbar = () => {
     navigate("/");
   };
   return (
-    <Navbar variant="dark" className="glowny-navbar" expand="lg">
+    <Navbar variant="dark" className="glowny-navbar" expand="md">
       <Container>
-        <Navbar.Brand style={{ fontSize: 30 }}>
+        <Navbar.Brand style={{ fontSize: 25 }}>
           <Link to="/">Calzlet</Link>
           <span className="m-1 link-text" style={{fontSize: "small"}}>BETA</span>
         </Navbar.Brand>
@@ -37,7 +37,7 @@ const MainNavbar = () => {
                 </Nav.Link>
               </Nav>
               <Nav className="justify-content-end m-3">
-                {user && `Zalogowano jako: ${user.username}`}
+                {user.user && `Zalogowano jako: ${user.user.username}`}
               </Nav>
               <Nav className="justify-content-end">
                 {user && <Button onClick={logoutUser}>Wyloguj</Button>}

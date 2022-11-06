@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Popup from "./Popup";
 import axios from "axios";
@@ -14,6 +14,7 @@ const RegisterForm = () => {
   const [errorText, setErrorText] = useState();
   const navigate = useNavigate()
   const { user, setUser} = useContext(UserContext)
+  const [auth, setAuth] = useState()
 
   const emailRegex =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -36,18 +37,20 @@ const RegisterForm = () => {
       return
     }
 
-    // if (!hcaptchaToken) {
-    //   setErrorText("Wypełnij captchę.")
-    // }
+    if (!hcaptchaToken) {
+      setErrorText("Wypełnij captchę.")
+      return
+    }
     const data = {
       email: email,
       password: password,
       token: hcaptchaToken
     }
-    const response = await axios.post("http://localhost:5000/api/register", data)
+    const response = await axios.post("/api/register", data)
     console.log(response)
     if (response.data.message === "success") {
       setProfile(response)
+      window.location = "/your-sets"
       navigate("/your-sets")
     } else {
       setErrorText("Wystąpił błąd.")
@@ -55,12 +58,14 @@ const RegisterForm = () => {
   };
 
   const setProfile = (response) => {
-    let user = jwtDecode(response.data.token).user
+    let user = jwtDecode(response.data.token)
     console.log(user)
     user.token = response.data.token;
+    user.userId = response.data._id
     user = JSON.stringify(user);
-    setUser(user);
     localStorage.setItem("user", user);;
+    setUser(user);
+    setAuth(true)
   }
 
 

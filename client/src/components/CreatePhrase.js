@@ -13,7 +13,7 @@ const CreatePhrase = (props) => {
   const [imageUrls, setImageUrls] = useState(props.imageUrls || []);
   const [errorText, setErrorText] = useState();
   const [index, setIndex] = useState(props.index);
-  const { user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
 
   const uploadImage = async (image) => {
     if (image.size >= 2000000) {
@@ -29,37 +29,31 @@ const CreatePhrase = (props) => {
     const formData = new FormData();
     formData.append("image", image);
     const result = await axios.post(
-      "http://localhost:5000/api/images",
+      "/api/images",
       formData,
-      {headers: { "Content-Type": "multipart/form-data", 'Authorization': `Bearer ${user.token}`}},
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
     );
 
-    setImageUrls(imageUrls.concat(["http://localhost:5000/" + result.data.imageUrl]))
+    setImageUrls(
+      imageUrls.concat(["/" + result.data.imageUrl])
+    );
     props.editFlashcard(
       props.index,
       "imageUrls",
-      imageUrls.concat(["http://localhost:5000/" + result.data.imageUrl])
+      imageUrls.concat(["/" + result.data.imageUrl])
     );
   };
 
   const deleteImage = (e, index) => {
     e.preventDefault();
-    console.log(index)
-    let copy = imageUrls
-    return
-    console.log(imageUrls.length === 1)
-    let newImageArray
-    if (copy.length === 1) {
-      newImageArray = []
-    } else {
-      newImageArray = copy.splice(imageUrls.indexOf(imageUrls[index]) - 1, 1);
-      console.log(newImageArray)
-    }
+    let newImageArray = imageUrls.filter(value => value !== imageUrls[index])
     setImageUrls(newImageArray);
-    props.editFlashcard(
-      props.index,
-      "imageUrls",
-      newImageArray)
+    props.editFlashcard(props.index, "imageUrls", newImageArray);
   };
 
   return (
@@ -113,14 +107,23 @@ const CreatePhrase = (props) => {
             ></input>
             <div className="podpis mt-1">DEFINICJA</div>
           </Col>
-          <Col md={2} style={{display: "flex"}}>
+          <Col md={2} style={{ display: "flex" }}>
             {imageUrls.map((image, index) => {
               return (
-                <div key={index}>
-                  <img src={image} height="50" width="50"></img>
-                  <span onClick={(e) => deleteImage(e, index)} style={{fontSize: "small"}}>
-                    Usuń obraz
-                  </span>
+                <div key={image} className="image-container">
+                  <img
+                    className="p-1"
+                    src={image}
+                    height="100"
+                    width="100"
+                  ></img>
+                  <Button
+                    className="red overlay-button"
+                    onClick={(e) => deleteImage(e, index)}
+                    style={{ fontSize: "small" }}
+                  >
+                    <img src={trashImage} alt="" height="15"></img>
+                  </Button>
                 </div>
               );
             })}

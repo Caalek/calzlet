@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col'
 
 const WordPair = (props) => {
     return (
-        <div className="word-pair p-4 m-1">
+        <div className="word-pair p-3 m-1">
             <Row>
                 <Col sm={6}>
                     {props.word}

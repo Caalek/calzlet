@@ -25,6 +25,7 @@ const port = 5000;
 
 app.use("/api", require("./routes/sets"));
 app.use("/api", require("./routes/auth"));
+app.use("/api", require("./routes/users"));
 
 app.get("/test", (req, res) => {
   res.send("Hello, World!");

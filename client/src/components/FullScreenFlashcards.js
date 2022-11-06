@@ -12,7 +12,7 @@ const FullScreenFlashcards = () => {
 
   useEffect(() => {
     const fetchSets = async () => {
-      const fetchedSet = await axios.get(`http://localhost:5000/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}})
+      const fetchedSet = await axios.get(`/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}})
       setSet(fetchedSet.data)
       console.log(set)
     }

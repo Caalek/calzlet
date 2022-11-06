@@ -18,8 +18,8 @@ const PasswordPrompt = ({ passwordType, setId, setHasPassword }) => {
       password: typedPassword,
     };
     const response = await axios.post(
-      `http://localhost:5000/api/check-view-password/${setId}`,
-      data, {headers: {'Authorization': `Bearer ${user.token}`}}
+      `/api/check-view-password/${setId}`,
+      data,
     );
     console.log(response)
     if (response.data.message === "success") {

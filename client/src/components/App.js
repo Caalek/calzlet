@@ -26,8 +26,15 @@ import Settings from "./Settings";
 
 const RequireAuth = ({ children }) => {
   const { user, setUser } = useContext(UserContext);
-
-  return user ? children : <Navigate to="/login" />;
+  if (user) {
+    if (Date.now() >= user.token.exp * 1000) { //check if token expired
+      setUser(null)
+      return <Navigate to="/login" />
+    }
+    return children
+  } else {
+    return <Navigate to="/login" />
+  }
 };
 
 const App = () => {

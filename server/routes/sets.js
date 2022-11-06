@@ -3,8 +3,9 @@ const middleware = require("../middleware")
 const router = express.Router();
 const FlashcardSet = require("../models/flashcardSet");
 
-router.get("/sets/:userId", middleware.verifyToken, async (req, res) => { //for YourSets page
-  const results = await FlashcardSet.find({ userId: req.params.userId });
+router.get("/sets", middleware.verifyToken, async (req, res) => { //for YourSets page
+  // const results = await FlashcardSet.find({ userId: req.params.userId });
+  const results = await FlashcardSet.find({userId: req._id})
   res.send(results);
 });
 
@@ -33,7 +34,7 @@ router.patch("/set/:setId", middleware.verifyToken, async (req, res) => {
 })
 
 // get one set
-router.get("/set/:setId" , middleware.verifyToken, async (req, res) => {
+router.get("/set/:setId" , async (req, res) => {
   const result = await FlashcardSet.findOne({_id: req.params.setId})
   res.send(result)
 })

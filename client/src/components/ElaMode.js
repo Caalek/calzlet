@@ -30,7 +30,7 @@ const ElaMode = () => {
     const fetchSets = async () => {
       console.log("FETCHING SET");
       const fetchedSet = await axios.get(
-        `http://localhost:5000/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}}
+        `/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}}
       );
       setSet(fetchedSet.data);
       setAnswerArray(getAnswerArray(fetchedSet.data.flashcards, 0));
@@ -100,9 +100,10 @@ const ElaMode = () => {
         />
       )}
       {set && (
-        <Container>
+        <Container className="mt-2">
           {!hasFinished && (
             <ProgressBar
+              className="m-2"
               complete={currentFlashcardIndex}
               all={set.flashcards.length}
             />

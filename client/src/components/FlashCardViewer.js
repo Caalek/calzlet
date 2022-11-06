@@ -3,11 +3,13 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import arrowLeft from "../img/arrow-left.png";
 import arrowRight from "../img/arrow-right.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import Button from "react-bootstrap/esm/Button"
 
 const FlashcardViewer = ({ title, words, setId }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [isViewingWord, setIsViewingWord] = useState(true);
+  const [hasFinished, setHasFinished] = useState(false)
   const navigate = useNavigate();
 
   const changeTextViewed = () => {
@@ -16,6 +18,7 @@ const FlashcardViewer = ({ title, words, setId }) => {
 
   const moveBackward = () => {
     if (currentWordIndex - 1 >= 0) {
+      setHasFinished(false)
       setCurrentWordIndex(currentWordIndex - 1);
     }
   };
@@ -23,9 +26,10 @@ const FlashcardViewer = ({ title, words, setId }) => {
   const moveForward = () => {
     if (currentWordIndex + 1 < words.length) {
       setCurrentWordIndex(currentWordIndex + 1);
+    } else {
+      setHasFinished(true)
     }
   };
-  console.log(words[currentWordIndex].imageUrls)
   return (
     <>
       <div
@@ -56,11 +60,15 @@ const FlashcardViewer = ({ title, words, setId }) => {
       <div className="flashcard-viewer p-5 m-2">
         <span className="progress-bar"></span>
         <div className="justify-content-begin">
+          {!hasFinished && 
+          <>
           {isViewingWord ? (
             <span className="font-background">Pojęcie</span>
           ) : (
-            <span className="font-background">Definicja</span>
+          <span className="font-background">Definicja</span>
           )}
+          </>
+          }
         </div>
         <div
           className="upper-fiszka p-5"
@@ -72,7 +80,20 @@ const FlashcardViewer = ({ title, words, setId }) => {
           }}
           onClick={changeTextViewed}
         >
-          {isViewingWord ? (
+
+          {hasFinished &&
+          <div style={{display: "inline", textAlign: "center"}}>
+            <span>Gratulacje!</span>
+            <br></br>
+            <span>Ukończyłeś zestaw {title}! </span>
+            <br></br>
+            <Link to={`/view-set/${setId}`}><Button>Powrót do strony zestawu</Button></Link>
+          </div>
+          }
+
+          {!hasFinished && 
+          <>
+          {isViewingWord  ? (
             words[currentWordIndex].word
           ) : (
             <div>
@@ -83,6 +104,10 @@ const FlashcardViewer = ({ title, words, setId }) => {
               })}
             </div>
           )}
+          </>
+          }
+
+
         </div>
         <Row>
           <Col>

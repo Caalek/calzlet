@@ -25,7 +25,9 @@ const WordViewer = (props) => {
   };
 
   return (
-    <div className="word-viewer p-5 m-5">
+    <div className="word-viewer p-5 m-3">
+
+      
       <div style={{ textAlign: "center" }}>
         {currentWordIndex + 1 + "/" + props.flashcards.length}
       </div>

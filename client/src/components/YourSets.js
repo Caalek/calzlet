@@ -12,13 +12,12 @@ const YourSets = () => {
 
     useEffect(() => {
       const fetchSets = async () => {
-        const userId = user.userId
-        const fetchedSets = await axios.get(`http://localhost:5000/api/sets/${userId}`, {headers: {'Authorization': `Bearer ${user.token}`}})
+        const fetchedSets = await axios.get(`/api/sets`, {headers: {'Authorization': `Bearer ${user.token}`}})
         setSets(fetchedSets.data)
       }
       fetchSets()
     }, [])
-    console.log(user)
+    console.log("USER", user)
     return (
       <div>
         <MainNavbar />
@@ -26,7 +25,7 @@ const YourSets = () => {
             <h1 className="mt-5">Twoje zestawy</h1>
             <input className="text-input mt-5" placeholder="Szukaj po nazwie" onChange={(e) => setSearchTerm(e.target.value)}></input>
             {sets && sets.map((set, index) => {
-              if (set.title.includes(searchTerm) || !searchTerm) {
+              if ((searchTerm && set.title.toLowerCase().includes(searchTerm.toLowerCase())) || !searchTerm) {
                 return <SetCard key={index} set={set} />
               }
             })}

@@ -28,19 +28,21 @@ const LoginForm = () => {
       email: email,
       password: password,
     }
-    const response = await axios.post("http://localhost:5000/api/login", data)
+    const response = await axios.post("/api/login", data)
     if (response.data.auth) {
       setProfile(response)
       navigate("/your-sets")
+      window.location.reload()
     } else {
       setErrorText("Niepoprawny email lub hasło.")
     }
   };
 
   const setProfile = (response) => {
-    let user = jwtDecode(response.data.token).user
+    let user = jwtDecode(response.data.token)
     console.log(user)
     user.token = response.data.token;
+    user.userId = response.data.userId
     user = JSON.stringify(user);
     setUser(user);
     localStorage.setItem("user", user);;
@@ -77,8 +79,6 @@ const LoginForm = () => {
           <Button className="mt-3" type="submit">
             Zaloguj się
           </Button>
-          <span className="mt-4">lub</span>
-          <div id="googleSignIn" className="mt-3"></div>
           </div>
         </form>
         </Col>

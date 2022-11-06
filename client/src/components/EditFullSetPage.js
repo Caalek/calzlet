@@ -14,7 +14,7 @@ const EditFullSet = (props) => {
   useEffect(() => {
     const fetchSets = async () => {
       const fetchedSet = await axios.get(
-        `http://localhost:5000/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}}
+        `/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}}
       );
       setSet(fetchedSet.data);
     };
