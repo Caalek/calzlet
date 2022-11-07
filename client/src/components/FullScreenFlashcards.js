@@ -14,13 +14,12 @@ const FullScreenFlashcards = () => {
     const fetchSets = async () => {
       const fetchedSet = await axios.get(`/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}})
       setSet(fetchedSet.data)
-      console.log(set)
     }
     fetchSets()
   }, [])
     return (
         <Container>
-            {set && <FlashcardViewer title={set.title} words={set.flashcards} setId={set._id} />}
+            {set && <FlashcardViewer title={set.title} words={set.flashcards} setId={set._id} lastIndex={set.lastIndex}/>}
         </Container>
     )
 }

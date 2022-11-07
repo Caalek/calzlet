@@ -17,7 +17,6 @@ const YourSets = () => {
       }
       fetchSets()
     }, [])
-    console.log("USER", user)
     return (
       <div>
         <MainNavbar />

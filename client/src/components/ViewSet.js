@@ -4,10 +4,10 @@ import Col from "react-bootstrap/Col";
 import WordPair from "./WordPair";
 import { useState, useEffect, useContext } from "react";
 import WordViewer from "./WordViewer";
-import elaImage from "../img/ela.png"
-import editImage from "../img/edit.png"
-import copyImage from "../img/copy.png"
-import flashcardImage from "../img/flashcard.png"
+import elaImage from "../img/ela.png";
+import editImage from "../img/edit.png";
+import copyImage from "../img/copy.png";
+import flashcardImage from "../img/flashcard.png";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import MainNavbar from "./MainNavbar";
 import axios from "axios";
@@ -18,6 +18,8 @@ import ConfirmDialogue from "./ConfirmDialogue";
 import Popup from "./Popup";
 import PasswordPrompt from "./PasswordPrompt";
 
+import getTimePassedString from "../utils/getTimePassedString";
+
 const ViewSet = () => {
   const { user, setUser } = useContext(UserContext);
   const { setId } = useParams();
@@ -25,14 +27,14 @@ const ViewSet = () => {
   const [showDialogue, setShowDialogue] = useState();
   const navigate = useNavigate();
   const [errorText, setErrorText] = useState();
-  const [canAccess, setCanAccess] = useState()
+  const [canAccess, setCanAccess] = useState();
 
+  console.log(set)
 
   useEffect(() => {
     const fetchSets = async () => {
-      const fetchedSet = await axios.get(
-        `/api/set/${setId}`
-      );
+      const fetchedSet = await axios.get(`/api/set/${setId}`);
+      console.log(fetchedSet.data);
       setSet(fetchedSet.data);
     };
     fetchSets();
@@ -40,17 +42,24 @@ const ViewSet = () => {
 
   useEffect(() => {
     if (set) {
-      const setIdsPasswordAuthorizedArray = JSON.parse(sessionStorage.getItem("setIdsPasswordAuthorized"))
-      if (setIdsPasswordAuthorizedArray && setIdsPasswordAuthorizedArray.includes(set._id)) {
-        setCanAccess(true)
+      const setIdsPasswordAuthorizedArray = JSON.parse(
+        sessionStorage.getItem("setIdsPasswordAuthorized")
+      );
+      if (
+        setIdsPasswordAuthorizedArray &&
+        setIdsPasswordAuthorizedArray.includes(set._id)
+      ) {
+        setCanAccess(true);
       } else {
-        checkIfCanAccess(set)
+        checkIfCanAccess(set);
       }
     }
-  }, [set])
+  }, [set]);
 
   async function deleteSet() {
-    await axios.delete(`/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}});
+    await axios.delete(`/api/set/${setId}`, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
     setShowDialogue(false);
     navigate("/your-sets");
   }
@@ -66,43 +75,43 @@ const ViewSet = () => {
   }
 
   function setHasPassword(value) {
-    setCanAccess(value)
+    setCanAccess(value);
   }
 
   function checkIfCanAccess(setArg) {
-    console.log(user)
     if (setArg.viewAccess === "all") {
-      setCanAccess(true)
+      setCanAccess(true);
     } else if (setArg.viewAccess === "me") {
       if (user && user.user.userId === setArg.userId) {
-        setCanAccess(true)
+        setCanAccess(true);
       } else {
-        navigate("/")
+        navigate("/");
       }
     } else if (setArg.viewAccess === "password") {
       if (user && user.user.userId === setArg.userId) {
-        setCanAccess(true)
+        setCanAccess(true);
       }
     }
   }
 
   function checkIfCanEdit(setArg) {
     if (setArg.editAccess === "all") {
-      return true
+      return true;
     } else if (setArg.editAccess === "me") {
       if (user && user.user.userId === setArg.userId) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     } else if (setArg.editAccess === "password") {
       if (user && user.user.userId === setArg.userId) {
-        return true
+        return true;
       }
     }
   }
 
   if (set && canAccess) {
+    console.log(typeof set.edited);
     return (
       <>
         <Popup
@@ -119,20 +128,19 @@ const ViewSet = () => {
           onReject={() => setShowDialogue(false)}
         />
         <MainNavbar />
-        <Container className="mt-3">
+        <Container className="mt-2">
           <Row>
             <Col sm={12} md={{ span: 8, offset: 2 }}>
               <h1>{set.title}</h1>
+              <span className="font-background">
+                Edytowano {getTimePassedString(set.edited)}
+              </span>
             </Col>
           </Row>
           <Row>
             <Col sm={3} md={{ span: 2, offset: 2 }}>
               <div onClick={navigateToEla} className="learn-button p-2 mt-1">
-              <img
-                  src={elaImage}
-                  alt=""
-                  height="30"
-                ></img>
+                <img src={elaImage} alt="" height="30"></img>
                 <span className="m-3" style={{ fontSize: 17 }}>
                   Tryb Eli
                 </span>
@@ -141,11 +149,7 @@ const ViewSet = () => {
             <Col sm={3} md={{ span: 2 }}>
               <Link to={`/flashcards/${set._id}`}>
                 <div className="learn-button p-2 mt-1">
-                <img
-                  src={flashcardImage}
-                  alt=""
-                  height="30"
-                ></img>
+                  <img src={flashcardImage} alt="" height="30"></img>
                   <span className="m-3" style={{ fontSize: 18 }}>
                     Fiszki
                   </span>
@@ -156,40 +160,47 @@ const ViewSet = () => {
           <Row>
             <Col sm={12} md={{ span: 8, offset: 2 }}>
               <div>
-                <WordViewer flashcards={set.flashcards} />
+                <WordViewer
+                  flashcards={set.flashcards}
+                  lastIndex={set.lastIndex}
+                />
               </div>
               {user && user.userId === set.userId && (
                 <Button className="m-1" onClick={() => setShowDialogue(true)}>
                   Usuń zestaw
                 </Button>
               )}
-              {checkIfCanEdit(set) &&
+              {checkIfCanEdit(set) && (
+                <Button
+                  className="m-1"
+                  onClick={() => navigate(`/edit-set/${setId}`)}
+                >
+                  <img
+                    src={editImage}
+                    alt=""
+                    className=""
+                    style={{ marginRight: "5px" }}
+                    height="17"
+                  ></img>
+                  Edytuj zestaw
+                </Button>
+              )}
               <Button
                 className="m-1"
-                onClick={() => navigate(`/edit-set/${setId}`)}
-              >
-                <img
-                  src={editImage}
-                  alt=""
-                  className=""
-                  style={{marginRight: "5px"}}
-                  height="17"
-                ></img>
-                Edytuj zestaw
-              </Button>
-              }
-              <Button
-                className="m-1"
-                onClick={() => navigator.clipboard.writeText(`http://localhost:3000/view-set/${set._id}`)}
+                onClick={() =>
+                  navigator.clipboard.writeText(
+                    `http://localhost:3000/view-set/${set._id}`
+                  )
+                }
               >
                 <img
                   src={copyImage}
                   alt=""
                   className=""
-                  style={{marginRight: "5px"}}
+                  style={{ marginRight: "5px" }}
                   height="17"
                 ></img>
-                Skopiuj link 
+                Skopiuj link
               </Button>
             </Col>
           </Row>
@@ -208,7 +219,13 @@ const ViewSet = () => {
       </>
     );
   } else if (set && !canAccess && set.viewAccess === "password") {
-    return <PasswordPrompt setHasPassword={setHasPassword} passwordType="view" setId={set._id} />
+    return (
+      <PasswordPrompt
+        setHasPassword={setHasPassword}
+        passwordType="view"
+        setId={set._id}
+      />
+    );
   } else {
     return <></>;
   }

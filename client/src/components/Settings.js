@@ -37,7 +37,6 @@ const Settings = () => {
       "/api/check-password", data,
       { headers: { 'Authorization': `Bearer ${user.token}`}}
     );
-    console.log(response)
     if (response.data.auth) {
       const newData = {
         email:  newEmail
@@ -88,6 +87,10 @@ const Settings = () => {
     }
   };
 
+  const updateUsername = () => {
+    return ""
+  }
+
   const validatePassword = (password) => {
     if (
       password.length >= 8 &&
@@ -137,7 +140,24 @@ const Settings = () => {
       <Container className="mt-5">
         <Row>
           <h3>Konto</h3>
-          <Col sm={12} md={6}>
+          <Col sm={12} md={4}>
+            <div className="settings-div p-3">
+              <h5>Ustaw swój profil</h5>
+              Avatar
+              <br />
+              Nazwa użytkownika
+              <input
+                className="text-input"
+                placeholder="Wpisz nazwę użytkownika"
+                onChange={(e) => setNewEmail(e.target.value)}
+                defaultValue={user.user.username}
+              ></input>
+               <Button className="" onClick={updateUsername}>
+                Zmień nazwę użytkownika
+              </Button>
+            </div>
+          </Col>
+          <Col sm={12} md={4}>
             <div className="settings-div p-3">
               <h5>Zmień email</h5>
               <span className="font-background">
@@ -157,7 +177,7 @@ const Settings = () => {
               <Button className="" onClick={updateEmail}>Zatwierdź</Button>
             </div>
           </Col>
-          <Col sm={12} md={6}>
+          <Col sm={12} md={4}>
             <div className="settings-div p-3">
               <h5>Zmień hasło</h5>
               <input
@@ -173,7 +193,7 @@ const Settings = () => {
               ></input>
               <input
                 className="text-input"
-                placeholder="Wpisz nowe jeszcze raz"
+                placeholder="Wpisz nowe hasło jeszcze raz"
                 onChange={(e) => setNewPassword2(e.target.value)}
               ></input>
               <Button className="" onClick={updatePassword}>
@@ -191,7 +211,7 @@ const Settings = () => {
                 wszystkich Twoich zestawów.
               </span>
               <br />
-              <Button variant="danger" onClick={() => setShowDialogue(true)}>Rozumiem, chce usunąć konto</Button>
+              <Button variant="danger" onClick={() => setShowDialogue(true)}>Rozumiem, chcę usunąć konto</Button>
             </div>
           </Col>
         </Row>

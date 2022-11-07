@@ -1,15 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import arrowLeft from "../img/arrow-left.png";
 import arrowRight from "../img/arrow-right.png";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button"
+import axios from "axios"
+import UserContext from "../context/UserContext";
 
-const FlashcardViewer = ({ title, words, setId }) => {
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+const FlashcardViewer = ({ title, words, setId, lastIndex }) => {
+  const [currentWordIndex, setCurrentWordIndex] = useState(lastIndex);
   const [isViewingWord, setIsViewingWord] = useState(true);
   const [hasFinished, setHasFinished] = useState(false)
+  const { user } = useContext(UserContext)
   const navigate = useNavigate();
 
   const changeTextViewed = () => {
@@ -30,6 +33,13 @@ const FlashcardViewer = ({ title, words, setId }) => {
       setHasFinished(true)
     }
   };
+
+  const leaveSet = async () => {
+    const data = {lastIndex: currentWordIndex, accessed: new Date}
+    await axios.patch(`/api/set/${setId}`, data, {headers: {'Authorization': `Bearer ${user.token}`}})
+    navigate(`/view-set/${setId}`)
+  }
+
   return (
     <>
       <div
@@ -42,7 +52,7 @@ const FlashcardViewer = ({ title, words, setId }) => {
       >
         <img
           src={arrowLeft}
-          onClick={() => navigate(`/view-set/${setId}`)}
+          onClick={leaveSet}
           height="25"
         ></img>
         {currentWordIndex + 1 + "/" + words.length}

@@ -33,6 +33,7 @@ const EditFullSet = (props) => {
           viewPassword={set.viewPassword}
           editPassword={set.editPassword}
           flashcards={set.flashcards}
+          set={set}
         />
       )}
     </>

@@ -17,8 +17,9 @@ tasks:
 ports:
   - port: 3000
     onOpen: open-browser
-  
+
 vscode:
   extensions:
     - vscode-icons-team.vscode-icons
     - zhuangtongfa.material-theme
+    - esbenp.prettier-vscode

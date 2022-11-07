@@ -14,7 +14,10 @@ const FlashcardSetSchema = new mongoose.Schema({
   editAccess: {type: String, required: true},
   viewPassword: {type: String, required: false},
   editPassword: {type: String, required: false},
-  created: {type: Date, default: Date.now}
+  created: {type: Date, default: new Date, required: true},
+  edited: {type: Date, default: new Date, required: true},
+  accessed: {type: Date, default: new Date, required: true},
+  lastIndex: {type: Number, default: 0, required: true}
 })
 
 module.exports = mongoose.model("FlashcardSet", FlashcardSetSchema, "flashcard_sets")

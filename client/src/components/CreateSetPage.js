@@ -5,7 +5,7 @@ const CreateSetPage = () => {
   return (
     <>
       <MainNavbar />
-      <CreateSet flashcards={[{ word: "", translation: "", imageUrl: "", index: 0 }]} />
+      <CreateSet set={{flashcards: [{ word: "", translation: "", imageUrl: "", index: 0 }]}} />
     </>
 
   )

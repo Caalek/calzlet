@@ -4,8 +4,8 @@ import Col from "react-bootstrap/Col";
 import arrowLeft from "../img/arrow-left.png";
 import arrowRight from "../img/arrow-right.png";
 
-const WordViewer = (props) => {
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+const WordViewer = ({ flashcards, lastIndex }) => {
+  const [currentWordIndex, setCurrentWordIndex] = useState(lastIndex);
   const [isViewingWord, setIsViewingWord] = useState(true);
 
   const changeTextViewed = () => {
@@ -19,7 +19,7 @@ const WordViewer = (props) => {
   };
 
   const moveForward = () => {
-    if (currentWordIndex + 1 < props.flashcards.length) {
+    if (currentWordIndex + 1 < flashcards.length) {
       setCurrentWordIndex(currentWordIndex + 1);
     }
   };
@@ -29,7 +29,7 @@ const WordViewer = (props) => {
 
       
       <div style={{ textAlign: "center" }}>
-        {currentWordIndex + 1 + "/" + props.flashcards.length}
+        {currentWordIndex + 1 + "/" + flashcards.length}
       </div>
       <div
         className="p-5"
@@ -37,13 +37,13 @@ const WordViewer = (props) => {
         onClick={changeTextViewed}
       >
         {isViewingWord ? (
-          props.flashcards[currentWordIndex].word
+          flashcards[currentWordIndex].word
         ) : (
           <div>
-            {props.flashcards[currentWordIndex].translation}
+            {flashcards[currentWordIndex].translation}
             <br />
-            {props.flashcards[currentWordIndex].imageUrl && (
-              <img src={props.flashcards[currentWordIndex].imageUrl} height="100" />
+            {flashcards[currentWordIndex].imageUrl && (
+              <img src={flashcards[currentWordIndex].imageUrl} height="100" />
             )}
           </div>
         )}

@@ -12,22 +12,22 @@ import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 import AccessManager from "./AccessManager";
 
-const CreateSet = (props) => {
+const CreateSet = ({ set }) => {
   const { user } = useContext(UserContext);
   const { setId } = useParams();
 
-  const [flashcards, setFlashcards] = useState(props.flashcards);
-  const [title, setTitle] = useState(props.title);
-  const [description, setDescription] = useState(props.description);
+  const [flashcards, setFlashcards] = useState(set.flashcards);
+  const [title, setTitle] = useState(set.title);
+  const [description, setDescription] = useState(set.description);
 
   const [errorText, setErrorText] = useState();
   const [showAccessManager, setShowAccessManager] = useState(false);
 
-  const [viewAccess, setViewAccess] = useState(props.viewAccess || "all");
-  const [editAccess, setEditAccess] = useState(props.editAccess || "me");
+  const [viewAccess, setViewAccess] = useState(set.viewAccess || "all");
+  const [editAccess, setEditAccess] = useState(set.editAccess || "me");
 
-  const [viewPassword, setViewPassword] = useState(props.viewPassword || "");
-  const [editPassword, setEditPassword] = useState(props.editPassword || "");
+  const [viewPassword, setViewPassword] = useState(set.viewPassword || "");
+  const [editPassword, setEditPassword] = useState(set.editPassword || "");
 
   const navigate = useNavigate();
 
@@ -48,6 +48,12 @@ const CreateSet = (props) => {
     }
   };
 
+  // const validateFlashcards = () => {
+  //   for (let flashcard of flashcards) {
+  //     if ()
+  //   }
+  // }
+
   async function createSet() {
     const data = {
       userId: user.user.userId, //id usera od googla
@@ -63,16 +69,19 @@ const CreateSet = (props) => {
   }
 
   async function replaceSet() {
+    console.log(set.created)
     const data = {
       userId: user.user.userId, //id usera od googla
       title: title,
       description: description,
       flashcards: flashcards,
-      _id: setId,
-      viewPassword: viewPassword,
       viewAccess: viewAccess,
       editAccess: editAccess,
+      viewPassword: viewPassword,
       editPassword: editPassword,
+      created: set.created,
+      accessed: set.accessed,
+      edited: new Date
     };
     const response = await axios.put(
       `/api/set/${setId}`,
@@ -137,7 +146,7 @@ const CreateSet = (props) => {
                   className="text-input"
                   onChange={(e) => setTitle(e.target.value.trim())}
                   placeholder="Tytuł"
-                  defaultValue={props.title}
+                  defaultValue={set.title}
                 ></input>
               </Col>
             </Row>
@@ -149,7 +158,7 @@ const CreateSet = (props) => {
                   rows={3}
                   placeholder="Opis"
                   onChange={(e) => setDescription(e.target.value.trim())}
-                  defaultValue={props.description}
+                  defaultValue={set.description}
                 ></textarea>
               </Col>
             </Row>

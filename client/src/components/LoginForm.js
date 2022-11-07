@@ -40,7 +40,6 @@ const LoginForm = () => {
 
   const setProfile = (response) => {
     let user = jwtDecode(response.data.token)
-    console.log(user)
     user.token = response.data.token;
     user.userId = response.data.userId
     user = JSON.stringify(user);

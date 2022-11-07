@@ -28,7 +28,6 @@ const ElaMode = () => {
 
   useEffect(() => {
     const fetchSets = async () => {
-      console.log("FETCHING SET");
       const fetchedSet = await axios.get(
         `/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}}
       );

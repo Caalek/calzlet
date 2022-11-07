@@ -47,7 +47,6 @@ const RegisterForm = () => {
       token: hcaptchaToken
     }
     const response = await axios.post("/api/register", data)
-    console.log(response)
     if (response.data.message === "success") {
       setProfile(response)
       window.location = "/your-sets"
@@ -59,7 +58,6 @@ const RegisterForm = () => {
 
   const setProfile = (response) => {
     let user = jwtDecode(response.data.token)
-    console.log(user)
     user.token = response.data.token;
     user.userId = response.data._id
     user = JSON.stringify(user);

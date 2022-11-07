@@ -21,7 +21,6 @@ const PasswordPrompt = ({ passwordType, setId, setHasPassword }) => {
       `/api/check-view-password/${setId}`,
       data,
     );
-    console.log(response)
     if (response.data.message === "success") {
       const passwordsEntered = JSON.parse(sessionStorage.getItem("setIdsPasswordAuthorized"))
       sessionStorage.setItem("setIdsPasswordAuthorized", JSON.stringify([setId].concat(passwordsEntered)))
