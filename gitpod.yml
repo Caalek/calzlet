@@ -13,3 +13,7 @@ tasks:
       echo npm install
     command: |
       echo npm start
+
+ports:
+  - port: 3000
+    onOpen: open-preview
