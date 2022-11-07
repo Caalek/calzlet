@@ -3,6 +3,7 @@
 NAJWAŻNIEJSZE ogarnąć gdzieś wpisywanie hasła do editu jeśli się tak ustawi (albo w ogóle to narazie wypieprzyć)
 
 Konieczne do releasu:
+1. Naprawić czcionkę bo się dziwnie wyświetla na windowsie, może znaleźc inną?
 2. Wyświetlani autora na secie (jakiś join mongodb?????)
 3. Zastanowić się gdzie ma być api auth a gdzie niekoniecznie
 3. Poprawic wyglad password prompta
