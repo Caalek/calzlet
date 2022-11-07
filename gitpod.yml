@@ -1,0 +1,15 @@
+tasks:
+  - name: server
+    before: |
+      cd server
+    init: |
+      echo npm install
+    command: |
+      echo npm run dev
+  - name: client
+    before: |
+      cd client
+    init: |
+      echo npm install
+    command: |
+      echo npm start
