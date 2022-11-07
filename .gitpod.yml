@@ -3,17 +3,22 @@ tasks:
     before: |
       cd server
     init: |
-      echo npm install
+      npm install
     command: |
-      echo npm run dev
+      npm run dev
   - name: client
     before: |
       cd client
     init: |
-      echo npm install
+      npm install
     command: |
-      echo npm start
+      npm start
 
 ports:
   - port: 3000
-    onOpen: open-preview
+    onOpen: open-browser
+  
+vscode:
+  extensions:
+    - vscode-icons-team.vscode-icons
+    - zhuangtongfa.material-theme
