@@ -267,11 +267,11 @@ footer {
 
 @font-face {
     font-family: "HurmeGeometricSans1";
-    src: url(fonts/HurmeGeometricSans1.otf);
+    src: url(fonts/HurmeGeometricSans1-SemiBold.ttf);
 }
 @font-face {
     font-family: "HurmeGeometricSans1Bold";
-    src: url(fonts/HurmeGeometricSans1Bold.otf);
+    src: url(fonts/HurmeGeometricSans1-SemiBold.ttf);
 }
 
 *:hover,

@@ -1,6 +1,7 @@
 # MVP
 
 NAJWAŻNIEJSZE ogarnąć gdzieś wpisywanie hasła do editu jeśli się tak ustawi (albo w ogóle to narazie wypieprzyć)
+eee
 
 Konieczne do releasu:
 1. Naprawić czcionkę bo się dziwnie wyświetla na windowsie, może znaleźc inną?
