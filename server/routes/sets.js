@@ -29,7 +29,7 @@ router.delete("/set/:setId", middleware.verifyToken, async (req, res) => {
 router.patch("/set/:setId", middleware.verifyToken, async (req, res) => {
   const query = {_id: req.params.setId}
   const updateObject = req.body
-  await FlashcardSet.findOneAndUpdate(query, updateObject)
+  FlashcardSet.findOneAndUpdate(query, updateObject)
   res.sendStatus(200)
 })
 

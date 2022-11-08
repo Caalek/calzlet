@@ -12,10 +12,12 @@ const hcaptchaSecret = process.env.HCAPTCHA_SECRET
 router.post("/register", async (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, 8);
     const userOfSameEmailExists = await User.findOne({ email: req.body.email });
-    if (userOfSameEmailExists)
+    if (userOfSameEmailExists) {
+      console.log(userOfSameEmailExists)
       return res.send({
         message: "A user with this email adress already exists.",
       });
+    }
     User.create(
       {
         username: req.body.email.split("@")[0],
@@ -23,12 +25,14 @@ router.post("/register", async (req, res) => {
         password: hashedPassword,
       },
       (error, user) => {
+        console.log(error)
         if (error) return res.send({ message: "Internal server error." });
 
         const userData = {
           userId: user._id,
           username: user.username,
-          email: user.email
+          email: user.email,
+          avatarUrl: user.avatarUrl
         }
         const token = jwt.sign({ user: userData}, jwtSecret, {
           expiresIn: 86400,
@@ -62,7 +66,8 @@ router.post("/login", (req, res) => {
     const userData = {
       userId: user._id,
       username: user.username,
-      email: user.email
+      email: user.email,
+      avatarUrl: user.avatarUrl
     }
 
     const token = jwt.sign({user: userData}, jwtSecret, { expiresIn: 86400 }); // expires in 24 hours

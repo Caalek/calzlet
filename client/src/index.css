@@ -25,6 +25,11 @@ p, ul {
     border-radius: 5px;
 }
 
+.dropdown-menu {
+    color: white;
+    background: #0a092d;
+}
+
 .text-input:focus {
     background-color: #2e3856;
     border-bottom: 2px solid #ffcd1f;
@@ -281,6 +286,16 @@ footer {
   outline: none;
   box-shadow: none !important;
   -webkit-appearance: none;
+}
+
+.dropdown-item {
+    /* color: #9090a0 */
+    color: white
+}
+
+.dropdown-item:hover {
+    background: #0a092d;
+    color: #b3acb5
 }
 
 .red {

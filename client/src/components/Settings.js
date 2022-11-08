@@ -8,6 +8,8 @@ import Button from "react-bootstrap/Button";
 import ConfirmDialogue from "./ConfirmDialogue";
 import Popup from "./Popup";
 import axios from "axios";
+import Avatar from "./Avatar";
+import { useRef } from "react";
 
 const Settings = () => {
   const { user, setUser } = useContext(UserContext);
@@ -20,6 +22,10 @@ const Settings = () => {
   const [newPassword2, setNewPassword2] = useState();
 
   const [showDialogue, setShowDialogue] = useState(false)
+
+  const [avatarUrl, setAvatarUrl] = useState(null)
+
+  const filePicker = useRef();
 
   const updateEmail = async () => {
     if (!newEmail) {
@@ -41,9 +47,13 @@ const Settings = () => {
       const newData = {
         email:  newEmail
       }
-      await axios.put("/api/user", newData, {
+      const response = await axios.put("/api/user", newData, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
+      if (response.data.message !== "success") {
+        setErrorText("Użytkownik z tym adresem email już istnieje.")
+        return
+      }
       setUser(null)
       alert("Adres email zmieniony, zaloguj się ponownie.");
     } else {
@@ -121,6 +131,49 @@ const Settings = () => {
     alert("Twoje konto zostało usunięte.")
   }
 
+  const uploadAvatar = async (image) => {
+    if (image.size >= 3000000) {
+      setErrorText("Za duży obraz. Maksymalny rozmiar to 3MB.");
+      return;
+    }
+
+    if (!image.type.startsWith("image")) {
+      setErrorText("Wstaw obraz, nie co innego.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", image);
+    const result = await axios.post(
+      "/api/images",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+    setAvatarUrl("/" + result.data.imageUrl)
+  };
+
+  const saveAvatar = async () => {
+    const data = {avatarUrl: avatarUrl}
+    await axios.patch("/api/user", data,  {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+    const copyUser = user
+    copyUser.user.avatarUrl = avatarUrl
+    console.log(copyUser)
+    setUser(copyUser)
+    alert("Avatar zapisany")
+  }
+
+  console.log(user)
+
   return (
     <>
       <Popup
@@ -139,11 +192,27 @@ const Settings = () => {
       <MainNavbar />
       <Container className="mt-5">
         <Row>
-          <h3>Konto</h3>
+          <h3>{user.user.username}</h3>
           <Col sm={12} md={4}>
             <div className="settings-div p-3">
-              <h5>Ustaw swój profil</h5>
-              Avatar
+              <h5>Profil</h5>
+              <span className="font-background">
+                Kliknij na avatar, aby wybrać nowy.
+              </span>
+              <input
+                ref={filePicker}
+                type="file"
+                style={{ display: "none" }}
+                onChange={(e) => uploadAvatar(e.target.files[0])}
+              ></input>
+              <div className="mt-2" onClick={() => filePicker.current.click()}>
+                {!avatarUrl && <Avatar size={100}/>}
+                {avatarUrl && <img src={avatarUrl} height="100" width="100"></img>}
+              </div>
+              <br></br>
+              <Button className="mt-2" onClick={saveAvatar}>
+                Zapisz avatar
+              </Button>
               <br />
               Nazwa użytkownika
               <input

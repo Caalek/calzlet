@@ -4,7 +4,9 @@ NAJWAŻNIEJSZE ogarnąć gdzieś wpisywanie hasła do editu jeśli się tak usta
 eee
 
 Konieczne do releasu:
-1. Naprawić czcionkę bo się dziwnie wyświetla na windowsie, może znaleźc inną?
+1. Jak sie wylogowujuje to sie nie wylogowyeuje
+2. ten dropdown
+3. zmiana nazwy usera
 2. Wyświetlani autora na secie (jakiś join mongodb?????)
 3. Zastanowić się gdzie ma być api auth a gdzie niekoniecznie
 3. Poprawic wyglad password prompta

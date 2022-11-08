@@ -2,9 +2,11 @@ import Navbar from "react-bootstrap/Navbar";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Nav from "react-bootstrap/Nav";
-import { Link, useNavigate } from "react-router-dom";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
+import Avatar from "./Avatar";
 
 const MainNavbar = () => {
   const { user, setUser } = useContext(UserContext);
@@ -13,13 +15,17 @@ const MainNavbar = () => {
   const logoutUser = () => {
     setUser(null);
     navigate("/");
+    localStorage.clear()
   };
+
   return (
     <Navbar variant="dark" className="glowny-navbar" expand="md">
       <Container>
         <Navbar.Brand style={{ fontSize: 25 }}>
           <Link to="/">Calzlet</Link>
-          <span className="m-1 link-text" style={{fontSize: "small"}}>BETA</span>
+          <span className="m-1 link-text" style={{ fontSize: "small" }}>
+            BETA
+          </span>
         </Navbar.Brand>
         {user ? (
           <div>
@@ -32,19 +38,28 @@ const MainNavbar = () => {
                 <Nav.Link as={Link} to="/create-set">
                   Stwórz zestaw
                 </Nav.Link>
-                <Nav.Link as={Link} to="/settings">
+                {/* <Nav.Link as={Link} to="/settings">
                   Ustawienia
-                </Nav.Link>
+                </Nav.Link> */}
               </Nav>
-              <Nav className="justify-content-end m-3">
-                {user.user && `Zalogowano jako: ${user.user.username}`}
-              </Nav>
-              <Nav className="justify-content-end">
-                {user && <Button onClick={logoutUser}>Wyloguj</Button>}
-              </Nav>
+              <NavDropdown title={<Avatar size={40} />} className="ml-2" align="end">
+                <NavDropdown.Item eventKey={1}>
+                  <Nav.Link as={Link} to="/settings">
+                    Ustawienia
+                  </Nav.Link>
+                </NavDropdown.Item>
+                <NavDropdown.Item eventKey={2}>
+                  <div onClick={logoutUser}>
+                    {user && <Button >Wyloguj</Button>}
+                  </div>
+                  Wyloguj się
+                </NavDropdown.Item>
+              </NavDropdown>
             </Navbar.Collapse>
           </div>
-        ) : <Button onClick={() => navigate("/login")}>Zaloguj się</Button>}
+        ) : (
+          <Button onClick={() => navigate("/login")}>Zaloguj się</Button>
+        )}
       </Container>
     </Navbar>
   );

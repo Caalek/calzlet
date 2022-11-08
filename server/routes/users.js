@@ -17,6 +17,13 @@ router.put("/user", middleware.verifyToken, async (req, res) => {
   res.send({message: 'success'})
 })
 
+router.patch("/user", middleware.verifyToken, async (req, res) => {
+    const query = {_id: req._id}
+    const updateObject = req.body
+    await User.findOneAndUpdate(query, updateObject)
+    res.sendStatus(200)
+})
+
 router.delete("/user", middleware.verifyToken, async (req, res) => {
   const foundUser = await User.findOne({_id: req._id})
   console.log(foundUser)

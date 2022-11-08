@@ -47,6 +47,7 @@ const RegisterForm = () => {
       token: hcaptchaToken
     }
     const response = await axios.post("/api/register", data)
+    console.log(response)
     if (response.data.message === "success") {
       setProfile(response)
       window.location = "/your-sets"
