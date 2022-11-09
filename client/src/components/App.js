@@ -7,7 +7,6 @@ import ViewSet from "./ViewSet";
 import FullScreenFlashcards from "./FullScreenFlashcards";
 import YourSets from "./YourSets";
 import { useEffect, React, useState, useContext } from "react";
-import jwt_decode from "jwt-decode";
 import UserContext, { UserProvider } from "../context/UserContext";
 import EditFullSetPage from "./EditFullSetPage";
 import ElaMode from "./ElaMode";

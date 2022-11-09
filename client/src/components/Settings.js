@@ -24,6 +24,7 @@ const Settings = () => {
   const [showDialogue, setShowDialogue] = useState(false)
 
   const [avatarUrl, setAvatarUrl] = useState(null)
+  const [newUsername, setNewUsername] = useState(null)
 
   const filePicker = useRef();
 
@@ -97,10 +98,6 @@ const Settings = () => {
     }
   };
 
-  const updateUsername = () => {
-    return ""
-  }
-
   const validatePassword = (password) => {
     if (
       password.length >= 8 &&
@@ -167,12 +164,25 @@ const Settings = () => {
     })
     const copyUser = user
     copyUser.user.avatarUrl = avatarUrl
-    console.log(copyUser)
     setUser(copyUser)
+    localStorage.setItem("user", JSON.stringify(copyUser))
     alert("Avatar zapisany")
   }
 
-  console.log(user)
+  const updateUsername = async () => {
+    const data = {username: newUsername}
+    await axios.patch("/api/user", data,  {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    })
+    const copyUser = user
+    copyUser.username = newUsername
+    setUser(copyUser)
+    localStorage.setItem("user", JSON.stringify(copyUser))
+    alert("Nazwa użytkownika zmieniona")
+  }
 
   return (
     <>
@@ -206,7 +216,7 @@ const Settings = () => {
                 onChange={(e) => uploadAvatar(e.target.files[0])}
               ></input>
               <div className="mt-2" onClick={() => filePicker.current.click()}>
-                {!avatarUrl && <Avatar size={100}/>}
+                {!avatarUrl && <Avatar user={user.user} size={100}/>}
                 {avatarUrl && <img src={avatarUrl} height="100" width="100"></img>}
               </div>
               <br></br>
@@ -218,7 +228,7 @@ const Settings = () => {
               <input
                 className="text-input"
                 placeholder="Wpisz nazwę użytkownika"
-                onChange={(e) => setNewEmail(e.target.value)}
+                onChange={(e) => setNewUsername(e.target.value)}
                 defaultValue={user.user.username}
               ></input>
                <Button className="" onClick={updateUsername}>
@@ -230,7 +240,6 @@ const Settings = () => {
             <div className="settings-div p-3">
               <h5>Zmień email</h5>
               <span className="font-background">
-                {" "}
                 Twój obecny email to {user.user.email}
               </span>
               <input

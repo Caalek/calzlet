@@ -4,8 +4,14 @@ const router = express.Router();
 const FlashcardSet = require("../models/flashcardSet");
 
 router.get("/sets", middleware.verifyToken, async (req, res) => { //for YourSets page
-  // const results = await FlashcardSet.find({ userId: req.params.userId });
-  const results = await FlashcardSet.find({userId: req._id})
+  // let query
+  // if (req._id) {
+  //   query = {userId: req._id}
+  // } else {
+  //   query = req.query
+  // }
+  query = req.query
+  const results = await FlashcardSet.find(query)
   res.send(results);
 });
 
@@ -28,8 +34,9 @@ router.delete("/set/:setId", middleware.verifyToken, async (req, res) => {
 // jak chce editowac flashcardy to np flashcard.0.word
 router.patch("/set/:setId", middleware.verifyToken, async (req, res) => {
   const query = {_id: req.params.setId}
+  console.log("pacz poszed")
   const updateObject = req.body
-  FlashcardSet.findOneAndUpdate(query, updateObject)
+  await FlashcardSet.findOneAndUpdate(query, updateObject)
   res.sendStatus(200)
 })
 

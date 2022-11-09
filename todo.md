@@ -1,27 +1,21 @@
 # MVP
 
-NAJWAŻNIEJSZE ogarnąć gdzieś wpisywanie hasła do editu jeśli się tak ustawi (albo w ogóle to narazie wypieprzyć)
-eee
-
 Konieczne do releasu:
-1. Jak sie wylogowujuje to sie nie wylogowyeuje
-2. ten dropdown
-3. zmiana nazwy usera
-2. Wyświetlani autora na secie (jakiś join mongodb?????)
+1. accessed wywalić bo jest useless
+2. naprawic sprwadzanie hasla na view secie
+3. ogarnać ten walony navbar
+4. error handling na api
 3. Zastanowić się gdzie ma być api auth a gdzie niekoniecznie
-3. Poprawic wyglad password prompta
-4. dodac avatarzy do userów
-5. Dodac editedAt, accessedAt i lastIndex, żeby zaczynało od tego na którym się skończyło
+4. zastanowic sie czy cos jeszcze dodac do bazy danych (frontend mozna potem zmienic w kazdej chwili)
+5. ogolne poprawki
 
-Inne zmiany:
-1. Zapisywanie rzeczy na koncie
+Mniej wazne:
+1. Usuwanie z associated ids jesli sie chce
+2. Usuwanie setów
+3. Filtrowanie w your-sets
+4. jakis sass do boostrapa a nie takie gowno
+5. cleanup roznych rzeczy
 
-4. pierdoły:
-- profile picture na navbarze
-- testuj na ataki xss
-5. upiększenie wizualne (flashcard viewer i ela mode)
-6. cleanup kodu
-7. release bety
 
 # BUGS
 1. Jak się nie wpisze pojeca/definicji (zostawi jedno pole) do jednego to przy submicie serwer crashuje

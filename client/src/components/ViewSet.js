@@ -19,6 +19,7 @@ import Popup from "./Popup";
 import PasswordPrompt from "./PasswordPrompt";
 
 import getTimePassedString from "../utils/getTimePassedString";
+import Avatar from "./Avatar";
 
 const ViewSet = () => {
   const { user, setUser } = useContext(UserContext);
@@ -28,31 +29,65 @@ const ViewSet = () => {
   const navigate = useNavigate();
   const [errorText, setErrorText] = useState();
   const [canAccess, setCanAccess] = useState();
+  const [canEdit, setCanEdit] = useState();
 
-  console.log(set)
+  const [showPasswordPopup, setShowPasswordPopup] = useState();
 
+  console.log(user)
   useEffect(() => {
-    const fetchSets = async () => {
-      const fetchedSet = await axios.get(`/api/set/${setId}`);
-      console.log(fetchedSet.data);
-      setSet(fetchedSet.data);
+    console.log(user);
+    const addToAssociated = (set) => {
+      console.log(set);
+      const data = {
+        associatedUserIds: set.associatedUserIds.concat([user.user.userId]),
+      };
+      console.log("DATA", data);
+      axios
+        .patch(`/api/set/${setId}`, data, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        })
+        .then((response) => {
+          console.log("added to asociated");
+        });
     };
-    fetchSets();
+
+    axios.get(`/api/set/${setId}`).then((response) => {
+      setSet(response.data);
+      console.log(response.data.userId);
+      console.log(user.user.userId);
+      if (
+        response.data.userId !== user.user.userId &&
+        !response.data.associatedUserIds.includes(user.user.userId) && response.data
+      ) {
+        addToAssociated(response.data);
+      }
+    });
   }, []);
 
   useEffect(() => {
     if (set) {
-      const setIdsPasswordAuthorizedArray = JSON.parse(
-        sessionStorage.getItem("setIdsPasswordAuthorized")
-      );
-      if (
-        setIdsPasswordAuthorizedArray &&
-        setIdsPasswordAuthorizedArray.includes(set._id)
-      ) {
-        setCanAccess(true);
-      } else {
-        checkIfCanAccess(set);
-      }
+      // const setIdsPasswordAuthorizedArray = JSON.parse(
+      //   sessionStorage.getItem("setIdsPasswordAuthorized")
+      // );
+      // if (user && set.userId === user.user.userId) {
+      //   console.log();
+      //   setCanAccess(true);
+      //   setCanEdit(true);
+      // } else if (
+      //   setIdsPasswordAuthorizedArray &&
+      //   setIdsPasswordAuthorizedArray.includes(set._id)
+      // ) {
+      //   setCanAccess(true);
+      // } else {
+      //   checkIfCanAccess(set);
+      // }
+      // checkIfCanEdit(set);
+      checkIfCanAccess(set)
+      checkIfCanEdit(set)
+      console.log(canEdit);
     }
   }, [set]);
 
@@ -78,6 +113,11 @@ const ViewSet = () => {
     setCanAccess(value);
   }
 
+  function setHasEditPassword(value) {
+    setCanEdit(value);
+    console.log(canEdit);
+  }
+
   function checkIfCanAccess(setArg) {
     if (setArg.viewAccess === "all") {
       setCanAccess(true);
@@ -90,23 +130,33 @@ const ViewSet = () => {
     } else if (setArg.viewAccess === "password") {
       if (user && user.user.userId === setArg.userId) {
         setCanAccess(true);
-      }
+      } else (
+        setShowPasswordPopup(true)
+      )
     }
   }
 
   function checkIfCanEdit(setArg) {
-    if (setArg.editAccess === "all") {
-      return true;
-    } else if (setArg.editAccess === "me") {
+    if (setArg.editAccess === "me") {
       if (user && user.user.userId === setArg.userId) {
-        return true;
+        setCanEdit(true);
       } else {
-        return false;
+        setCanEdit(false);
       }
     } else if (setArg.editAccess === "password") {
       if (user && user.user.userId === setArg.userId) {
-        return true;
+        setCanEdit(true);
       }
+    }
+  }
+
+  function navigateToEdit() {
+    if (canEdit) {
+      navigate(`/edit-set/${setId}`);
+    } else if (set.editAccess === "password") {
+      setShowPasswordPopup(true);
+    } else {
+      setErrorText("Autor nie pozwala innym edytować tego zestawu.")
     }
   }
 
@@ -118,6 +168,12 @@ const ViewSet = () => {
           show={errorText ? true : false}
           text={errorText}
           onHide={() => setErrorText(null)}
+        />
+        <PasswordPrompt
+          show={showPasswordPopup}
+          passwordType={canEdit ? "view" : "edit"}
+          setId={setId}
+          onHide={() => setShowPasswordPopup(false)}
         />
         <ConfirmDialogue
           show={showDialogue}
@@ -132,9 +188,6 @@ const ViewSet = () => {
           <Row>
             <Col sm={12} md={{ span: 8, offset: 2 }}>
               <h1>{set.title}</h1>
-              <span className="font-background">
-                Edytowano {getTimePassedString(set.edited)}
-              </span>
             </Col>
           </Row>
           <Row>
@@ -170,27 +223,20 @@ const ViewSet = () => {
                   Usuń zestaw
                 </Button>
               )}
-              {checkIfCanEdit(set) && (
-                <Button
-                  className="m-1"
-                  onClick={() => navigate(`/edit-set/${setId}`)}
-                >
-                  <img
-                    src={editImage}
-                    alt=""
-                    className=""
-                    style={{ marginRight: "5px" }}
-                    height="17"
-                  ></img>
-                  Edytuj zestaw
-                </Button>
-              )}
+              <Button className="m-1" onClick={navigateToEdit}>
+                <img
+                  src={editImage}
+                  alt=""
+                  className=""
+                  style={{ marginRight: "5px" }}
+                  height="17"
+                ></img>
+                Edytuj zestaw
+              </Button>
               <Button
                 className="m-1"
                 onClick={() =>
-                  navigator.clipboard.writeText(
-                    `http://localhost:3000/view-set/${set._id}`
-                  )
+                  navigator.clipboard.writeText(window.location.href)
                 }
               >
                 <img
@@ -203,6 +249,12 @@ const ViewSet = () => {
                 Skopiuj link
               </Button>
             </Col>
+            <Row className="mb-1">
+              <Col sm={12} md={{ span: 8, offset: 2 }}>
+              <span className="font-background">Autor</span>
+              <Avatar user={{avatarUrl: set.creatorAvatarUrl}} size="30" /> {set.creatorUsername}
+              </Col>
+            </Row>
           </Row>
           <Row>
             {set.flashcards.map((pair, index) => {
@@ -220,14 +272,15 @@ const ViewSet = () => {
     );
   } else if (set && !canAccess && set.viewAccess === "password") {
     return (
-      <PasswordPrompt
-        setHasPassword={setHasPassword}
-        passwordType="view"
-        setId={set._id}
-      />
+      <>
+        <MainNavbar />
+        <PasswordPrompt
+          setHasPassword={setHasPassword}
+          passwordType="view"
+          setId={set._id}
+        />
+      </>
     );
-  } else {
-    return <></>;
   }
 };
 export default ViewSet;

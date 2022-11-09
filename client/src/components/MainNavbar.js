@@ -15,7 +15,7 @@ const MainNavbar = () => {
   const logoutUser = () => {
     setUser(null);
     navigate("/");
-    localStorage.clear()
+    localStorage.clear();
   };
 
   return (
@@ -31,18 +31,22 @@ const MainNavbar = () => {
           <div>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="me-auto">
-                <Nav.Link as={Link} to="/your-sets">
+              <Nav className>
+                <Nav.Link as={Link} to="/your-sets" className="mt-1">
                   Twoje zestawy
                 </Nav.Link>
                 <Nav.Link as={Link} to="/create-set">
-                  Stwórz zestaw
+                  <Button className>Stwórz zestaw</Button>
                 </Nav.Link>
-                {/* <Nav.Link as={Link} to="/settings">
-                  Ustawienia
-                </Nav.Link> */}
               </Nav>
-              <NavDropdown title={<Avatar size={40} />} className="ml-2" align="end">
+              <NavDropdown
+                title={<Avatar user={user.user} size={40} />}
+                className="ml-2"
+                align="end"
+              >
+                <NavDropdown.Item eventKey={0} disabled>
+                  {user.user.username}
+                </NavDropdown.Item>
                 <NavDropdown.Item eventKey={1}>
                   <Nav.Link as={Link} to="/settings">
                     Ustawienia
@@ -50,9 +54,8 @@ const MainNavbar = () => {
                 </NavDropdown.Item>
                 <NavDropdown.Item eventKey={2}>
                   <div onClick={logoutUser}>
-                    {user && <Button >Wyloguj</Button>}
+                    {user && <Button>Wyloguj</Button>}
                   </div>
-                  Wyloguj się
                 </NavDropdown.Item>
               </NavDropdown>
             </Navbar.Collapse>

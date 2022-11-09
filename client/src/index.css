@@ -27,7 +27,7 @@ p, ul {
 
 .dropdown-menu {
     color: white;
-    background: #0a092d;
+    background: #2e3856;
 }
 
 .text-input:focus {
@@ -212,6 +212,11 @@ p, ul {
     border-bottom: 1px solid #282e3e;
 }
 
+.card-footer {
+    background-color: #2e3856;
+    border: none;
+}
+
 .set-card {
     background-color: #2e3856;
 }
@@ -272,7 +277,7 @@ footer {
 
 @font-face {
     font-family: "HurmeGeometricSans1";
-    src: url(fonts/HurmeGeometricSans1-SemiBold.ttf);
+    src: url(fonts/HurmeGeometricSans1-Regular.ttf);
 }
 @font-face {
     font-family: "HurmeGeometricSans1Bold";
@@ -294,7 +299,7 @@ footer {
 }
 
 .dropdown-item:hover {
-    background: #0a092d;
+    background: #2e3856;
     color: #b3acb5
 }
 
@@ -316,4 +321,9 @@ footer {
     left: 50%;
     transform: translate(10%, -140%);
     -ms-transform: translate(-50%, -50%);
+}
+
+.avatar {
+    border: 1px #0a092d;
+    border-radius: 50%;
 }

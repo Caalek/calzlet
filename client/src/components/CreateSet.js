@@ -59,21 +59,43 @@ const CreateSet = ({ set }) => {
       userId: user.user.userId, //id usera od googla
       title: title,
       description: description,
+      creatorUsername: user.user.username,
+      creatorAvatarUrl: user.user.avatarUrl,
       flashcards: flashcards,
       viewAccess: viewAccess,
       editAccess: editAccess,
       viewPassword: viewPassword,
       editPassword: editPassword,
+      associatedUserIds: [user.user.userId]
     };
     await axios.post("/api/set", data, {headers: {'Authorization': `Bearer ${user.token}`}});
   }
 
+  const addToAssociated = (set) => {
+    console.log(set);
+    const data = {
+      associatedUserIds: set.associatedUserIds.concat([user.user.userId]),
+    };
+    console.log("DATA", data);
+    axios
+      .patch(`/api/set/${setId}`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((response) => {
+        console.log("added to asociated");
+      });
+  };
+
   async function replaceSet() {
-    console.log(set.created)
     const data = {
       userId: user.user.userId, //id usera od googla
       title: title,
       description: description,
+      creatorUsername: user.user.username,
+      creatorAvatarUrl: user.user.avatarUrl,
       flashcards: flashcards,
       viewAccess: viewAccess,
       editAccess: editAccess,
@@ -81,13 +103,19 @@ const CreateSet = ({ set }) => {
       editPassword: editPassword,
       created: set.created,
       accessed: set.accessed,
-      edited: new Date
+      associatedUserIds: set.associatedUserIds,
+      edited: new Date()
     };
     const response = await axios.put(
       `/api/set/${setId}`,
       data, {headers: {'Authorization': `Bearer ${user.token}`}}
     );
-    console.log(response);
+    if (
+      response.data.userId !== user.user.userId &&
+      !response.data.associatedUserIds.includes(user.user.userId)
+    ) {
+      addToAssociated(set);
+    }
   }
 
   function deleteFlashcard(indexToDelete) {
@@ -137,7 +165,12 @@ const CreateSet = ({ set }) => {
       />
       <div className="mt-5">
         <Container>
-          <h2>{setId ? "Edytuj zestaw" : "Stwórz zestaw"}</h2>
+          <div style={{display: "flex", justifyContent: "space-between"}} className="mb-1">
+            <h2>{setId ? "Edytuj zestaw" : "Stwórz zestaw"}</h2>
+            <Button onClick={handleSubmit}>
+              {setId ? "Zapisz zmiany" : "Stwórz"}
+            </Button>
+          </div>
           <Form>
             <Row className="m-auto">
               <Col sm={12}>
@@ -224,7 +257,7 @@ const CreateSet = ({ set }) => {
             style={{ justifyContent: "center", display: "flex" }}
           >
             <Button onClick={handleSubmit} size="lg">
-              Zapisz i kontynuuj
+              {setId ? "Zapisz zmiany" : "Stwórz"}
             </Button>
           </div>
         </Container>

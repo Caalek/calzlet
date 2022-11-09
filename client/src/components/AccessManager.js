@@ -40,8 +40,8 @@ const AccessManager = (props) => {
           className="popup"
         >
           <Modal.Body>
-            <Row className="p-3">
-              <Col sm={12} md={6}>
+            <Row className="p-2">
+              <Col sm={12} md={6} className="mt-3">
                 <h4>Widoczne dla</h4>
                 <select
                   defaultValue={props.viewAccess}
@@ -63,14 +63,14 @@ const AccessManager = (props) => {
                   ></input>
                 )}
               </Col>
-              <Col sm={12} md={6}>
+              <Col sm={12} md={6} className="mt-3">
                 <h4>Możliwe do edycji dla</h4>
                 <select
                   defaultValue={props.editAccess}
                   className="select-input"
                   onChange={(e) => setEditAccess(e.target.value)}s
                 >
-                  <option value="all">każdego</option>
+                  {/* <option value="all">każdego</option> */}
                   <option value="me">tylko mnie</option>
                   <option value="password">posiadających hasło</option>
                 </select>

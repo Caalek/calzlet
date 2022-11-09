@@ -1,7 +1,7 @@
 const ElaAnswer = ({text, checkAnswer, index}) => {
 
   return (
-    <div onClick={() => {checkAnswer(text); console.log("clicked answer")}} className="ela-answer p-3 m-3">
+    <div onClick={() => {checkAnswer(text)}} className="ela-answer p-3 m-3">
       {text}
     </div>
   )

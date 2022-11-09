@@ -35,7 +35,7 @@ const FlashcardViewer = ({ title, words, setId, lastIndex }) => {
   };
 
   const leaveSet = async () => {
-    const data = {lastIndex: currentWordIndex, accessed: new Date}
+    const data = {lastIndex: currentWordIndex, accessed: new Date()}
     await axios.patch(`/api/set/${setId}`, data, {headers: {'Authorization': `Bearer ${user.token}`}})
     navigate(`/view-set/${setId}`)
   }

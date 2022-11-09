@@ -32,7 +32,6 @@ app.get("/test", (req, res) => {
 });
 
 app.post("/api/images", upload.single("image"), (req, res) => {
-  console.log(req.file.path)
   res.send({
     imageUrl: req.file.path
   })
@@ -45,9 +44,17 @@ app.get("/images/:imageId", (req, res) => {
 })
 
 app.post("/api/check-view-password/:setId", async (req, res) => {
-  const result = await FlashcardSet.findOne({_id: req.params.setId})
-  console.log(result)
+  const result = await FlashcardSet.findById(req.params.setId)
   if (req.body.password === result.viewPassword) {
+    res.send({"message": "success"})
+  } else {
+    res.send({"message": "password invalid"})
+  }
+})
+
+app.post("/api/check-edit-password/:setId", async (req, res) => {
+  const result = await FlashcardSet.findOne({_id: req.params.setId})
+  if (req.body.password === result.editPassword) {
     res.send({"message": "success"})
   } else {
     res.send({"message": "password invalid"})

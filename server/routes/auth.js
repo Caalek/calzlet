@@ -13,7 +13,6 @@ router.post("/register", async (req, res) => {
     const hashedPassword = bcrypt.hashSync(req.body.password, 8);
     const userOfSameEmailExists = await User.findOne({ email: req.body.email });
     if (userOfSameEmailExists) {
-      console.log(userOfSameEmailExists)
       return res.send({
         message: "A user with this email adress already exists.",
       });
@@ -54,10 +53,6 @@ router.post("/login", (req, res) => {
       req.body.password,
       user.password
     );
-    console.log(user)
-    console.log(req.body.password)
-    console.log(user.password)
-    console.log(passwordIsValid)
 
     if (!passwordIsValid) {
       return res.send({ auth: false, message: "Invalid email or password." });

@@ -5,7 +5,7 @@ function getTimePassedString(datestring) {
     const dateInSeconds = Math.floor(new Date(datestring).getTime() / 1000)
     const currentDateInSeconds = Math.floor(new Date().getTime() / 1000)
     const timePassedInSeconds = currentDateInSeconds - dateInSeconds
-    console.log(timePassedInSeconds)
+
     if (timePassedInSeconds > 86400) {
         const number = Math.floor(timePassedInSeconds / 86400)
         let ending
