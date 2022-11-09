@@ -33,7 +33,7 @@ const ViewSet = () => {
 
   const [showPasswordPopup, setShowPasswordPopup] = useState();
 
-  console.log(user)
+  console.log(user);
   useEffect(() => {
     console.log(user);
     const addToAssociated = (set) => {
@@ -60,7 +60,8 @@ const ViewSet = () => {
       console.log(user.user.userId);
       if (
         response.data.userId !== user.user.userId &&
-        !response.data.associatedUserIds.includes(user.user.userId) && response.data
+        !response.data.associatedUserIds.includes(user.user.userId) &&
+        response.data
       ) {
         addToAssociated(response.data);
       }
@@ -85,8 +86,8 @@ const ViewSet = () => {
       //   checkIfCanAccess(set);
       // }
       // checkIfCanEdit(set);
-      checkIfCanAccess(set)
-      checkIfCanEdit(set)
+      checkIfCanAccess(set);
+      checkIfCanEdit(set);
       console.log(canEdit);
     }
   }, [set]);
@@ -109,13 +110,12 @@ const ViewSet = () => {
     }
   }
 
-  function setHasPassword(value) {
+  function setHasViewPassword(value) {
     setCanAccess(value);
   }
 
   function setHasEditPassword(value) {
     setCanEdit(value);
-    console.log(canEdit);
   }
 
   function checkIfCanAccess(setArg) {
@@ -130,9 +130,10 @@ const ViewSet = () => {
     } else if (setArg.viewAccess === "password") {
       if (user && user.user.userId === setArg.userId) {
         setCanAccess(true);
-      } else (
-        setShowPasswordPopup(true)
-      )
+      } else {
+        setCanAccess(false);
+        setShowPasswordPopup(true);
+      }
     }
   }
 
@@ -156,131 +157,134 @@ const ViewSet = () => {
     } else if (set.editAccess === "password") {
       setShowPasswordPopup(true);
     } else {
-      setErrorText("Autor nie pozwala innym edytować tego zestawu.")
+      setErrorText("Autor nie pozwala innym edytować tego zestawu.");
     }
   }
-
-  if (set && canAccess) {
-    console.log(typeof set.edited);
-    return (
-      <>
-        <Popup
-          show={errorText ? true : false}
-          text={errorText}
-          onHide={() => setErrorText(null)}
-        />
+  return (
+    <>
+      {set && !canAccess && (
         <PasswordPrompt
           show={showPasswordPopup}
-          passwordType={canEdit ? "view" : "edit"}
+          setHasPassword={setHasViewPassword}
+          passwordType={"view"}
           setId={setId}
           onHide={() => setShowPasswordPopup(false)}
         />
-        <ConfirmDialogue
-          show={showDialogue}
-          text={
-            "Czy na pewno chcesz usunąć ten zestaw? Nie będzie już odwrotu."
-          }
-          onConfirm={deleteSet}
-          onReject={() => setShowDialogue(false)}
-        />
-        <MainNavbar />
-        <Container className="mt-2">
-          <Row>
-            <Col sm={12} md={{ span: 8, offset: 2 }}>
-              <h1>{set.title}</h1>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={3} md={{ span: 2, offset: 2 }}>
-              <div onClick={navigateToEla} className="learn-button p-2 mt-1">
-                <img src={elaImage} alt="" height="30"></img>
-                <span className="m-3" style={{ fontSize: 17 }}>
-                  Tryb Eli
-                </span>
-              </div>
-            </Col>
-            <Col sm={3} md={{ span: 2 }}>
-              <Link to={`/flashcards/${set._id}`}>
-                <div className="learn-button p-2 mt-1">
-                  <img src={flashcardImage} alt="" height="30"></img>
-                  <span className="m-3" style={{ fontSize: 18 }}>
-                    Fiszki
-                  </span>
-                </div>
-              </Link>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={12} md={{ span: 8, offset: 2 }}>
-              <div>
-                <WordViewer
-                  flashcards={set.flashcards}
-                  lastIndex={set.lastIndex}
-                />
-              </div>
-              {user && user.userId === set.userId && (
-                <Button className="m-1" onClick={() => setShowDialogue(true)}>
-                  Usuń zestaw
-                </Button>
-              )}
-              <Button className="m-1" onClick={navigateToEdit}>
-                <img
-                  src={editImage}
-                  alt=""
-                  className=""
-                  style={{ marginRight: "5px" }}
-                  height="17"
-                ></img>
-                Edytuj zestaw
-              </Button>
-              <Button
-                className="m-1"
-                onClick={() =>
-                  navigator.clipboard.writeText(window.location.href)
-                }
-              >
-                <img
-                  src={copyImage}
-                  alt=""
-                  className=""
-                  style={{ marginRight: "5px" }}
-                  height="17"
-                ></img>
-                Skopiuj link
-              </Button>
-            </Col>
-            <Row className="mb-1">
+      )}
+      {set && canAccess && (
+        <>
+          <Popup
+            show={errorText ? true : false}
+            text={errorText}
+            onHide={() => setErrorText(null)}
+          />
+          <PasswordPrompt
+            show={showPasswordPopup}
+            setHasPassword={setHasEditPassword}
+            passwordType={"edit"}
+            setId={setId}
+            onHide={() => setShowPasswordPopup(false)}
+          />
+          <ConfirmDialogue
+            show={showDialogue}
+            text={
+              "Czy na pewno chcesz usunąć ten zestaw? Nie będzie już odwrotu."
+            }
+            onConfirm={deleteSet}
+            onReject={() => setShowDialogue(false)}
+          />
+          <MainNavbar />
+          <Container className="mt-2">
+            <Row>
               <Col sm={12} md={{ span: 8, offset: 2 }}>
-              <span className="font-background">Autor</span>
-              <Avatar user={{avatarUrl: set.creatorAvatarUrl}} size="30" /> {set.creatorUsername}
+                <h1>{set.title}</h1>
               </Col>
             </Row>
-          </Row>
-          <Row>
-            {set.flashcards.map((pair, index) => {
-              return (
-                <WordPair
-                  key={index}
-                  word={pair.word}
-                  translation={pair.translation}
-                />
-              );
-            })}
-          </Row>
-        </Container>
-      </>
-    );
-  } else if (set && !canAccess && set.viewAccess === "password") {
-    return (
-      <>
-        <MainNavbar />
-        <PasswordPrompt
-          setHasPassword={setHasPassword}
-          passwordType="view"
-          setId={set._id}
-        />
-      </>
-    );
-  }
+            <Row>
+              <Col sm={3} md={{ span: 2, offset: 2 }}>
+                <div onClick={navigateToEla} className="learn-button p-2 mt-1">
+                  <img src={elaImage} alt="" height="30"></img>
+                  <span className="m-3" style={{ fontSize: 17 }}>
+                    Tryb Eli
+                  </span>
+                </div>
+              </Col>
+              <Col sm={3} md={{ span: 2 }}>
+                <Link to={`/flashcards/${set._id}`}>
+                  <div className="learn-button p-2 mt-1">
+                    <img src={flashcardImage} alt="" height="30"></img>
+                    <span className="m-3" style={{ fontSize: 18 }}>
+                      Fiszki
+                    </span>
+                  </div>
+                </Link>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm={12} md={{ span: 8, offset: 2 }}>
+                <div>
+                  <WordViewer
+                    flashcards={set.flashcards}
+                    lastIndex={set.lastIndex}
+                  />
+                </div>
+                {user && user.userId === set.userId && (
+                  <Button className="m-1" onClick={() => setShowDialogue(true)}>
+                    Usuń zestaw
+                  </Button>
+                )}
+                <Button className="m-1" onClick={navigateToEdit}>
+                  <img
+                    src={editImage}
+                    alt=""
+                    className=""
+                    style={{ marginRight: "5px" }}
+                    height="17"
+                  ></img>
+                  Edytuj zestaw
+                </Button>
+                <Button
+                  className="m-1"
+                  onClick={() =>
+                    navigator.clipboard.writeText(window.location.href)
+                  }
+                >
+                  <img
+                    src={copyImage}
+                    alt=""
+                    className=""
+                    style={{ marginRight: "5px" }}
+                    height="17"
+                  ></img>
+                  Skopiuj link
+                </Button>
+              </Col>
+              <Row className="mb-1">
+                <Col sm={12} md={{ span: 8, offset: 2 }}>
+                  <span className="font-background">Autor</span>
+                  <Avatar
+                    user={{ avatarUrl: set.creatorAvatarUrl }}
+                    size="30"
+                  />{" "}
+                  {set.creatorUsername}
+                </Col>
+              </Row>
+            </Row>
+            <Row>
+              {set.flashcards.map((pair, index) => {
+                return (
+                  <WordPair
+                    key={index}
+                    word={pair.word}
+                    translation={pair.translation}
+                  />
+                );
+              })}
+            </Row>
+          </Container>
+        </>
+      )}
+    </>
+  );
 };
 export default ViewSet;

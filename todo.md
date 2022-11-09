@@ -2,9 +2,7 @@
 
 Konieczne do releasu:
 1. accessed wywalić bo jest useless
-2. naprawic sprwadzanie hasla na view secie
-3. ogarnać ten walony navbar
-4. error handling na api
+3. OGARNĄĆ TEN WALONY NAVBAR
 3. Zastanowić się gdzie ma być api auth a gdzie niekoniecznie
 4. zastanowic sie czy cos jeszcze dodac do bazy danych (frontend mozna potem zmienic w kazdej chwili)
 5. ogolne poprawki

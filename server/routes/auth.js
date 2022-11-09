@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
       },
       (error, user) => {
         console.log(error)
-        if (error) return res.send({ message: "Internal server error." });
+        if (error) return res.send(500).send({ message: "Internal server error." });
 
         const userData = {
           userId: user._id,

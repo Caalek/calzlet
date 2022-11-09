@@ -4,47 +4,68 @@ const router = express.Router();
 const FlashcardSet = require("../models/flashcardSet");
 
 router.get("/sets", middleware.verifyToken, async (req, res) => { //for YourSets page
-  // let query
-  // if (req._id) {
-  //   query = {userId: req._id}
-  // } else {
-  //   query = req.query
-  // }
   query = req.query
-  const results = await FlashcardSet.find(query)
-  res.send(results);
+  FlashcardSet.find(query, (error, results ) => {
+    if (error) {
+      console.error(error)
+      return res.send(500).send({message: "Internal server errror"})
+    }
+    res.send(results)
+  })
 });
 
-router.post("/set", middleware.verifyToken, async (req, res) => { //for create-set page
-  const result = await FlashcardSet.create(req.body);
-  res.sendStatus(201)
+router.post("/set", middleware.verifyToken, async (req, res) => { //for CreateSet page
+  FlashcardSet.create(req.body, (error) => {
+    if (error) {
+      console.error(error)
+      return res.send(500).send({message: "Internal server errror"})
+    }
+    res.sendStatus(201)
+  });
 });
 
 router.put("/set/:setId", middleware.verifyToken, async (req, res) => {
-  const result = await FlashcardSet.findOneAndReplace({_id: req.params.setId}, req.body)
-  res.send({})
+  FlashcardSet.findOneAndReplace({_id: req.params.setId}, req.body, (error) => {
+    if (error) {
+      console.error(error)
+      return res.send(500).send({message: "Internal server errror"})
+    }
+    res.send(200).send({message: 'success'})
+  })
 })
 
 router.delete("/set/:setId", middleware.verifyToken, async (req, res) => {
-  const result = await FlashcardSet.deleteOne({_id: req.params.setId}, req.body)
-  res.send({})
+  FlashcardSet.deleteOne({_id: req.params.setId}, req.body, (error) => {
+    if (error) {
+      console.error(error)
+      return res.send(500).send({message: "Internal server errror"})
+    }
+    res.send(200).send({message: 'success'})
+  })
 })
 
-//edit
 // jak chce editowac flashcardy to np flashcard.0.word
 router.patch("/set/:setId", middleware.verifyToken, async (req, res) => {
   const query = {_id: req.params.setId}
-  console.log("pacz poszed")
   const updateObject = req.body
-  await FlashcardSet.findOneAndUpdate(query, updateObject)
-  res.sendStatus(200)
+  FlashcardSet.findOneAndUpdate(query, updateObject, (error) => {
+    if (error) {
+      console.error(error)
+      return res.send(500).send({message: "Internal server errror"})
+    }
+    res.send(200).send({message: 'success'})
+  })
 })
 
 // get one set
 router.get("/set/:setId" , async (req, res) => {
-  const result = await FlashcardSet.findOne({_id: req.params.setId})
-  res.send(result)
+  FlashcardSet.findOne({_id: req.params.setId}, (error, result) => {
+    if (error) {
+      console.error(error)
+      return res.send(500).send({message: "Internal server errror"})
+    }
+    res.send(result)
+  })
 })
-
 
 module.exports = router;

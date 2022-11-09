@@ -31,7 +31,7 @@ const MainNavbar = () => {
           <div>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className>
+              <Nav>
                 <Nav.Link as={Link} to="/your-sets" className="mt-1">
                   Twoje zestawy
                 </Nav.Link>

@@ -59,7 +59,7 @@ const PasswordPrompt = ({ passwordType, setId, setHasPassword, onHide, show }) =
               text={errorText}
               onHide={() => setErrorText(null)}
             />
-            <Container className="mt-5">
+            <Container className="mt-1">
               <Row style={{ fontSize: "large" }}>
                 <Col sm={12} md={{ span: 6, offset: 3 }}>
                   Aby
