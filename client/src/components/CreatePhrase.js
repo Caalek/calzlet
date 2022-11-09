@@ -28,7 +28,7 @@ const CreatePhrase = (props) => {
     const formData = new FormData();
     formData.append("image", image);
     const result = await axios.post(
-      "/api/images",
+      "/api/image",
       formData,
       {
         headers: {

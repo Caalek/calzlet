@@ -25,12 +25,7 @@ const port = 5000;
 app.use("/api", require("./routes/sets"));
 app.use("/api", require("./routes/auth"));
 app.use("/api", require("./routes/users"));
-
-app.post("/api/images", upload.single("image"), middleware.verifyToken, (req, res) => {
-  res.send({
-    imageUrl: req.file.path
-  })
-})
+app.use("/api", require("./routes/images"));
 
 app.get("/images/:imageId", (req, res) => {
   const imageId = req.params.imageId

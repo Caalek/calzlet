@@ -106,7 +106,7 @@ const RegisterForm = () => {
           onChange={(e) => setEmail(e.target.value)}
         ></input>
         <input
-          type="text"
+          type="password"
           className=" mt-3 text-input"
           placeholder="Hasło"
           onChange={(e) => setPassword(e.target.value)}

@@ -65,7 +65,7 @@ router.post("/login", (req, res) => {
       avatarUrl: user.avatarUrl
     }
 
-    const token = jwt.sign({user: userData}, jwtSecret, { expiresIn: "15s" }); // expires in 24 hours
+    const token = jwt.sign({user: userData}, jwtSecret, { expiresIn: "24h" }); // expires in 24 hours
     res.send({ auth: true, token: token });
   });
 });

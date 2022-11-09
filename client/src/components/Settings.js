@@ -141,7 +141,7 @@ const Settings = () => {
 
     const formData = new FormData();
     formData.append("image", image);
-    const result = await axios.post("/api/images", formData, {
+    const result = await axios.post("/api/image", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${user.token}`,
@@ -158,6 +158,11 @@ const Settings = () => {
         Authorization: `Bearer ${user.token}`,
       },
     });
+    if (user.user.avatarUrl !== "default") {
+      await axios.delete(`/api/${user.user.avatarUrl}`, {headers : {
+        Authorization: `Bearer ${user.token}`,
+      }})
+    }
     const copyUser = user;
     copyUser.user.avatarUrl = avatarUrl;
     setUser(copyUser);

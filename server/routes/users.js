@@ -55,7 +55,7 @@ router.patch("/user", middleware.verifyToken, async (req, res) => {
       console.error(error);
       return res.send(500).send({ message: "Internal server errror" });
     }
-    res.send(200);
+    res.sendStatus(200);
   })
 });
 

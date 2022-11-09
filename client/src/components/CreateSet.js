@@ -140,7 +140,7 @@ const CreateSet = ({ set }) => {
       return;
     }
     setId ? replaceSet() : createSet();
-    navigate("/your-sets");
+    navigate(`/view-set/${setId}`);
   }
 
   function setAccess(view, edit) {
