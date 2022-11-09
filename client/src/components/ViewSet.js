@@ -8,7 +8,7 @@ import elaImage from "../img/ela.png";
 import editImage from "../img/edit.png";
 import copyImage from "../img/copy.png";
 import flashcardImage from "../img/flashcard.png";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import MainNavbar from "./MainNavbar";
 import axios from "axios";
 import UserContext from "../context/UserContext";
@@ -17,12 +17,10 @@ import { useNavigate } from "react-router-dom";
 import ConfirmDialogue from "./ConfirmDialogue";
 import Popup from "./Popup";
 import PasswordPrompt from "./PasswordPrompt";
-
-import getTimePassedString from "../utils/getTimePassedString";
 import Avatar from "./Avatar";
 
 const ViewSet = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const { setId } = useParams();
   const [set, setSet] = useState();
   const [showDialogue, setShowDialogue] = useState();
@@ -33,9 +31,7 @@ const ViewSet = () => {
 
   const [showPasswordPopup, setShowPasswordPopup] = useState();
 
-  console.log(user);
   useEffect(() => {
-    console.log(user);
     const addToAssociated = (set) => {
       console.log(set);
       const data = {
@@ -56,9 +52,8 @@ const ViewSet = () => {
 
     axios.get(`/api/set/${setId}`).then((response) => {
       setSet(response.data);
-      console.log(response.data.userId);
-      console.log(user.user.userId);
       if (
+        user &&
         response.data.userId !== user.user.userId &&
         !response.data.associatedUserIds.includes(user.user.userId) &&
         response.data
@@ -88,7 +83,6 @@ const ViewSet = () => {
       // checkIfCanEdit(set);
       checkIfCanAccess(set);
       checkIfCanEdit(set);
-      console.log(canEdit);
     }
   }, [set]);
 
@@ -152,7 +146,10 @@ const ViewSet = () => {
   }
 
   function navigateToEdit() {
-    if (canEdit) {
+    if (!user) {
+      setErrorText("Musisz być zalogowany, aby edytować zestawy.")
+    }
+    else if (canEdit) {
       navigate(`/edit-set/${setId}`);
     } else if (set.editAccess === "password") {
       setShowPasswordPopup(true);
@@ -162,6 +159,7 @@ const ViewSet = () => {
   }
   return (
     <>
+      <MainNavbar />
       {set && !canAccess && (
         <PasswordPrompt
           show={showPasswordPopup}
@@ -193,7 +191,6 @@ const ViewSet = () => {
             onConfirm={deleteSet}
             onReject={() => setShowDialogue(false)}
           />
-          <MainNavbar />
           <Container className="mt-2">
             <Row>
               <Col sm={12} md={{ span: 8, offset: 2 }}>
@@ -201,7 +198,7 @@ const ViewSet = () => {
               </Col>
             </Row>
             <Row>
-              <Col sm={3} md={{ span: 2, offset: 2 }}>
+              <Col xs={6} md={{ span: 2, offset: 2 }}>
                 <div onClick={navigateToEla} className="learn-button p-2 mt-1">
                   <img src={elaImage} alt="" height="30"></img>
                   <span className="m-3" style={{ fontSize: 17 }}>
@@ -209,7 +206,7 @@ const ViewSet = () => {
                   </span>
                 </div>
               </Col>
-              <Col sm={3} md={{ span: 2 }}>
+              <Col xs={6} md={{ span: 2 }}>
                 <Link to={`/flashcards/${set._id}`}>
                   <div className="learn-button p-2 mt-1">
                     <img src={flashcardImage} alt="" height="30"></img>
@@ -259,7 +256,7 @@ const ViewSet = () => {
                   Skopiuj link
                 </Button>
               </Col>
-              <Row className="mb-1">
+              <Row className="mb-1 p-2">
                 <Col sm={12} md={{ span: 8, offset: 2 }}>
                   <span className="font-background">Autor</span>
                   <Avatar

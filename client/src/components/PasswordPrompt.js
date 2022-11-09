@@ -1,16 +1,19 @@
-import { useCallback, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/esm/Container";
 import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 import axios from "axios";
 import MainNavbar from "./MainNavbar";
 import UserContext from "../context/UserContext";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Modal from "react-bootstrap/Modal"
+import Modal from "react-bootstrap/Modal";
 
-const PasswordPrompt = ({ passwordType, setId, setHasPassword, onHide, show }) => {
+const PasswordPrompt = ({
+  passwordType,
+  setId,
+  setHasPassword,
+  onHide,
+  show,
+}) => {
   const [typedPassword, setTypedPassword] = useState();
   const [errorText, setErrorText] = useState();
   const { user } = useContext(UserContext);
@@ -35,7 +38,7 @@ const PasswordPrompt = ({ passwordType, setId, setHasPassword, onHide, show }) =
         JSON.stringify([setId].concat(passwordsEntered))
       );
       setHasPassword(true);
-      onHide()
+      onHide();
     } else {
       setErrorText("Błędne hasło.");
     }
@@ -59,25 +62,21 @@ const PasswordPrompt = ({ passwordType, setId, setHasPassword, onHide, show }) =
               text={errorText}
               onHide={() => setErrorText(null)}
             />
-            <Container className="mt-1">
-              <Row style={{ fontSize: "large" }}>
-                <Col sm={12} md={{ span: 6, offset: 3 }}>
-                  Aby
-                  {passwordType === "edit" && " edytować"}
-                  {passwordType === "view" && " zobaczyć"}
-                  {" ten zestaw, musisz wpisać hasło."}
-                  <input
-                    type="password"
-                    className="text-input"
-                    placeholder="Hasło"
-                    onChange={(e) => setTypedPassword(e.target.value)}
-                  ></input>
-                  <Button className="mt-1" onClick={checkPassword}>
-                    Kontynnuj
-                  </Button>
-                </Col>
-              </Row>
-            </Container>
+            <div className="p-3" style={{fontSize: "large"}}>
+            Aby
+            {passwordType === "edit" && " edytować"}
+            {passwordType === "view" && " zobaczyć"}
+            {" ten zestaw, musisz wpisać hasło."}
+            <input
+              type="password"
+              className="text-input"
+              placeholder="Hasło"
+              onChange={(e) => setTypedPassword(e.target.value)}
+            ></input>
+            <Button className="mt-1" onClick={checkPassword}>
+              Kontynnuj
+            </Button>
+            </div>
           </Modal.Body>
         </Modal>
       </div>

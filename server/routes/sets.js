@@ -5,16 +5,18 @@ const FlashcardSet = require("../models/flashcardSet");
 
 router.get("/sets", middleware.verifyToken, async (req, res) => { //for YourSets page
   query = req.query
-  FlashcardSet.find(query, (error, results ) => {
+  FlashcardSet.find(query, (error, results) => {
     if (error) {
       console.error(error)
       return res.send(500).send({message: "Internal server errror"})
     }
+    console.log(results)
     res.send(results)
   })
 });
 
 router.post("/set", middleware.verifyToken, async (req, res) => { //for CreateSet page
+  console.log("dsadasd")
   FlashcardSet.create(req.body, (error) => {
     if (error) {
       console.error(error)
@@ -25,12 +27,13 @@ router.post("/set", middleware.verifyToken, async (req, res) => { //for CreateSe
 });
 
 router.put("/set/:setId", middleware.verifyToken, async (req, res) => {
-  FlashcardSet.findOneAndReplace({_id: req.params.setId}, req.body, (error) => {
+  console.log(req.body)
+  FlashcardSet.replaceOne({_id: req.params.setId}, req.body, (error) => {
     if (error) {
       console.error(error)
       return res.send(500).send({message: "Internal server errror"})
     }
-    res.send(200).send({message: 'success'})
+    res.send({message: 'success'})
   })
 })
 
@@ -40,7 +43,7 @@ router.delete("/set/:setId", middleware.verifyToken, async (req, res) => {
       console.error(error)
       return res.send(500).send({message: "Internal server errror"})
     }
-    res.send(200).send({message: 'success'})
+    res.send({message: 'success'})
   })
 })
 
@@ -53,7 +56,7 @@ router.patch("/set/:setId", middleware.verifyToken, async (req, res) => {
       console.error(error)
       return res.send(500).send({message: "Internal server errror"})
     }
-    res.send(200).send({message: 'success'})
+    res.send({message: 'success'})
   })
 })
 

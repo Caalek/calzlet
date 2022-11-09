@@ -1,9 +1,8 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignor
 server/.env
 node_modules
 devlogin.txt
 /server/images/**
 venv
-/build
+build
 .env
 npm-debug.log*

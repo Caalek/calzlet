@@ -129,11 +129,16 @@ p, ul {
     border-radius: 0px;
 }
 
-.btn {
+.btn-primary {
     background-color: #4255ff;
     color: white;
     border: 0ex;
 }
+
+// .btn-danger {
+    
+//     background-color: #eb725b;
+// }                                                                           
 
 .btn:hover {
     background-color: #4255ff;
@@ -141,9 +146,11 @@ p, ul {
 }
 
 .btn:focus {
-    border-color: white;
-    border-width: 1px;
-    border-style: solid;
+    border: none
+}
+
+.bg-dark {
+    background: #0a092d;
 }
 
 .fraza {
@@ -166,11 +173,17 @@ p, ul {
 .flashcard-viewer {
     background-color: #2e3856;
     border-radius: 10px;
-    height: 80vh;
+    height: 70vh;
+    transform-style: preserve-3d;
+    transition: all 0.5s ease;
 }
 
 .fiszki {
     height: 75vh;
+}
+
+a:hover {
+    color: white;
 }
 
 .next-button {
@@ -208,7 +221,7 @@ p, ul {
     border-bottom: 2px solid #a8b1ff;
 }
 
-.glowny-navbar {
+.navbar {
     border-bottom: 1px solid #282e3e;
 }
 
@@ -277,11 +290,11 @@ footer {
 
 @font-face {
     font-family: "HurmeGeometricSans1";
-    src: url(fonts/HurmeGeometricSans1-Regular.ttf);
+    src: url(../fonts/HurmeGeometricSans1-Regular.ttf);
 }
 @font-face {
     font-family: "HurmeGeometricSans1Bold";
-    src: url(fonts/HurmeGeometricSans1-SemiBold.ttf);
+    src: url(../fonts/HurmeGeometricSans1-SemiBold.ttf);
 }
 
 *:hover,

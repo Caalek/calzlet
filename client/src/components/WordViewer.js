@@ -43,7 +43,7 @@ const WordViewer = ({ flashcards, lastIndex }) => {
             {flashcards[currentWordIndex].translation}
             <br />
             {flashcards[currentWordIndex].imageUrl && (
-              <img src={flashcards[currentWordIndex].imageUrl} height="100" />
+              <img src={flashcards[currentWordIndex].imageUrl} height="100" alt="obrazek z fiszki"/>
             )}
           </div>
         )}
@@ -51,12 +51,12 @@ const WordViewer = ({ flashcards, lastIndex }) => {
       <Row>
         <Col>
           <div className="next-button m-1" onClick={moveBackward}>
-            <img src={arrowLeft} height="18"></img>
+            <img src={arrowLeft} height="18" alt="strzałka w lewo"></img>
           </div>
         </Col>
         <Col>
           <div className="next-button m-1" onClick={moveForward}>
-            <img src={arrowRight} height="18"></img>
+            <img src={arrowRight} height="18" alt="strzałka w prawo"></img>
           </div>
         </Col>
       </Row>

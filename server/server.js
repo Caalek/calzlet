@@ -7,9 +7,8 @@ const path = require("path");
 const multer = require("multer")
 const upload = multer({ dest: 'images/' })
 
-const cors = require("cors");
-const FlashcardSet = require("./models/flashcardSet")
-app.use(cors());
+const FlashcardSet = require("./models/flashcardSet");
+const middleware = require("./middleware");
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -27,11 +26,7 @@ app.use("/api", require("./routes/sets"));
 app.use("/api", require("./routes/auth"));
 app.use("/api", require("./routes/users"));
 
-app.get("/test", (req, res) => {
-  res.send("Hello, World!");
-});
-
-app.post("/api/images", upload.single("image"), (req, res) => {
+app.post("/api/images", upload.single("image"), middleware.verifyToken, (req, res) => {
   res.send({
     imageUrl: req.file.path
   })
@@ -58,6 +53,14 @@ app.post("/api/check-edit-password/:setId", async (req, res) => {
     res.send({"message": "success"})
   } else {
     res.send({"message": "password invalid"})
+  }
+})
+
+app.get('*', (req, res, next) => {
+  if (process.env.ENV === "prod") {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'))
+  } else {
+    next()
   }
 })
 

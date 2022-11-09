@@ -1,18 +1,16 @@
 # MVP
 
-Konieczne do releasu:
-1. accessed wywalić bo jest useless
-3. OGARNĄĆ TEN WALONY NAVBAR
-3. Zastanowić się gdzie ma być api auth a gdzie niekoniecznie
-4. zastanowic sie czy cos jeszcze dodac do bazy danych (frontend mozna potem zmienic w kazdej chwili)
-5. ogolne poprawki
+Wazne:
+- password reset 
 
 Mniej wazne:
-1. Usuwanie z associated ids jesli sie chce
-2. Usuwanie setów
-3. Filtrowanie w your-sets
-4. jakis sass do boostrapa a nie takie gowno
-5. cleanup roznych rzeczy
+- Page usera 
+- Usuwanie z associated ids jesli sie chce
+- Usuwanie setów
+- Filtrowanie w your-sets
+- jakis sass do boostrapa a nie takie gowno
+- cleanup roznych rzeczy
+- 
 
 
 # BUGS

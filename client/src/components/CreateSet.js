@@ -48,13 +48,20 @@ const CreateSet = ({ set }) => {
     }
   };
 
-  // const validateFlashcards = () => {
-  //   for (let flashcard of flashcards) {
-  //     if ()
-  //   }
-  // }
+  const validateFlashcards = () => {
+    for (let flashcard of flashcards) {
+      if (!flashcard.translation || !flashcard.word) {
+        return false
+      }
+    }
+    return true
+  }
 
   async function createSet() {
+    if (!validateFlashcards()) {
+      console.log("shit")
+      return setErrorText("Wypełnij wszystkie pola.")
+    }
     const data = {
       userId: user.user.userId, //id usera od googla
       title: title,
@@ -165,7 +172,7 @@ const CreateSet = ({ set }) => {
       />
       <div className="mt-5">
         <Container>
-          <div style={{display: "flex", justifyContent: "space-between"}} className="mb-1">
+          <div style={{display: "flex", justifyContent: "space-between"}} className="mb-2">
             <h2>{setId ? "Edytuj zestaw" : "Stwórz zestaw"}</h2>
             <Button onClick={handleSubmit}>
               {setId ? "Zapisz zmiany" : "Stwórz"}
@@ -226,7 +233,7 @@ const CreateSet = ({ set }) => {
               </Col>
               <Col sm={12} md={4}>
                 <span style={{ fontSize: "larger" }} className="link-text">
-                  Importuj z plików CSV (wkrótce)
+                  Importuj z plików Excela (wkrótce)
                 </span>
               </Col>
             </Row>

@@ -1,14 +1,15 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
-import MainNavbar from "./MainNavbar";
 import ElaAnswer from "./ElaAnswer";
-import { useState, useEffect, useSyncExternalStore, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
-import ProgressBar from "./ProgressBar";
 import Popup from "./Popup";
 import { useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
+import arrowLeft from "../img/arrow-left.png";
+import Col from "react-bootstrap/Col"
+import Row from "react-bootstrap/Row"
 
 const ElaMode = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const ElaMode = () => {
   const { setId } = useParams();
   const [set, setSet] = useState();
   const [currentFlashcardIndex, setCurrentFlashcardIndex] = useState(0);
-  const [correctAnswer, setCorrectAnswer] = useState(false);
+  const [correctAnswer, setCorrectAnswer] = useState(false); //eslint-disable-line
   const [showInput, setShowInput] = useState();
   const [input, setInput] = useState();
   const [answerArray, setAnswerArray] = useState();
@@ -74,11 +75,11 @@ const ElaMode = () => {
 
   const getAnswerArray = (flashcards, currentFlashcardIndex) => {
     let answerArray = [];
-    while (answerArray.length != 3) {
+    while (answerArray.length !== 3) {
       let answer = randomElementFromArray(flashcards).word;
       if (
         !answerArray.includes(answer) &&
-        answer != flashcards[currentFlashcardIndex].word
+        answer !== flashcards[currentFlashcardIndex].word
       ) {
         answerArray.push(answer);
       }
@@ -90,7 +91,6 @@ const ElaMode = () => {
 
   return (
     <>
-      <MainNavbar />
       {errorText && (
         <Popup
           show={errorText ? true : false}
@@ -101,11 +101,34 @@ const ElaMode = () => {
       {set && (
         <Container className="mt-2">
           {!hasFinished && (
-            <ProgressBar
-              className="m-2"
-              complete={currentFlashcardIndex}
-              all={set.flashcards.length}
-            />
+            <>
+            <Row className="p-2">
+            <Col xs={1}>
+              <img
+                className="mt-2"
+                src={arrowLeft}
+                onClick={() => navigate(`/view-set/${set._id}`)}
+                height="25"
+                alt="strzałka w lewo"
+              ></img>
+            </Col>
+            <Col xs={10}>
+              <div style={{ textAlign: "center" }}>
+                <div>{currentFlashcardIndex + 1 + " / " + set.flashcards.length}</div>
+                {set.title}
+              </div>
+            </Col>
+          </Row>
+    
+          <span
+            className="progress-bar"
+            style={{
+              width: `${Math.round(
+                ((currentFlashcardIndex + 1) / set.flashcards.length) * 100
+              )}%`,
+            }}
+          ></span>
+          </>
           )}
           {!hasFinished && (
             <div className="ela-mode p-3 mt-4">

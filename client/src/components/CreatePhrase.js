@@ -12,7 +12,6 @@ const CreatePhrase = (props) => {
   const filePicker = useRef();
   const [imageUrls, setImageUrls] = useState(props.imageUrls || []);
   const [errorText, setErrorText] = useState();
-  const [index, setIndex] = useState(props.index);
   const { user } = useContext(UserContext);
 
   const uploadImage = async (image) => {
@@ -116,6 +115,7 @@ const CreatePhrase = (props) => {
                     src={image}
                     height="100"
                     width="100"
+                    alt="obraz definicji"
                   ></img>
                   <Button
                     className="red overlay-button"

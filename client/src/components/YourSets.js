@@ -1,14 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import SetCard from "./SetCard";
 import Container from "react-bootstrap/Container";
-import MainNavbar from "./MainNavbar";
+import MainNavbar from "./MainNavbar"
 import UserContext from "../context/UserContext";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const YourSets = () => {
   const { user, setUser } = useContext(UserContext);
   const [sets, setSets] = useState();
   const [searchTerm, setSearchTerm] = useState();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,6 +18,11 @@ const YourSets = () => {
         `/api/sets`,
         { params: { associatedUserIds: user.user.userId }, headers: { Authorization: `Bearer ${user.token}` } }
       ).then(response => {
+        if (response.status === 401) {
+          console.log(response)
+          console.log("redirect to login")
+          navigate("/login")
+        }
         setSets(response.data)
       })
     };

@@ -19,7 +19,7 @@ const EditFullSet = (props) => {
       setSet(fetchedSet.data);
     };
     fetchSets();
-  }, []);
+  }, [setId, user.token]);
 
   return (
     <>
