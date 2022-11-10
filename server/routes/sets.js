@@ -8,7 +8,7 @@ router.get("/sets", middleware.verifyToken, async (req, res) => { //for YourSets
   FlashcardSet.find(query, (error, results) => {
     if (error) {
       console.error(error)
-      return res.send(500).send({message: "Internal server errror"})
+      return res.status(500).send({message: "Internal server errror"})
     }
     console.log(results)
     res.send(results)
@@ -20,7 +20,7 @@ router.post("/set", middleware.verifyToken, async (req, res) => { //for CreateSe
   FlashcardSet.create(req.body, (error) => {
     if (error) {
       console.error(error)
-      return res.send(500).send({message: "Internal server errror"})
+      return res.status(500).send({message: "Internal server errror"})
     }
     res.sendStatus(201)
   });
@@ -31,7 +31,7 @@ router.put("/set/:setId", middleware.verifyToken, async (req, res) => {
   FlashcardSet.replaceOne({_id: req.params.setId}, req.body, (error) => {
     if (error) {
       console.error(error)
-      return res.send(500).send({message: "Internal server errror"})
+      return res.status(500).send({message: "Internal server errror"})
     }
     res.send({message: 'success'})
   })
@@ -41,7 +41,7 @@ router.delete("/set/:setId", middleware.verifyToken, async (req, res) => {
   FlashcardSet.deleteOne({_id: req.params.setId}, req.body, (error) => {
     if (error) {
       console.error(error)
-      return res.send(500).send({message: "Internal server errror"})
+      return res.status(500).send({message: "Internal server errror"})
     }
     res.send({message: 'success'})
   })
@@ -54,7 +54,7 @@ router.patch("/set/:setId", middleware.verifyToken, async (req, res) => {
   FlashcardSet.findOneAndUpdate(query, updateObject, (error) => {
     if (error) {
       console.error(error)
-      return res.send(500).send({message: "Internal server errror"})
+      return res.status(500).send({message: "Internal server errror"})
     }
     res.send({message: 'success'})
   })
@@ -65,7 +65,7 @@ router.get("/set/:setId" , async (req, res) => {
   FlashcardSet.findOne({_id: req.params.setId}, (error, result) => {
     if (error) {
       console.error(error)
-      return res.send(500).send({message: "Internal server errror"})
+      return res.status(500).send({message: "Internal server errror"})
     }
     res.send(result)
   })

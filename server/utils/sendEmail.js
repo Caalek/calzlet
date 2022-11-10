@@ -14,7 +14,6 @@ const transporter = nodemailer.createTransport({
     }
 })
 
-
 const sendEmail = async (options) => {
     options.from = '"Calzlet" <calzletapp@gmail.com>'
     let info = await transporter.sendMail(options)

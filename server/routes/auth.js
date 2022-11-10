@@ -29,7 +29,7 @@ router.post("/register", async (req, res) => {
     (error, user) => {
       console.log(error);
       if (error)
-        return res.send(500).send({ message: error.message });
+        return res.status(500).send({ message: error.message });
 
       const userData = {
         userId: user._id,

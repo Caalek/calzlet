@@ -29,7 +29,7 @@ router.put("/user", middleware.verifyToken, async (req, res) => {
       console.error(error);
       return res.send(500).send({ message: error.message});
     }
-    res.send(200).send({ message: "success" });
+    res.status(200).send({ message: "success" });
   });
 });
 
@@ -46,7 +46,7 @@ router.patch("/user", middleware.verifyToken, async (req, res) => {
       }, (error) => {
         if (error) {
           console.error(error);
-          return res.send(500).send({ message: error.message});
+          return res.status(500).send({ message: error.message});
         }
       }
     );
@@ -64,9 +64,9 @@ router.delete("/user", middleware.verifyToken, async (req, res) => {
   User.findOneAndDelete({ _id: req._id }, (error, user) => {
     if (error) {
       console.error(error);
-      return res.send(500).send({ message: error.message});
+      return res.status(500).send({ message: error.message});
     }
-    if (!user) return res.send(404).send({ message: "User not found." });
+    if (!user) return res.status(404).send({ message: "User not found." });
   });
   res.send({ message: "success" });
 });
@@ -74,15 +74,15 @@ router.delete("/user", middleware.verifyToken, async (req, res) => {
 router.post("/check-password", middleware.verifyToken, async (req, res) => {
   User.findOne({ _id: req._id }, (error, user) => {
     if (error)
-      return res.send(500).send({ auth: false, message: error.message });
+      return res.send(500).status({ auth: false, message: error.message });
     if (!user)
-      return res.send(400).send({ auth: false, message: "User does not exist." });
+      return res.send(400).status({ auth: false, message: "User does not exist." });
     const passwordIsValid = bcrypt.compareSync(
       req.body.password,
       user.password
     );
     if (!passwordIsValid) {
-      return res.send(400).send({ auth: false, message: "Invalid email or password." });
+      return res.send(400).status({ auth: false, message: "Invalid email or password." });
     }
     res.send({ auth: true });
   });
