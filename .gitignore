@@ -6,3 +6,4 @@ venv
 build
 .env
 npm-debug.log*
+images
