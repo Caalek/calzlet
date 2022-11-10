@@ -14,3 +14,12 @@ services:
       - SMTP_EMAIL
       - SMTP_PASSWORD
       - BASE_URL
+      - VIRTUAL_HOST
+      - VIRTUAL_PORT
+      - LETSENCRYPT_HOST
+    networks:
+     - net
+
+networks:
+  net:
+    external: true

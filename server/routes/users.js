@@ -16,6 +16,7 @@ router.get("/user/:userId", async (req, res) => {
 });
 
 router.put("/user", middleware.verifyToken, async (req, res) => {
+  const foundUser = await User.findOne({ _id: req._id })
   const updateObject = {
     username: req.body.username ? req.body.username : foundUser.user,
     email: req.body.email ? req.body.email : foundUser.email,
