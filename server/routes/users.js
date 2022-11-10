@@ -9,7 +9,7 @@ router.get("/user/:userId", async (req, res) => {
   User.findOne({ _id: req.params.userId }, (error, user) => {
     if (error) {
       console.error(error);
-      return res.send(500).send({ message: "Internal server errror" });
+      return res.send(500).send({ message: error.message });
     }
     res.send({ username: user.username, avatarUrl: user.avatarUrl });
   });
@@ -26,7 +26,7 @@ router.put("/user", middleware.verifyToken, async (req, res) => {
   User.findOneAndUpdate({ _id: req._id }, updateObject, (error, user) => {
     if (error) {
       console.error(error);
-      return res.send(500).send({ message: "Internal server errror" });
+      return res.send(500).send({ message: error.message});
     }
     res.send(200).send({ message: "success" });
   });
@@ -45,7 +45,7 @@ router.patch("/user", middleware.verifyToken, async (req, res) => {
       }, (error) => {
         if (error) {
           console.error(error);
-          return res.send(500).send({ message: "Internal server errror" });
+          return res.send(500).send({ message: error.message});
         }
       }
     );
@@ -53,7 +53,7 @@ router.patch("/user", middleware.verifyToken, async (req, res) => {
   User.findOneAndUpdate(query, updateObject, (error) => {
     if (error) {
       console.error(error);
-      return res.send(500).send({ message: "Internal server errror" });
+      return res.send(500).send({ message: error.message});
     }
     res.sendStatus(200);
   })
@@ -63,7 +63,7 @@ router.delete("/user", middleware.verifyToken, async (req, res) => {
   User.findOneAndDelete({ _id: req._id }, (error, user) => {
     if (error) {
       console.error(error);
-      return res.send(500).send({ message: "Internal server errror" });
+      return res.send(500).send({ message: error.message});
     }
     if (!user) return res.send(404).send({ message: "User not found." });
   });
@@ -73,7 +73,7 @@ router.delete("/user", middleware.verifyToken, async (req, res) => {
 router.post("/check-password", middleware.verifyToken, async (req, res) => {
   User.findOne({ _id: req._id }, (error, user) => {
     if (error)
-      return res.send(500).send({ auth: false, message: "Internal server error." });
+      return res.send(500).send({ auth: false, message: error.message });
     if (!user)
       return res.send(400).send({ auth: false, message: "User does not exist." });
     const passwordIsValid = bcrypt.compareSync(

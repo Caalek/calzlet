@@ -10,7 +10,7 @@ const middleware = require("../middleware")
 router.get("/image/:imageId", (req, res) => {
     const imageId = req.params.imageId
     if (!fs.existsSync("../images/" + req.params.imageId)) {
-        return res.send(404)
+        return res.status(404)
     }
     const readStream = fs.createReadStream(`images/${imageId}`)
     readStream.pipe(res)
@@ -23,10 +23,12 @@ router.post("/image", upload.single("image"), middleware.verifyToken, (req, res)
 })
 
 router.delete("/image/:imageId", middleware.verifyToken, (req, res) => {
-    if (!fs.existsSync("../images/" + req.params.imageId)) {
-        return res.send(404).send({"message": "Image not found."})
+    console.log("images/" + req.params.imageId)
+    if (!fs.existsSync("images/" + req.params.imageId)) {
+        return res.status(404).send({"message": "Image not found."})
     }
-    fs.unlinkSync("../images/" + req.params.imageId)
+    fs.unlinkSync("images/" + req.params.imageId)
+    res.send({message: "success"})
 })
 
 module.exports = router

@@ -14,6 +14,7 @@ import ElaMode from "./ElaMode";
 import LoginForm from "./LoginForm";
 import Settings from "./Settings";
 import { isExpired } from "react-jwt";
+import VerifyEmail from "./VerifyEmail";
 
 const RequireAuth = ({ children }) => {
   const { user, setUser } = useContext(UserContext);
@@ -76,6 +77,7 @@ const App = () => {
           />
           <Route path="/flashcards/:setId" element={<FullScreenFlashcards />} />
           <Route path="/ela-mode/:setId" element={<ElaMode />} />
+          <Route path="/verify-email/:emailVerifyToken" element={<VerifyEmail />} />
         </Routes>
       </BrowserRouter>
     </UserProvider>

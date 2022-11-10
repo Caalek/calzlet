@@ -1,0 +1,15 @@
+version: '3'
+services:
+  calzlet:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - "./images:/app/images:rw"
+    environment:
+      - MONGODB_URI
+      - JWT_SECRET
+      - HCAPTCHA_SECRET
+      - SMTP_EMAIL
+      - SMTP_PASSWORD
+      - BASE_URL

@@ -159,7 +159,8 @@ const Settings = () => {
       },
     });
     if (user.user.avatarUrl !== "default") {
-      await axios.delete(`/api/${user.user.avatarUrl}`, {headers : {
+      const avatarFilename = user.user.avatarUrl.split("/")[2]
+      await axios.delete(`/api/image/${avatarFilename}`, {headers : {
         Authorization: `Bearer ${user.token}`,
       }})
     }

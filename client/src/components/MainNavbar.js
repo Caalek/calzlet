@@ -9,6 +9,7 @@ import UserContext from "../context/UserContext";
 import Avatar from "./Avatar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useState } from "react";
+import VerifyEmailPrompt from "./VerifyEmailPrompt";
 
 const MainNavbar = () => {
   const { user, setUser } = useContext(UserContext);
@@ -27,6 +28,7 @@ const MainNavbar = () => {
   const expand = "sm";
   return (
     <>
+    {user && !user.user.verified && <VerifyEmailPrompt />}
       <Navbar
         key={expand}
         bg="dark"

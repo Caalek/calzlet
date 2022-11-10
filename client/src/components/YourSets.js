@@ -11,7 +11,8 @@ const YourSets = () => {
   const [sets, setSets] = useState();
   const [searchTerm, setSearchTerm] = useState();
   const navigate = useNavigate()
-
+  
+  console.log(user)
   useEffect(() => {
     const fetchData = async () => {
       axios.get(
@@ -28,6 +29,7 @@ const YourSets = () => {
     };
     fetchData();
     console.log(sets)
+    console.log(user)
   }, []);
   return (
     <div>

@@ -89,7 +89,7 @@ const RegisterForm = () => {
       }
     return false
   }
-
+  console.log(user)
   return (
     <>
     <Popup
