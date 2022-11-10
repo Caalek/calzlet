@@ -6,23 +6,23 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      
-      - name: Setup SSH Keys and known_hosts
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          ssh-add - <<< "${{ secrets.GH_PRIVATE_KEY }}"
-      
-      - name: executing remote ssh commands using password
+      - name: copy files
+        users: appleboy/scp-action@master
+        with:
+          with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          source: "."
+          target: "/home/adam/calzlet"
+        
+      - name: rebuild image
         uses: appleboy/ssh-action@master
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
           port: ${{ secrets.PORT }}
-          script: cd calzlet && git pull origin master && docker compose up -d --build
+          script: docker compose up -d --build
