@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup SSH Keys and known_hosts
-        uses: actions/checkout@v1
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
