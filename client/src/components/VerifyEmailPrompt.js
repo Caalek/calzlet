@@ -11,12 +11,10 @@ const VerifyEmailPrompt = () => {
     color: "white",
   };
 
-  console.log(user.token)
   const resendVerificationLink = () => {
     axios
       .get("/api/send-email-verify", {headers: { Authorization: `Bearer ${user.token}` } })
       .then((response) => {
-        console.log(response.status)
         if (response.status === 200) {
           alert("Link wysłany");
         } else {

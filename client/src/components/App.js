@@ -22,7 +22,6 @@ const RequireAuth = ({ children }) => {
     // ten undefined tu bo jakiś dziwny błąd był
     if (isExpired(user.token) && user.token !== undefined) { //check if token expired
       setUser(null)
-      console.log("shit")
       localStorage.clear()
       return <Navigate to="/login" />
     }

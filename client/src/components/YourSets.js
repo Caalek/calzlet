@@ -12,7 +12,6 @@ const YourSets = () => {
   const [searchTerm, setSearchTerm] = useState();
   const navigate = useNavigate()
   
-  console.log(user)
   useEffect(() => {
     const fetchData = async () => {
       axios.get(
@@ -20,16 +19,12 @@ const YourSets = () => {
         { params: { associatedUserIds: user.user.userId }, headers: { Authorization: `Bearer ${user.token}` } }
       ).then(response => {
         if (response.status === 401) {
-          console.log(response)
-          console.log("redirect to login")
           navigate("/login")
         }
         setSets(response.data)
       })
     };
     fetchData();
-    console.log(sets)
-    console.log(user)
   }, []);
   return (
     <div>

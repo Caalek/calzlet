@@ -1,6 +1,4 @@
 const Footer = () => {
-
-  const githubLink = "https://github.com/Caalek"
   const email = "calzletapp@gmail.com"
   return (
     <>
@@ -11,7 +9,6 @@ const Footer = () => {
             justifyContent: "space-between"
           }}
         >
-          <a href={githubLink}>Github</a>
           <> </>
           <a href={`mailto:${email}`}>Kontakt</a>
         </div>

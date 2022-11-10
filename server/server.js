@@ -32,7 +32,6 @@ app.use("/api", require("./routes/users"));
 app.use("/api", require("./routes/image"));
 
 app.get("/images/:imageId", (req, res) => {
-  console.log("tu coś")
   const imageId = req.params.imageId
   const readStream = fs.createReadStream(`images/${imageId}`)
   readStream.on('open', () => {
@@ -62,7 +61,7 @@ app.post("/api/check-edit-password/:setId", async (req, res) => {
 })
 
 app.get("/api/verify-email/:emailVerifyToken", async (req, res) => {
-  console.log(req.params.emailVerifyToken)  
+ 
   EmailVerifyToken.findOne({token: req.params.emailVerifyToken}, (error, token) => {
     if (!token) {
       res.status(400).send({message: "Token invalid or expired"})
@@ -98,18 +97,15 @@ app.get("/api/verify-email/:emailVerifyToken", async (req, res) => {
 })
 
 app.get("/api/send-email-verify", middleware.verifyToken, async (req, res) => {
-  console.log("got")
   User.findOne({_id: req._id}, (error, user) => {
     if (error) {
-      console.log("1")
       return res.status(500).send({ message: error.message })
     }
     if (!user) {
-      console.log("2")
+
       return res.status(400).send({message: "User not found"})
     }
     if (user.verified) {
-      console.log("3")
       return res.sendStatus(200)
     }
     else   {

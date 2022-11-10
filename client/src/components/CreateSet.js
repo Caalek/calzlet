@@ -59,7 +59,6 @@ const CreateSet = ({ set }) => {
 
   async function createSet() {
     if (!validateFlashcards()) {
-      console.log("shit")
       return setErrorText("Wypełnij wszystkie pola.")
     }
     const data = {
@@ -79,11 +78,9 @@ const CreateSet = ({ set }) => {
   }
 
   const addToAssociated = (set) => {
-    console.log(set);
     const data = {
       associatedUserIds: set.associatedUserIds.concat([user.user.userId]),
     };
-    console.log("DATA", data);
     axios
       .patch(`/api/set/${setId}`, data, {
         headers: {
@@ -92,7 +89,7 @@ const CreateSet = ({ set }) => {
         },
       })
       .then((response) => {
-        console.log("added to asociated");
+        {}
       });
   };
 

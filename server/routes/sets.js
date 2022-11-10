@@ -16,7 +16,6 @@ router.get("/sets", middleware.verifyToken, async (req, res) => { //for YourSets
 });
 
 router.post("/set", middleware.verifyToken, async (req, res) => { //for CreateSet page
-  console.log("dsadasd")
   FlashcardSet.create(req.body, (error) => {
     if (error) {
       console.error(error)
@@ -27,7 +26,6 @@ router.post("/set", middleware.verifyToken, async (req, res) => { //for CreateSe
 });
 
 router.put("/set/:setId", middleware.verifyToken, async (req, res) => {
-  console.log(req.body)
   FlashcardSet.replaceOne({_id: req.params.setId}, req.body, (error) => {
     if (error) {
       console.error(error)

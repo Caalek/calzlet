@@ -23,7 +23,6 @@ router.post("/image", upload.single("image"), middleware.verifyToken, (req, res)
 })
 
 router.delete("/image/:imageId", middleware.verifyToken, (req, res) => {
-    console.log("images/" + req.params.imageId)
     if (!fs.existsSync("images/" + req.params.imageId)) {
         return res.status(404).send({"message": "Image not found."})
     }

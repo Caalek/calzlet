@@ -33,11 +33,10 @@ const ViewSet = () => {
 
   useEffect(() => {
     const addToAssociated = (set) => {
-      console.log(set);
       const data = {
         associatedUserIds: set.associatedUserIds.concat([user.user.userId]),
       };
-      console.log("DATA", data);
+
       axios
         .patch(`/api/set/${setId}`, data, {
           headers: {
@@ -46,7 +45,7 @@ const ViewSet = () => {
           },
         })
         .then((response) => {
-          console.log("added to asociated");
+          {}
         });
     };
 

@@ -14,7 +14,6 @@ const VerifyEmail = () => {
         
   useEffect(() => {
     axios.get(`/api/verify-email/${emailVerifyToken}`).then((response) => {
-      console.log(response)
       if (response.status === 200) {
         setUser(null);
         localStorage.clear();
