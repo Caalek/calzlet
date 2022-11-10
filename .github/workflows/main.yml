@@ -6,9 +6,8 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: appleboy/ssh-action@master
-
       - name: Setup SSH Keys and known_hosts
+      - uses: actions/checkout@v1
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
@@ -16,6 +15,7 @@ jobs:
           ssh-add - <<< "${{ secrets.GH_PRIVATE_KEY }}"
       
       - name: executing remote ssh commands using password
+      - uses: appleboy/ssh-action@master
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         with:
