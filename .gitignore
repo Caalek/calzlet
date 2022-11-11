@@ -7,4 +7,3 @@ build
 .env
 npm-debug.log*
 images
-main.yml
