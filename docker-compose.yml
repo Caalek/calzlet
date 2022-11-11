@@ -1,7 +1,7 @@
 version: '3'
 services:
   calzlet:
-    build: .
+    image: ghcr.io/caalek/calzlet:latest
     # ports:
     #   - "5000:5000"
     # managed by the proxy
@@ -17,6 +17,7 @@ services:
       - VIRTUAL_HOST
       - VIRTUAL_PORT
       - LETSENCRYPT_HOST
+    restart: unless-stopped
     networks:
      - net
 

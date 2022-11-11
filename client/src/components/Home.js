@@ -23,7 +23,7 @@ const Home = () => {
         <Row className="mt-5">
           <Col sm={12} md={6}>
             {/* <RegisterForm /> */}
-            <h1>Już wkrótce!</h1>
+            <h1>Coming soon™</h1>
             <p>Aplikacja nie jest jeszcze ogólnodostępna. Jeśli chcesz zostać beta testerem, napisz na <strong>calzletapp@gmail.com</strong></p>
           </Col>
         </Row>
