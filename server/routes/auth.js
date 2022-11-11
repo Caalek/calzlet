@@ -10,7 +10,6 @@ const EmailVerifyToken = require("../models/emailVerifyToken")
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto")
 const jwtSecret = process.env.JWT_SECRET;
-const hcaptchaSecret = process.env.HCAPTCHA_SECRET;
 
 router.post("/register", async (req, res) => {
   const hashedPassword = bcrypt.hashSync(req.body.password, 8);
