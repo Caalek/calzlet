@@ -5,11 +5,11 @@ WORKDIR /app
 RUN mkdir client
 RUN mkdir server
 
-COPY client /app/client
-COPY server /app/server
+COPY client /app/client/
+COPY server /app/server/
 
-COPY client/package*.json ./client
-COPY server/package*.json ./server
+COPY client/package*.json ./client/
+COPY server/package*.json ./server/
 
 RUN cd /app/client && npm install && npm run build
 RUN cd /app/server && npm install
