@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 import AccessManager from "./AccessManager";
+import CsvImporter from "./CsvImporter";
 
 const CreateSet = ({ set }) => {
   const { user } = useContext(UserContext);
@@ -28,6 +29,8 @@ const CreateSet = ({ set }) => {
 
   const [viewPassword, setViewPassword] = useState(set.viewPassword || "");
   const [editPassword, setEditPassword] = useState(set.editPassword || "");
+
+  const [showCsvImporter, setShowCsvImporter] = useState(false)
 
   const navigate = useNavigate();
 
@@ -167,6 +170,10 @@ const CreateSet = ({ set }) => {
         setPasswords={setPasswords}
         onHide={() => setShowAccessManager(false)}
       />
+      <CsvImporter
+        show={showCsvImporter}
+        onHide={() => setShowCsvImporter(false)}
+      />
       <div className="mt-5">
         <Container>
           <div style={{display: "flex", justifyContent: "space-between"}} className="mb-2">
@@ -229,7 +236,7 @@ const CreateSet = ({ set }) => {
                 </span>
               </Col>
               <Col sm={12} md={4}>
-                <span style={{ fontSize: "larger" }} className="link-text">
+                <span onClick={() => setShowCsvImporter(true)}style={{ fontSize: "larger" }} className="link-text">
                   Importuj z plików Excela (wkrótce)
                 </span>
               </Col>
