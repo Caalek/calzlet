@@ -89,7 +89,7 @@ const FlashcardViewer = ({ title, words, setId, lastIndex }) => {
             {!hasFinished && (
               <>
                 {isViewingWord ? (
-                  <span className="font-background">Pojęcie</span>
+                  <span className="font-background">Słówko</span>
                 ) : (
                   <span className="font-background">Definicja</span>
                 )}

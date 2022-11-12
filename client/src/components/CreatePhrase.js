@@ -42,7 +42,7 @@ const CreatePhrase = (props) => {
       imageUrls.concat(["/" + result.data.imageUrl])
     );
     props.editFlashcard(
-      props.index,
+      props._id,
       "imageUrls",
       imageUrls.concat(["/" + result.data.imageUrl])
     );
@@ -52,7 +52,7 @@ const CreatePhrase = (props) => {
     e.preventDefault();
     let newImageArray = imageUrls.filter(value => value !== imageUrls[index])
     setImageUrls(newImageArray);
-    props.editFlashcard(props.index, "imageUrls", newImageArray);
+    props.editFlashcard(props._id, "imageUrls", newImageArray);
   };
 
   return (
@@ -73,7 +73,7 @@ const CreatePhrase = (props) => {
               src={trashImage}
               alt=""
               height="15"
-              onClick={() => props.deleteFlashcard(props.index)}
+              onClick={() => props.deleteFlashcard(props._id)}
             ></img>
           </div>
         </div>
@@ -81,14 +81,14 @@ const CreatePhrase = (props) => {
           <Col sm={12} md={4}>
             <input
               type="text"
-              placeholder="Pojęcie"
+              placeholder="Słówko"
               className="text-input"
               defaultValue={props.word}
               onChange={(e) => {
-                props.editFlashcard(props.index, "word", e.target.value.trim());
+                props.editFlashcard(props._id, "word", e.target.value.trim());
               }}
             ></input>
-            <div className="podpis mt-1">POJĘCIE</div>
+            <div className="podpis mt-1">SŁÓWKO</div>
           </Col>
           <Col sm={12} md={4}>
             <input
@@ -98,7 +98,7 @@ const CreatePhrase = (props) => {
               defaultValue={props.translation}
               onChange={(e) => {
                 props.editFlashcard(
-                  props.index,
+                  props._id,
                   "translation",
                   e.target.value.trim()
                 );
