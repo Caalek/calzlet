@@ -10,7 +10,6 @@ router.get("/sets", middleware.verifyToken, async (req, res) => { //for YourSets
       console.error(error)
       return res.status(500).send({message: "Internal server errror"})
     }
-    console.log(results)
     res.send(results)
   })
 });

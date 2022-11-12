@@ -11,6 +11,8 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 import AccessManager from "./AccessManager";
+import CsvImporter from "./CsvImporter";
+import uuid from "react-uuid";
 
 const CreateSet = ({ set }) => {
   const { user } = useContext(UserContext);
@@ -29,18 +31,30 @@ const CreateSet = ({ set }) => {
   const [viewPassword, setViewPassword] = useState(set.viewPassword || "");
   const [editPassword, setEditPassword] = useState(set.editPassword || "");
 
+  const [showCsvImporter, setShowCsvImporter] = useState(false);
+
   const navigate = useNavigate();
 
   const createFlashcard = () => {
     let newArray = flashcards.concat([
-      { word: "", translation: "", imageUrl: "", index: flashcards.length },
+      { word: "", translation: "", imageUrl: "", _id: uuid() },
     ]);
     setFlashcards(newArray);
   };
 
-  const editFlashcard = (index, field, change) => {
+  const bulkAddFlashcards = (arrayToBeAdded) => {
+    let newArray;
+    if (!flashcards) {
+      newArray = arrayToBeAdded;
+    } else {
+      newArray = flashcards.concat(arrayToBeAdded);
+    }
+    setFlashcards(newArray);
+  };
+
+  const editFlashcard = (idToEdit, field, change) => {
     for (let i = 0; i < flashcards.length; i++) {
-      if (flashcards[i].index === index) {
+      if (flashcards[i]._id === idToEdit) {
         let newFlashcards = flashcards;
         newFlashcards[i][field] = change;
         setFlashcards(newFlashcards);
@@ -48,18 +62,26 @@ const CreateSet = ({ set }) => {
     }
   };
 
+  const deleteFlashcard = (idToDelete) => {
+    let array = flashcards.filter((flashcard) => {
+      return flashcard._id !== idToDelete;
+    });
+    setFlashcards(array);
+  };
+
   const validateFlashcards = () => {
     for (let flashcard of flashcards) {
       if (!flashcard.translation || !flashcard.word) {
-        return false
+        return false;
       }
     }
-    return true
-  }
+    return true;
+  };
 
   async function createSet() {
     if (!validateFlashcards()) {
-      return setErrorText("Wypełnij wszystkie pola.")
+      setErrorText("Wypełnij wszystkie pola.");
+      return
     }
     const data = {
       userId: user.user.userId, //id usera od googla
@@ -72,28 +94,22 @@ const CreateSet = ({ set }) => {
       editAccess: editAccess,
       viewPassword: viewPassword,
       editPassword: editPassword,
-      associatedUserIds: [user.user.userId]
+      associatedUserIds: [user.user.userId],
     };
-    await axios.post("/api/set", data, {headers: {'Authorization': `Bearer ${user.token}`}});
+    await axios.post("/api/set", data, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
+    navigate("/your-sets")
   }
 
-  const addToAssociated = (set) => {
-    const data = {
-      associatedUserIds: set.associatedUserIds.concat([user.user.userId]),
-    };
-    axios
-      .patch(`/api/set/${setId}`, data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-      })
-      .then((response) => {
-        {}
-      });
-  };
-
   async function replaceSet() {
+
+    // let flashcardsToSend = []
+    // for (let element of flashcards) {
+    //   let copyElement = element
+    //   delete copyElement["_id"]
+    //   flashcardsToSend.push(copyElement)
+
     const data = {
       userId: user.user.userId, //id usera od googla
       title: title,
@@ -108,36 +124,24 @@ const CreateSet = ({ set }) => {
       created: set.created,
       accessed: set.accessed,
       associatedUserIds: set.associatedUserIds,
-      edited: new Date()
+      edited: new Date(),
     };
-    const response = await axios.put(
-      `/api/set/${setId}`,
-      data, {headers: {'Authorization': `Bearer ${user.token}`}}
-    );
-    if (
-      response.data.userId !== user.user.userId &&
-      !response.data.associatedUserIds.includes(user.user.userId)
-    ) {
-      addToAssociated(set);
-    }
+    const response = await axios.put(`/api/set/${setId}`, data, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
+    navigate(`/view-set/${setId}`);
   }
 
-  function deleteFlashcard(indexToDelete) {
-    let array = flashcards.filter((flashcard) => {
-      return flashcard.index !== indexToDelete;
-    });
-    for (let i = indexToDelete; i < array.length; i++) {
-      array[i].index = array[i].index - 1;
-    }
-    setFlashcards(array);
-  }
   function handleSubmit() {
     if (!title || flashcards.length === 0) {
       setErrorText("Twój zestaw musi mieć przynajmniej tytuł i jedną fiszkę.");
       return;
     }
-    setId ? replaceSet() : createSet();
-    navigate(`/view-set/${setId}`);
+    if (setId) {
+      replaceSet()
+    } else {
+      createSet()
+    }
   }
 
   function setAccess(view, edit) {
@@ -167,9 +171,17 @@ const CreateSet = ({ set }) => {
         setPasswords={setPasswords}
         onHide={() => setShowAccessManager(false)}
       />
+      <CsvImporter
+        show={showCsvImporter}
+        bulkAddFlashcards={bulkAddFlashcards}
+        onHide={() => setShowCsvImporter(false)}
+      />
       <div className="mt-5">
         <Container>
-          <div style={{display: "flex", justifyContent: "space-between"}} className="mb-2">
+          <div
+            style={{ display: "flex", justifyContent: "space-between" }}
+            className="mb-2"
+          >
             <h2>{setId ? "Edytuj zestaw" : "Stwórz zestaw"}</h2>
             <Button onClick={handleSubmit}>
               {setId ? "Zapisz zmiany" : "Stwórz"}
@@ -229,8 +241,12 @@ const CreateSet = ({ set }) => {
                 </span>
               </Col>
               <Col sm={12} md={4}>
-                <span style={{ fontSize: "larger" }} className="link-text">
-                  Importuj z plików Excela (wkrótce)
+                <span
+                  onClick={() => setShowCsvImporter(true)}
+                  style={{ fontSize: "larger" }}
+                  className="link-text"
+                >
+                  Importuj fiszki
                 </span>
               </Col>
             </Row>
@@ -240,7 +256,8 @@ const CreateSet = ({ set }) => {
             flashcards.map((flashcard, index) => {
               return (
                 <CreatePhrase
-                  key={index}
+                  key={uuid()}
+                  _id={flashcard._id}
                   index={index}
                   word={flashcard.word}
                   translation={flashcard.translation}
