@@ -33,7 +33,8 @@ const ElaMode = () => {
         `/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}}
       );
       setSet(fetchedSet.data);
-      setAnswerArray(getAnswerArray(fetchedSet.data.flashcards, 0));
+      setCurrentFlashcardIndex(fetchedSet.data.lastIndex)
+      setAnswerArray(getAnswerArray(fetchedSet.data.flashcards, 0))
     };
     fetchSets();
   }, []);

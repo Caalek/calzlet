@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Container from "react-bootstrap/esm/Container";
 import Footer from "./Footer";
@@ -12,9 +12,9 @@ import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [errorText, setErrorText] = useState()
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [errorText, setErrorText] = useState(null)
   const {user, setUser} = useContext(UserContext)
   const navigate = useNavigate()
 
@@ -32,7 +32,6 @@ const LoginForm = () => {
     if (response.data.auth) {
       setProfile(response)
       navigate("/your-sets")
-      window.location.reload()
     } else {
       setErrorText("Niepoprawny email lub hasło.")
     }
@@ -43,11 +42,9 @@ const LoginForm = () => {
     user.token = response.data.token;
     user.userId = response.data.userId
     user = JSON.stringify(user);
+    localStorage.setItem("user", user)
     setUser(user);
-    localStorage.setItem("user", user);;
   }
-
-
 
   return (
     <>

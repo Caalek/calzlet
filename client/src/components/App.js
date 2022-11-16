@@ -12,7 +12,7 @@ import UserContext, { UserProvider } from "../context/UserContext";
 import EditFullSetPage from "./EditFullSetPage";
 import ElaMode from "./ElaMode";
 import LoginForm from "./LoginForm";
-import Settings from "./Settings";
+import SettingsPage from "./SettingsPage";
 import { isExpired } from "react-jwt";
 import VerifyEmail from "./VerifyEmail";
 
@@ -32,11 +32,9 @@ const RequireAuth = ({ children }) => {
 };
 
 const App = () => {
-  let userItem = localStorage.getItem("user");
-  const user = JSON.parse(userItem);
 
   return (
-    <UserProvider userData={user}>
+    <UserProvider>
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Home />} />
@@ -70,7 +68,7 @@ const App = () => {
             path="/settings"
             element={
               <RequireAuth>
-                <Settings />
+                <SettingsPage />
               </RequireAuth>
             }
           />

@@ -1,7 +1,7 @@
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 
-function Popup(props) {
+const Popup = props => {
   return (
     <div className='popup'>
       <Modal

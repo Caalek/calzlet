@@ -11,6 +11,8 @@ const YourSets = () => {
   const [sets, setSets] = useState();
   const [searchTerm, setSearchTerm] = useState();
   const navigate = useNavigate()
+
+  console.log(user.user)
   
   useEffect(() => {
     const fetchData = async () => {
