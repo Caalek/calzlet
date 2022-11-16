@@ -5,14 +5,14 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 import Avatar from "./Avatar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useState } from "react";
 import VerifyEmailPrompt from "./VerifyEmailPrompt";
 
 const MainNavbar = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useAuth();
   const [dimensions, detectHW] = useState({
     winWidth: window.innerWidth,
     winHeight: window.innerHeight,
@@ -22,7 +22,6 @@ const MainNavbar = () => {
   const logoutUser = () => {
     setUser(null);
     navigate("/");
-    localStorage.clear();
   };
 
   const expand = "sm";

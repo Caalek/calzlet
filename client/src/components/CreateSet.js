@@ -2,10 +2,10 @@ import Form from "react-bootstrap/Form";
 import CreatePhrase from "./CreatePhrase";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ import CsvImporter from "./CsvImporter";
 import uuid from "react-uuid";
 
 const CreateSet = ({ set }) => {
-  const { user } = useContext(UserContext);
+  const { user } = useAuth()
   const { setId } = useParams();
 
   const [flashcards, setFlashcards] = useState(set.flashcards);

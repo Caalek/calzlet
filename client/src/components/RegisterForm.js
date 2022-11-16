@@ -4,7 +4,7 @@ import Popup from "./Popup";
 import axios from "axios";
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { useNavigate } from "react-router-dom";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 import jwtDecode from "jwt-decode";
 
 const RegisterForm = () => {
@@ -13,7 +13,7 @@ const RegisterForm = () => {
   const [hcaptchaToken, setHcaptchaToken] = useState();
   const [errorText, setErrorText] = useState();
   const navigate = useNavigate()
-  const { user, setUser} = useContext(UserContext)
+  const { user, setUser} = useAuth()
   const [auth, setAuth] = useState()
 
   const emailRegex =

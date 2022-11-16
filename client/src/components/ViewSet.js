@@ -2,7 +2,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import WordPair from "./WordPair";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import WordViewer from "./WordViewer";
 import elaImage from "../img/ela.png";
 import editImage from "../img/edit.png";
@@ -11,7 +11,7 @@ import flashcardImage from "../img/flashcard.png";
 import { Link, useParams } from "react-router-dom";
 import MainNavbar from "./MainNavbar";
 import axios from "axios";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import ConfirmDialogue from "./ConfirmDialogue";
@@ -20,7 +20,7 @@ import PasswordPrompt from "./PasswordPrompt";
 import Avatar from "./Avatar";
 
 const ViewSet = () => {
-  const { user } = useContext(UserContext);
+  const { user } = useAuth();
   const { setId } = useParams();
   const [set, setSet] = useState();
   const [showDialogue, setShowDialogue] = useState();

@@ -7,15 +7,15 @@ import Popup from "./Popup"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import axios from "axios"
-import UserContext from "../context/UserContext"
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const LoginForm = () => {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [errorText, setErrorText] = useState(null)
-  const {user, setUser} = useContext(UserContext)
+  const {user, setUser} = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -41,8 +41,6 @@ const LoginForm = () => {
     let user = jwtDecode(response.data.token)
     user.token = response.data.token;
     user.userId = response.data.userId
-    user = JSON.stringify(user);
-    localStorage.setItem("user", user)
     setUser(user);
   }
 

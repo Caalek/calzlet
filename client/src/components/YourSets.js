@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import SetCard from "./SetCard";
 import Container from "react-bootstrap/Container";
 import MainNavbar from "./MainNavbar"
-import UserContext from "../context/UserContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 const YourSets = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useAuth();
   const [sets, setSets] = useState();
   const [searchTerm, setSearchTerm] = useState();
   const navigate = useNavigate()

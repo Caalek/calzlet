@@ -1,12 +1,11 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
-
 import ConfirmDialogue from "./ConfirmDialogue";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 
 const DeleteAccountForm = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser } = useAuth()
   const [showDialogue, setShowDialogue] = useState(false);
 
   const deleteUser = async () => {

@@ -8,10 +8,10 @@ import UpdateEmailForm from "./UpdateEmailForm";
 import UpdatePasswordForm from "./UpdatePasswordForm";
 import DeleteAccountForm from "./DeleteAccountForm";
 import UpdateProfileForm from "./UpdateProfileForm";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 
 const SettingsPage = () => {
-  const { user } = useContext(UserContext)
+  const { user } = useAuth()
 
   return (
     <>

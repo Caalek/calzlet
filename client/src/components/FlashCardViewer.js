@@ -6,13 +6,13 @@ import arrowRight from "../img/arrow-right.png";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 import axios from "axios";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 
 const FlashcardViewer = ({ title, words, setId, lastIndex }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(lastIndex);
   const [isViewingWord, setIsViewingWord] = useState(true);
   const [hasFinished, setHasFinished] = useState(false);
-  const { user } = useContext(UserContext);
+  const { user } = useAuth();
   const navigate = useNavigate();
   const viewer = useRef()
 

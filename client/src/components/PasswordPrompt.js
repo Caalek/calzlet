@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 import axios from "axios";
 import MainNavbar from "./MainNavbar";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 import Modal from "react-bootstrap/Modal";
 
 const PasswordPrompt = ({
@@ -16,7 +16,7 @@ const PasswordPrompt = ({
 }) => {
   const [typedPassword, setTypedPassword] = useState();
   const [errorText, setErrorText] = useState();
-  const { user } = useContext(UserContext);
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const checkPassword = async () => {

@@ -3,11 +3,11 @@ import CreateSet from "./CreateSet";
 import MainNavbar from "./MainNavbar";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 
 const EditFullSet = (props) => {
   const { setId } = useParams();
-  const { user } = useContext(UserContext)
+  const { user } = useAuth()
 
   const [set, setSet] = useState();
 

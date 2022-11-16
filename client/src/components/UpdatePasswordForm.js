@@ -3,10 +3,10 @@ import Button from "react-bootstrap/Button";
 import { useContext, useState } from "react";
 
 import Popup from "./Popup";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 
 const UpdatePasswordForm = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser } = useAuth()
 
   const [oldPassword, setOldPassword] = useState(null);
   const [newPassword1, setNewPassword1] = useState(null);

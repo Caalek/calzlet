@@ -6,7 +6,7 @@ import { useState, useEffect, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import Popup from "./Popup";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 import arrowLeft from "../img/arrow-left.png";
 import Col from "react-bootstrap/Col"
 import Row from "react-bootstrap/Row"
@@ -25,7 +25,7 @@ const ElaMode = () => {
   const [errorCount, setErrorCount] = useState(0);
   const [hasFinished, setHasFinished] = useState(false);
 
-  const { user } = useContext(UserContext)
+  const { user } = useAuth()
 
   useEffect(() => {
     const fetchSets = async () => {

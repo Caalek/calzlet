@@ -4,14 +4,14 @@ import axios from "axios";
 
 import Popup from "./Popup";
 import Avatar from "./Avatar";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 
 const UpdateProfileForm = () => {
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [newUsername, setNewUsername] = useState(null);
   const [errorText, setErrorText] = useState(null);
   const filePicker = useRef();
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser } = useAuth()
 
   const uploadAvatar = async (image) => {
     if (image.size >= 3000000) {

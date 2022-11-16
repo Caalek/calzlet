@@ -4,12 +4,12 @@ import MainNavbar from "./MainNavbar";
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import { useContext, useEffect } from "react";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 // import RegisterForm from "./RegisterForm"
 import Footer from "./Footer";
 
 const Home = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser } = useAuth()
   const navigate = useNavigate()
   useEffect(() => {
     if (user) {

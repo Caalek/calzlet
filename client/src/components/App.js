@@ -7,22 +7,22 @@ import "../scss/custom.scss"
 import ViewSet from "./ViewSet";
 import FullScreenFlashcards from "./FullScreenFlashcards";
 import YourSets from "./YourSets";
-import { React, useContext } from "react";
-import UserContext, { UserProvider } from "../context/UserContext";
+import { React } from "react";
 import EditFullSetPage from "./EditFullSetPage";
+import { UserProvider } from "../context/UserContext";
 import ElaMode from "./ElaMode";
 import LoginForm from "./LoginForm";
 import SettingsPage from "./SettingsPage";
 import { isExpired } from "react-jwt";
 import VerifyEmail from "./VerifyEmail";
+import useAuth from "../hooks/useAuth";
 
 const RequireAuth = ({ children }) => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useAuth()
   if (user) {
     // ten undefined tu bo jakiś dziwny błąd był
     if (isExpired(user.token) && user.token !== undefined) { //check if token expired
       setUser(null)
-      localStorage.clear()
       return <Navigate to="/login" />
     }
     return children

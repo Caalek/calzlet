@@ -2,11 +2,11 @@ import { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
 
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 import Popup from "./Popup";
 
 const UpdateEmailForm = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useAuth();
   const [password, setPassword] = useState(null);
   const [email, setEmail] = useState(null);
   const [errorText, setErrorText] = useState(null)
