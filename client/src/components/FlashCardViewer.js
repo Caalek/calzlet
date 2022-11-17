@@ -5,7 +5,7 @@ import arrowLeft from "../img/arrow-left.png";
 import arrowRight from "../img/arrow-right.png";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
-import axios from "axios";
+import axios from "../utils/axios";
 import useAuth from "../hooks/useAuth";
 
 const FlashcardViewer = ({ title, words, setId, lastIndex }) => {

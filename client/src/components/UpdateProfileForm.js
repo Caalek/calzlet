@@ -1,6 +1,6 @@
 import Button from "react-bootstrap/Button";
-import { useState, useContext, useRef } from "react";
-import axios from "axios";
+import { useState, useRef } from "react";
+import axios from "../utils/axios";
 
 import Popup from "./Popup";
 import Avatar from "./Avatar";
@@ -43,8 +43,8 @@ const UpdateProfileForm = () => {
         Authorization: `Bearer ${user.token}`,
       },
     });
-    if (user.user.avatarUrl !== "default") {
-      const avatarFilename = user.user.avatarUrl.split("/")[2];
+    if (user.avatarUrl !== "default") {
+      const avatarFilename = user.avatarUrl.split("/")[2];
       await axios.delete(`/api/image/${avatarFilename}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -87,7 +87,7 @@ const UpdateProfileForm = () => {
           className="text-input"
           placeholder="Wpisz nazwę użytkownika"
           onChange={(e) => setNewUsername(e.target.value)}
-          defaultValue={user.user.username}
+          defaultValue={user.username}
         ></input>
         <Button className="mb-2" onClick={updateUsername}>
           Zmień nazwę użytkownika
@@ -102,7 +102,7 @@ const UpdateProfileForm = () => {
           onChange={(e) => uploadAvatar(e.target.files[0])}
         ></input>
         <div className="mt-2" onClick={() => filePicker.current.click()}>
-          {!avatarUrl && <Avatar user={user.user} size={100} />}
+          {!avatarUrl && <Avatar user={user} size={100} />}
           {avatarUrl && (
             <img src={avatarUrl} height="100" width="100" alt="avatar"></img>
           )}

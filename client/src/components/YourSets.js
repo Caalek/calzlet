@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import SetCard from "./SetCard";
 import Container from "react-bootstrap/Container";
 import MainNavbar from "./MainNavbar"
-import axios from "axios";
+import axios from "../utils/axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
@@ -11,14 +11,12 @@ const YourSets = () => {
   const [sets, setSets] = useState();
   const [searchTerm, setSearchTerm] = useState();
   const navigate = useNavigate()
-
-  console.log(user.user)
   
   useEffect(() => {
     const fetchData = async () => {
       axios.get(
         `/api/sets`,
-        { params: { associatedUserIds: user.user.userId }, headers: { Authorization: `Bearer ${user.token}` } }
+        { params: { associatedUserIds: user.userId }, headers: { Authorization: `Bearer ${user.token}` } }
       ).then(response => {
         if (response.status === 401) {
           navigate("/login")

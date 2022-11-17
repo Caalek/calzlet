@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
-import axios from "axios";
+import axios from "../utils/axios";
 import ConfirmDialogue from "./ConfirmDialogue";
 import useAuth from "../hooks/useAuth";
 

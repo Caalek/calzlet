@@ -4,7 +4,7 @@ import Col from "react-bootstrap/Col";
 import trashImage from "../img/trash.png";
 import Button from "react-bootstrap/esm/Button";
 import { useRef, useState } from "react";
-import axios from "axios";
+import axios from "../utils/axios";
 import Popup from "./Popup";
 import useAuth from "../hooks/useAuth";
 

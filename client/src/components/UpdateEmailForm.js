@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
-import axios from "axios";
+import axios from "../utils/axios";
 
 import useAuth from "../hooks/useAuth";
 import Popup from "./Popup";
@@ -68,7 +68,7 @@ const UpdateEmailForm = () => {
       <div className="settings-div p-3 m-1">
         <h5>Zmień email</h5>
         <span className="font-background">
-          Twój obecny email to {user.user.email}
+          Twój obecny email to {user.email}
         </span>
         <input
           className="text-input"

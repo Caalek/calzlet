@@ -10,7 +10,7 @@ import copyImage from "../img/copy.png";
 import flashcardImage from "../img/flashcard.png";
 import { Link, useParams } from "react-router-dom";
 import MainNavbar from "./MainNavbar";
-import axios from "axios";
+import axios from "../utils/axios";
 import useAuth from "../hooks/useAuth";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
@@ -34,7 +34,7 @@ const ViewSet = () => {
   useEffect(() => {
     const addToAssociated = (set) => {
       const data = {
-        associatedUserIds: set.associatedUserIds.concat([user.user.userId]),
+        associatedUserIds: set.associatedUserIds.concat([user.userId]),
       };
 
       axios
@@ -53,8 +53,8 @@ const ViewSet = () => {
       setSet(response.data);
       if (
         user &&
-        response.data.userId !== user.user.userId &&
-        !response.data.associatedUserIds.includes(user.user.userId) &&
+        response.data.userId !== user.userId &&
+        !response.data.associatedUserIds.includes(user.userId) &&
         response.data
       ) {
         addToAssociated(response.data);
@@ -67,7 +67,7 @@ const ViewSet = () => {
       // const setIdsPasswordAuthorizedArray = JSON.parse(
       //   sessionStorage.getItem("setIdsPasswordAuthorized")
       // );
-      // if (user && set.userId === user.user.userId) {
+      // if (user && set.userId === user.userId) {
       //   console.log();
       //   setCanAccess(true);
       //   setCanEdit(true);
@@ -115,13 +115,13 @@ const ViewSet = () => {
     if (setArg.viewAccess === "all") {
       setCanAccess(true);
     } else if (setArg.viewAccess === "me") {
-      if (user && user.user.userId === setArg.userId) {
+      if (user && user.userId === setArg.userId) {
         setCanAccess(true);
       } else {
         navigate("/");
       }
     } else if (setArg.viewAccess === "password") {
-      if (user && user.user.userId === setArg.userId) {
+      if (user && user.userId === setArg.userId) {
         setCanAccess(true);
       } else {
         setCanAccess(false);
@@ -132,13 +132,13 @@ const ViewSet = () => {
 
   function checkIfCanEdit(setArg) {
     if (setArg.editAccess === "me") {
-      if (user && user.user.userId === setArg.userId) {
+      if (user && user.userId === setArg.userId) {
         setCanEdit(true);
       } else {
         setCanEdit(false);
       }
     } else if (setArg.editAccess === "password") {
-      if (user && user.user.userId === setArg.userId) {
+      if (user && user.userId === setArg.userId) {
         setCanEdit(true);
       }
     }

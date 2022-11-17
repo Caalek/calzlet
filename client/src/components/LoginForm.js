@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Container from "react-bootstrap/esm/Container";
 import Footer from "./Footer";
@@ -6,8 +6,7 @@ import MainNavbar from "./MainNavbar";
 import Popup from "./Popup"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
-import axios from "axios"
-import jwtDecode from "jwt-decode";
+import axios from "../utils/axios"
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
@@ -30,19 +29,13 @@ const LoginForm = () => {
     }
     const response = await axios.post("/api/login", data)
     if (response.data.auth) {
-      setProfile(response)
+      console.log(response.data.user)
+      setUser(response.data.user)
       navigate("/your-sets")
     } else {
       setErrorText("Niepoprawny email lub hasło.")
     }
   };
-
-  const setProfile = (response) => {
-    let user = jwtDecode(response.data.token)
-    user.token = response.data.token;
-    user.userId = response.data.userId
-    setUser(user);
-  }
 
   return (
     <>

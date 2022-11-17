@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../utils/axios";
 import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import ElaAnswer from "./ElaAnswer";

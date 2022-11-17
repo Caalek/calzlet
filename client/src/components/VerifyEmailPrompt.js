@@ -1,6 +1,5 @@
-import { useContext } from "react";
 import useAuth from "../hooks/useAuth";
-import axios from "axios";
+import axios from "../utils/axios";
 
 const VerifyEmailPrompt = () => {
   const { user } = useAuth();

@@ -6,7 +6,7 @@ import { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import useAuth from "../hooks/useAuth";
-import axios from "axios";
+import axios from "../utils/axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
@@ -84,17 +84,17 @@ const CreateSet = ({ set }) => {
       return
     }
     const data = {
-      userId: user.user.userId, //id usera od googla
+      userId: user.userId, //id usera od googla
       title: title,
       description: description,
-      creatorUsername: user.user.username,
-      creatorAvatarUrl: user.user.avatarUrl,
+      creatorUsername: user.username,
+      creatorAvatarUrl: user.avatarUrl,
       flashcards: flashcards,
       viewAccess: viewAccess,
       editAccess: editAccess,
       viewPassword: viewPassword,
       editPassword: editPassword,
-      associatedUserIds: [user.user.userId],
+      associatedUserIds: [user.userId],
     };
     await axios.post("/api/set", data, {
       headers: { Authorization: `Bearer ${user.token}` },
@@ -111,11 +111,11 @@ const CreateSet = ({ set }) => {
     //   flashcardsToSend.push(copyElement)
 
     const data = {
-      userId: user.user.userId, //id usera od googla
+      userId: user.userId, //id usera od googla
       title: title,
       description: description,
-      creatorUsername: user.user.username,
-      creatorAvatarUrl: user.user.avatarUrl,
+      creatorUsername: user.username,
+      creatorAvatarUrl: user.avatarUrl,
       flashcards: flashcards,
       viewAccess: viewAccess,
       editAccess: editAccess,

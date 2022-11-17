@@ -27,7 +27,7 @@ const MainNavbar = () => {
   const expand = "sm";
   return (
     <>
-    {user && !user.user.verified && <VerifyEmailPrompt />}
+    {user && !user.verified && <VerifyEmailPrompt />}
       <Navbar
         key={expand}
         bg="dark"
@@ -81,7 +81,7 @@ const MainNavbar = () => {
                   </Nav.Link>
                   </Nav>
                   <NavDropdown
-                    title={<Avatar user={user.user} size={35} />}
+                    title={<Avatar user={user} size={35} />}
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                     align="end"
                   >
@@ -89,10 +89,10 @@ const MainNavbar = () => {
                       <div style={{ fontSize: "small" }}>Zalogowano jako</div>
                       <div style={{ display: "flex" }}>
                         <div className="p-1">
-                          <Avatar user={user.user} size={30} />
+                          <Avatar user={user} size={30} />
                         </div>
                         <div className="text-white p-1">
-                          {user.user.username}
+                          {user.username}
                         </div>
                       </div>
                     </NavDropdown.Item>
@@ -120,10 +120,10 @@ const MainNavbar = () => {
                     <div style={{ fontSize: "small" }}>Zalogowano jako</div>
                       <div style={{ display: "flex", justifyContent: "center" }}>
                         <div className="p-">
-                          <Avatar user={user.user} size={30} />
+                          <Avatar user={user} size={30} />
                         </div>
                         <div className="text-white p-1">
-                          {user.user.username}
+                          {user.username}
                         </div>
                       </div>
                   </div>

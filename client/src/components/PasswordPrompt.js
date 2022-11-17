@@ -1,9 +1,8 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
-import axios from "axios";
-import MainNavbar from "./MainNavbar";
+import axios from "../utils/axios";
 import useAuth from "../hooks/useAuth";
 import Modal from "react-bootstrap/Modal";
 

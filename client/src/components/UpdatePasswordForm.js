@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../utils/axios";
 import Button from "react-bootstrap/Button";
 import { useContext, useState } from "react";
 

@@ -18,7 +18,7 @@ const SettingsPage = () => {
       <MainNavbar />
       <Container className="mt-5">
         <Row>
-          <h3>{user.user.username}</h3>
+          <h3>{user.username}</h3>
           <Col sm={12} md={4}>
             <UpdateProfileForm />
           </Col>

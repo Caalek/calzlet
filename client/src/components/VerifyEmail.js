@@ -5,7 +5,7 @@ import useAuth from "../hooks/useAuth";
 import Button from "react-bootstrap/Button"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
-import axios from "axios"
+import axios from "../utils/axios"
 
 const VerifyEmail = () => {
   const { emailVerifyToken } = useParams();

@@ -1,11 +1,10 @@
 import { useState, useContext } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Popup from "./Popup";
-import axios from "axios";
+import axios from "../utils/axios";
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import jwtDecode from "jwt-decode";
 
 const RegisterForm = () => {
   const [email, setEmail] = useState();
@@ -48,25 +47,13 @@ const RegisterForm = () => {
     }
     const response = await axios.post("/api/register", data)
     if (response.data.message === "success") {
-      setProfile(response)
-      window.location = "/your-sets"
+      setUser(response.data.user)
       navigate("/your-sets")
     } else {
       setErrorText("Wystąpił błąd.")
     }
   };
-
-  const setProfile = (response) => {
-    let user = jwtDecode(response.data.token)
-    user.token = response.data.token;
-    user.userId = response.data._id
-    user = JSON.stringify(user);
-    localStorage.setItem("user", user);;
-    setUser(user);
-    setAuth(true)
-  }
-
-
+  
   const checkIfSpamEmail = async (email) => {
     const response = await axios.get(
       "https://raw.githubusercontent.com/unkn0w/disposable-email-domain-list/main/domains.json"
