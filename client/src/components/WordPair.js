@@ -1,5 +1,6 @@
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import "./WordPair.css"
 
 const WordPair = ({ word, translation}) => {
   return (

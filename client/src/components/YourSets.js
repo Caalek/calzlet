@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 const YourSets = () => {
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
   const [sets, setSets] = useState();
   const [searchTerm, setSearchTerm] = useState();
   const navigate = useNavigate()
@@ -25,13 +25,15 @@ const YourSets = () => {
       })
     };
     fetchData();
-  }, []);
+  }, [navigate, user.token, user.userId]);
+  
   return (
     <div>
       <MainNavbar />
       <Container>
         <h1 className="mt-5">Zestawy</h1>
         <input
+          type="text"
           className="text-input mt-3"
           placeholder="Szukaj po nazwie"
           onChange={(e) => setSearchTerm(e.target.value)}

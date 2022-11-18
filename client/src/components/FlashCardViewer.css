@@ -1,0 +1,47 @@
+.flashcard-viewer {
+    border-radius: 10px;
+    height: 70vh;
+}
+
+.flashcard-clicked .flashcard-inner {
+    transform: rotateX(180deg);
+}
+
+.flashcard-clicked .flashcard-front {
+    visibility: hidden;
+}
+
+.flashcard-inner {
+    border-radius: 10px;
+    background-color: #2e3856;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s; 
+    transform-style: preserve-3d;
+}
+
+.flashcard-front, .flashcard-back {
+    font-size: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "HurmeGeometricSans1";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.flashcard-front {
+    transition-delay: 0.1   s;
+}
+
+.flashcard-back {
+    transform: rotateX(180deg);
+}
+
+.flashcard-hidden {
+    visibility: hidden;
+}

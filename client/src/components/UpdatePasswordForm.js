@@ -1,6 +1,6 @@
 import axios from "../utils/axios";
 import Button from "react-bootstrap/Button";
-import { useContext, useState } from "react";
+import { useState } from "react";
 
 import Popup from "./Popup";
 import useAuth from "../hooks/useAuth";

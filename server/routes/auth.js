@@ -57,7 +57,7 @@ router.post("/register", async (req, res) => {
           });
         }
       );
-      res.send({ message: "success", user: userData});
+      res.send({ message: "success", user: userData });
     }
   );
 });

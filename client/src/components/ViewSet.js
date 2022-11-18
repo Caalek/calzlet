@@ -94,9 +94,9 @@ const ViewSet = () => {
   }
 
   function navigateToEla() {
-    if (set.flashcards.length < 4) {
+    if (set.flashcards.length < 7) {
       setErrorText(
-        "Twój zestaw musi mieć minimum 4 fiszki, aby móc się go uczyć trybem Eli."
+        "Twój zestaw musi mieć minimum 7 fiszek, aby móc się go uczyć trybem Eli."
       );
     } else {
       navigate(`/ela-mode/${set._id}`);

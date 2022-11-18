@@ -2,7 +2,7 @@ import axios from "../utils/axios";
 import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import ElaAnswer from "./ElaAnswer";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Popup from "./Popup";
 import { useNavigate } from "react-router-dom";
@@ -154,7 +154,7 @@ const ElaMode = () => {
               ) : (
                 <div>
                   <div className="mt-5">Wybierz poprawne pojęcie</div>
-                  {answerArray.map((elem, index) => {
+                  {answerArray && answerArray.map((elem, index) => {
                     return (
                       <ElaAnswer
                         key={index}

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import CreateSet from "./CreateSet";
 import MainNavbar from "./MainNavbar";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "../utils/axios";
 import useAuth from "../hooks/useAuth";
 

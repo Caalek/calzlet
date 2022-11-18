@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+
 import arrowLeft from "../img/arrow-left.png";
 import arrowRight from "../img/arrow-right.png";
+import "./WordViewer.css"
 
 const WordViewer = ({ flashcards, lastIndex }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(lastIndex);
@@ -25,15 +27,13 @@ const WordViewer = ({ flashcards, lastIndex }) => {
   };
 
   return (
-    <div className="word-viewer p-5 m-3">
+    <div className="viewer p-3">
 
-      
-      <div style={{ textAlign: "center" }}>
+      <div className="top-bar">
         {currentWordIndex + 1 + "/" + flashcards.length}
       </div>
       <div
-        className="p-5"
-        style={{ fontSize: 35, textAlign: "center" }}
+        className="flashcard-text p-5"
         onClick={changeTextViewed}
       >
         {isViewingWord ? (

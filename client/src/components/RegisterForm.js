@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/esm/Button";
 import Popup from "./Popup";
 import axios from "../utils/axios";
@@ -12,8 +12,7 @@ const RegisterForm = () => {
   const [hcaptchaToken, setHcaptchaToken] = useState();
   const [errorText, setErrorText] = useState();
   const navigate = useNavigate()
-  const { user, setUser} = useAuth()
-  const [auth, setAuth] = useState()
+  const { setUser } = useAuth()
 
   const emailRegex =
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; //eslint-disable-line

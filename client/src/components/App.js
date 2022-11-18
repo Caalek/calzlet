@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import CreateSetPage from "./CreateSetPage";
 import Home from "./Home";
 import { BrowserRouter } from "react-router-dom";
-import "../scss/index.scss";
-import "../scss/custom.scss";
+// import "../scss/index.scss";
+// import "../scss/custom.scss"
 import ViewSet from "./ViewSet";
 import FullScreenFlashcards from "./FullScreenFlashcards";
 import YourSets from "./YourSets";
@@ -14,14 +14,16 @@ import ElaMode from "./ElaMode";
 import LoginForm from "./LoginForm";
 import SettingsPage from "./SettingsPage";
 import VerifyEmail from "./VerifyEmail";
+
 import AxiosInterceptor from "./AxiosInterceptor";
-import RequireAuth from "./RequireAuth";
+import RequireAuth from "./RequireAuth"
 
 const App = () => {
+
   return (
     <UserProvider>
-      <BrowserRouter>
-        <AxiosInterceptor>
+        <BrowserRouter>
+         <AxiosInterceptor>
           <Routes>
             <Route exact path="/" element={<Home />} />
             <Route path="/login" element={<LoginForm />}></Route>
@@ -58,18 +60,12 @@ const App = () => {
                 </RequireAuth>
               }
             />
-            <Route
-              path="/flashcards/:setId"
-              element={<FullScreenFlashcards />}
-            />
+            <Route path="/flashcards/:setId" element={<FullScreenFlashcards />} />
             <Route path="/ela-mode/:setId" element={<ElaMode />} />
-            <Route
-              path="/verify-email/:emailVerifyToken"
-              element={<VerifyEmail />}
-            />
+            <Route path="/verify-email/:emailVerifyToken" element={<VerifyEmail />} />
           </Routes>
-        </AxiosInterceptor>
-      </BrowserRouter>
+          </AxiosInterceptor>
+        </BrowserRouter>
     </UserProvider>
   );
 };
