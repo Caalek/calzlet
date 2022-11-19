@@ -7,29 +7,15 @@ import { useNavigate, Link } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 import axios from "../utils/axios";
 import useAuth from "../hooks/useAuth";
-import "./FlashCardViewer.css";
+import ProgressBar from "./ProgressBar";
+import IconButton from "./IconButton";
+import FlippingCard from "./FlippingCard";
 
 const FlashcardViewer = ({ title, words, setId, lastIndex }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(lastIndex);
-  const [isViewingWord, setIsViewingWord] = useState(true);
   const [hasFinished, setHasFinished] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
-  const front = useRef()
-  const viewer = useRef();
-
-  const changeTextViewed = () => {
-    if (isViewingWord) {
-      setIsViewingWord(false);
-    } else {
-      setIsViewingWord(true);
-    }
-  };
-
-  useEffect(() => {
-    // front.current.classList.toggle("flashcard-hidden")
-    viewer.current.classList.toggle("flashcard-clicked")
-  }, [isViewingWord])
 
   const moveBackward = () => {
     if (currentWordIndex - 1 >= 0) {
@@ -58,45 +44,25 @@ const FlashcardViewer = ({ title, words, setId, lastIndex }) => {
 
   return (
     <>
-      <Row className="p-2">
-        <Col xs={1}>
-          <img
-            className="mt-2"
-            src={arrowLeft}
-            onClick={leaveSet}
-            height="25"
-            alt="opuść zestaw"
-          ></img>
+      <ProgressBar
+        title={title}
+        setId={setId}
+        complete={currentWordIndex + 1}
+        all={words.length}
+      />
+      <FlippingCard
+        word={words[currentWordIndex].word}
+        translation={words[currentWordIndex].translation}
+        imageUrls={words[currentWordIndex].imageUrls}
+      />
+      <Row>
+        <Col>
+          <IconButton iconSrc={arrowLeft} onClick={moveBackward} />
         </Col>
-        <Col xs={10}>
-          <div style={{ textAlign: "center" }}>
-            <div>{currentWordIndex + 1 + " / " + words.length}</div>
-            {title}
-          </div>
+        <Col>
+          <IconButton iconSrc={arrowRight} onClick={moveForward} />
         </Col>
       </Row>
-      <span
-        className="progress-bar"
-        style={{
-          width: `${Math.round(
-            ((currentWordIndex + 1) / words.length) * 100
-          )}%`,
-        }}
-      ></span>
-      <div
-        className="flashcard-viewer p-5 font-regular"
-        onClick={changeTextViewed}
-        ref={viewer}
-      >
-        <div className="flashcard-inner">
-          <div className="flashcard-front" ref={front}>
-            {words[currentWordIndex].word}
-          </div>
-          <div className="flashcard-back">
-            {/* {words[currentWordIndex].translation} */}000
-          </div>
-        </div>
-      </div>
     </>
   );
 };

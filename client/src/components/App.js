@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 // import "../scss/index.scss";
 // import "../scss/custom.scss"
 import ViewSet from "./ViewSet";
-import FullScreenFlashcards from "./FullScreenFlashcards";
+import FlashcardsPage from "./FlashcardsPage";
 import YourSets from "./YourSets";
 import { React } from "react";
 import EditFullSetPage from "./EditFullSetPage";
@@ -60,7 +60,7 @@ const App = () => {
                 </RequireAuth>
               }
             />
-            <Route path="/flashcards/:setId" element={<FullScreenFlashcards />} />
+            <Route path="/flashcards/:setId" element={<FlashcardsPage />} />
             <Route path="/ela-mode/:setId" element={<ElaMode />} />
             <Route path="/verify-email/:emailVerifyToken" element={<VerifyEmail />} />
           </Routes>

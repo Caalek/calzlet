@@ -1,13 +1,13 @@
 import defaultAvatarImage from "../img/default_avatar.png";
-import styles from "./Avatar.module.css"
+import "../css/Avatar.css"
 
 const Avatar = ({ user, size }) => {
   return (
     <>
       {user.avatarUrl === "default" ? (
-        <img className={styles.avatar} height={size} width={size} src={defaultAvatarImage} alt="avatar"></img>
+        <img className="avatar" height={size} width={size} src={defaultAvatarImage} alt="avatar"></img>
       ) : (
-        <img className={styles.avatar} height={size} width={size} src={user.avatarUrl} alt="avatar"></img>
+        <img className="avatar" height={size} width={size} src={user.avatarUrl} alt="avatar"></img>
       )}
     </>
   );

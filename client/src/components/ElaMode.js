@@ -7,9 +7,8 @@ import Button from "react-bootstrap/Button";
 import Popup from "./Popup";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import arrowLeft from "../img/arrow-left.png";
-import Col from "react-bootstrap/Col"
-import Row from "react-bootstrap/Row"
+import ProgressBar from "./ProgressBar";
+import "../css/ElaMode.css"
 
 const ElaMode = () => {
   const navigate = useNavigate();
@@ -30,7 +29,7 @@ const ElaMode = () => {
   useEffect(() => {
     const fetchSets = async () => {
       const fetchedSet = await axios.get(
-        `/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}}
+        `/api/set/${setId}`
       );
       setSet(fetchedSet.data);
       setCurrentFlashcardIndex(fetchedSet.data.lastIndex)
@@ -103,32 +102,7 @@ const ElaMode = () => {
         <Container className="mt-2">
           {!hasFinished && (
             <>
-            <Row className="p-2">
-            <Col xs={1}>
-              <img
-                className="mt-2"
-                src={arrowLeft}
-                onClick={() => navigate(`/view-set/${set._id}`)}
-                height="25"
-                alt="strzałka w lewo"
-              ></img>
-            </Col>
-            <Col xs={10}>
-              <div style={{ textAlign: "center" }}>
-                <div>{currentFlashcardIndex + 1 + " / " + set.flashcards.length}</div>
-                {set.title}
-              </div>
-            </Col>
-          </Row>
-    
-          <span
-            className="progress-bar"
-            style={{
-              width: `${Math.round(
-                ((currentFlashcardIndex + 1) / set.flashcards.length) * 100
-              )}%`,
-            }}
-          ></span>
+            <ProgressBar title={set.title} setId={setId} complete={currentFlashcardIndex + 1} all={set.flashcards.length} />
           </>
           )}
           {!hasFinished && (

@@ -1,0 +1,11 @@
+.set-button-container {
+    display: flex;
+    justify-content: end;
+    justify-content: start;
+}
+
+.author {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}

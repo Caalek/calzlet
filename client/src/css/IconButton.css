@@ -1,0 +1,12 @@
+.icon-button {
+    border-color: white;
+    border-radius: 10px;
+    border-width: 2px;
+    border-style: solid;
+    font-size: 40;
+    text-align: center;
+}
+
+.icon-button:hover {
+    border-color: #939bb4;
+}

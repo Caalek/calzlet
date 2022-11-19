@@ -7,6 +7,7 @@ import WordViewer from "./WordViewer";
 import elaImage from "../img/ela.png";
 import editImage from "../img/edit.png";
 import copyImage from "../img/copy.png";
+import trashImage from "../img/trash.png";
 import flashcardImage from "../img/flashcard.png";
 import { Link, useParams } from "react-router-dom";
 import MainNavbar from "./MainNavbar";
@@ -18,6 +19,10 @@ import ConfirmDialogue from "./ConfirmDialogue";
 import Popup from "./Popup";
 import PasswordPrompt from "./PasswordPrompt";
 import Avatar from "./Avatar";
+import FlashcardViewer from "./FlashCardViewer";
+import BlueButton from "./BlueButton";
+import "../css/ViewSet.css";
+import PhraseList from "./PhraseList";
 
 const ViewSet = () => {
   const { user } = useAuth();
@@ -45,7 +50,8 @@ const ViewSet = () => {
           },
         })
         .then((response) => {
-          {}
+          {
+          }
         });
     };
 
@@ -64,22 +70,6 @@ const ViewSet = () => {
 
   useEffect(() => {
     if (set) {
-      // const setIdsPasswordAuthorizedArray = JSON.parse(
-      //   sessionStorage.getItem("setIdsPasswordAuthorized")
-      // );
-      // if (user && set.userId === user.userId) {
-      //   console.log();
-      //   setCanAccess(true);
-      //   setCanEdit(true);
-      // } else if (
-      //   setIdsPasswordAuthorizedArray &&
-      //   setIdsPasswordAuthorizedArray.includes(set._id)
-      // ) {
-      //   setCanAccess(true);
-      // } else {
-      //   checkIfCanAccess(set);
-      // }
-      // checkIfCanEdit(set);
       checkIfCanAccess(set);
       checkIfCanEdit(set);
     }
@@ -146,9 +136,8 @@ const ViewSet = () => {
 
   function navigateToEdit() {
     if (!user) {
-      setErrorText("Musisz być zalogowany, aby edytować zestawy.")
-    }
-    else if (canEdit) {
+      setErrorText("Musisz być zalogowany, aby edytować zestawy.");
+    } else if (canEdit) {
       navigate(`/edit-set/${setId}`);
     } else if (set.editAccess === "password") {
       setShowPasswordPopup(true);
@@ -190,7 +179,7 @@ const ViewSet = () => {
             onConfirm={deleteSet}
             onReject={() => setShowDialogue(false)}
           />
-          <Container className="mt-2">
+          <Container>
             <Row>
               <Col sm={12} md={{ span: 8, offset: 2 }}>
                 <h1>{set.title}</h1>
@@ -218,64 +207,48 @@ const ViewSet = () => {
             </Row>
             <Row>
               <Col sm={12} md={{ span: 8, offset: 2 }}>
-                <div>
-                  <WordViewer
-                    flashcards={set.flashcards}
-                    lastIndex={set.lastIndex}
+              <WordViewer
+                flashcards={set.flashcards}
+                lastIndex={set.lastIndex}
+              />
+              </Col>
+            </Row>
+            <Row className="mt-5">
+              <Col sm={12} md={{ span: 8, offset: 2 }}>
+                <div className="set-button-container mt-1">
+                  {user && user.userId === set.userId && (
+                    <BlueButton
+                      iconSrc={trashImage}
+                      onClick={() => setShowDialogue(true)}
+                      text="Usuń zestaw"
+                    />
+                  )}
+                  <BlueButton
+                    iconSrc={editImage}
+                    onClick={navigateToEdit}
+                    text="Edytuj zestaw"
+                  />
+                  <BlueButton
+                    iconSrc={copyImage}
+                    onClick={() =>
+                      navigator.clipboard.writeText(window.location.href)
+                    }
+                    text="Skopiuj link"
                   />
                 </div>
-                {user && user.userId === set.userId && (
-                  <Button className="m-1" onClick={() => setShowDialogue(true)}>
-                    Usuń zestaw
-                  </Button>
-                )}
-                <Button className="m-1" onClick={navigateToEdit}>
-                  <img
-                    src={editImage}
-                    alt=""
-                    className=""
-                    style={{ marginRight: "5px" }}
-                    height="17"
-                  ></img>
-                  Edytuj zestaw
-                </Button>
-                <Button
-                  className="m-1"
-                  onClick={() =>
-                    navigator.clipboard.writeText(window.location.href)
-                  }
-                >
-                  <img
-                    src={copyImage}
-                    alt=""
-                    className=""
-                    style={{ marginRight: "5px" }}
-                    height="17"
-                  ></img>
-                  Skopiuj link
-                </Button>
               </Col>
-              <Row className="mb-1 p-2">
-                <Col sm={12} md={{ span: 8, offset: 2 }}>
-                  <span className="font-background">Autor</span>
-                  <Avatar
-                    user={{ avatarUrl: set.creatorAvatarUrl }}
-                    size="30"
-                  />{" "}
+            </Row>
+            <Row className="mt-3 mb-3">
+              <Col sm={12} md={{ span: 8, offset: 2 }}>
+                <span className="font-background">Autor</span>
+                <div className="author">
+                  <Avatar user={{ avatarUrl: set.creatorAvatarUrl }} size="40" />
                   {set.creatorUsername}
-                </Col>
-              </Row>
+                </div>
+              </Col>
             </Row>
             <Row>
-              {set.flashcards.map((pair, index) => {
-                return (
-                  <WordPair
-                    key={index}
-                    word={pair.word}
-                    translation={pair.translation}
-                  />
-                );
-              })}
+              <PhraseList items={set.flashcards} />
             </Row>
           </Container>
         </>

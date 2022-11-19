@@ -25,6 +25,11 @@ const CreatePhrase = (props) => {
       return;
     }
 
+    if (imageUrls.length === 3) {
+      setErrorText("Możesz dodać maksymalne 3 obrazy.")
+      return 
+    }
+
     const formData = new FormData();
     formData.append("image", image);
     const result = await axios.post(
