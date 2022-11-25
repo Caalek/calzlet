@@ -23,19 +23,35 @@ const ElaMode = () => {
   const [errorText, setErrorText] = useState();
   const [errorCount, setErrorCount] = useState(0);
   const [hasFinished, setHasFinished] = useState(false);
+  const [share, setShare] = useState()
 
   const { user } = useAuth()
 
   useEffect(() => {
-    const fetchSets = async () => {
+    const fetchSet = async () => {
       const fetchedSet = await axios.get(
         `/api/set/${setId}`
       );
       setSet(fetchedSet.data);
-      setCurrentFlashcardIndex(fetchedSet.data.lastIndex)
       setAnswerArray(getAnswerArray(fetchedSet.data.flashcards, 0))
     };
-    fetchSets();
+
+    const fetchShare = async () => {
+      const params = {
+        userId: user.userId,
+        setId: setId
+      }
+      const response = await axios.get("/api/shares", {params: params});
+      setShare(response.data)
+      setCurrentFlashcardIndex(response.data.lastElaIndex)
+    }
+
+    fetchSet();
+    if (user) {
+      fetchShare()
+    } else {
+      setCurrentFlashcardIndex(0)
+    }
   }, []);
 
   const checkAnswer = (answer) => {
@@ -89,6 +105,19 @@ const ElaMode = () => {
     return answerArray;
   };
 
+  const leaveSet = async () => {
+    const params = {
+      userId: user.userId,
+      setId: setId
+    }
+    const patchObject = {
+      accessed: new Date(),
+      lastElaIndex: currentFlashcardIndex
+    }
+    await axios.patch("/api/share", patchObject, { params: params});
+    navigate(`/view-set/${setId}`)
+  }
+
   return (
     <>
       {errorText && (
@@ -102,7 +131,7 @@ const ElaMode = () => {
         <Container className="mt-2">
           {!hasFinished && (
             <>
-            <ProgressBar title={set.title} setId={setId} complete={currentFlashcardIndex + 1} all={set.flashcards.length} />
+            <ProgressBar title={set.title} setId={setId} complete={currentFlashcardIndex} all={set.flashcards.length} />
           </>
           )}
           {!hasFinished && (
@@ -146,7 +175,7 @@ const ElaMode = () => {
             <div style={{ textAlign: "center" }} className="mt-5">
               <h1>Gratulacje!</h1>
               <p>{`Ukończyłeś Ela mode dla zestawu ${set.title}!`}</p>
-              <Button onClick={() => navigate(`/view-set/${setId}`)}>
+              <Button onClick={leaveSet}>
                 Powrót do strony zestawu
               </Button>
             </div>

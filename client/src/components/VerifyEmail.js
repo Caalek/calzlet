@@ -19,7 +19,7 @@ const VerifyEmail = () => {
         setSuccess(true);
       }
     });
-  }, []);
+  }, [setUser, setSuccess]);
 
   return (
     <>

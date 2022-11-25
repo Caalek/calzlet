@@ -10,6 +10,7 @@ import Avatar from "./Avatar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useState } from "react";
 import VerifyEmailPrompt from "./VerifyEmailPrompt";
+import "../css/MainNavbar.css"
 
 const MainNavbar = () => {
   const { user, setUser } = useAuth();

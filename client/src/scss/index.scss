@@ -195,3 +195,22 @@ footer {
     transform: translate(10%, -140%);
     -ms-transform: translate(-50%, -50%);
 }
+
+.dropdown-menu {
+    background-color: #2e3856;
+    color: white;
+}
+
+.dropdown-item {
+    color: white;
+}
+
+.dropdown-item {
+    /* color: #9090a0 */
+    color: white
+}
+
+.dropdown-item:hover {
+    background: #2e3856;
+    color: #b3acb5
+}

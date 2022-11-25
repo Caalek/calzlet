@@ -33,40 +33,69 @@ const ViewSet = () => {
   const [errorText, setErrorText] = useState();
   const [canAccess, setCanAccess] = useState();
   const [canEdit, setCanEdit] = useState();
+  const [share, setShare] = useState();
+
+  const [visible, setVisible] = useState(false)
 
   const [showPasswordPopup, setShowPasswordPopup] = useState();
 
   useEffect(() => {
-    const addToAssociated = (set) => {
-      const data = {
-        associatedUserIds: set.associatedUserIds.concat([user.userId]),
+    async function fetchData() {
+    const addShare = async (userId, setId, setTitle, username, avatarUrl) => {
+      const shareData = {
+        userId: userId,
+        setId: setId,
+        title: setTitle,
+        username: username,
+        avatarUrl: avatarUrl,
       };
 
-      axios
-        .patch(`/api/set/${setId}`, data, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-        })
-        .then((response) => {
-          {
-          }
-        });
+      const response = await axios.post("/api/share", shareData, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      setShare(response.data.share)
     };
 
-    axios.get(`/api/set/${setId}`).then((response) => {
-      setSet(response.data);
+    const fetchShare = async () => {
+      const params = {
+        userId: user.userId,
+        setId: setId
+      }
+      const response = await axios.get("/api/shares", {params: params, 
+        headers: { Authorization: `Bearer ${user.token}`}});
+      return response
+    }
+
+    const fetchSet = async () => {
+      const fetchedSet = await axios.get(
+        `/api/set/${setId}`
+      );
+      setSet(fetchedSet.data);
+      return fetchedSet
+    };
+  
+    const response = await fetchSet()
+    if (user) {
+      const shareResponse = await fetchShare()
       if (
-        user &&
         response.data.userId !== user.userId &&
-        !response.data.associatedUserIds.includes(user.userId) &&
+        shareResponse.data.length === 0 &&
         response.data
       ) {
-        addToAssociated(response.data);
+        addShare(user.userId, setId, response.data.title, response.data.creatorUsername, response.data.creatorAvatarUrl)
+        setVisible(true)
+      } else {
+        if (user) {
+          setShare(shareResponse.data[0])
+          setVisible(true)
+        }
       }
-    });
-  }, []);
+    } else {
+      setVisible(true)
+    }
+  }
+    fetchData()
+  }, [setSet, setShare]);
 
   useEffect(() => {
     if (set) {
@@ -145,6 +174,7 @@ const ViewSet = () => {
       setErrorText("Autor nie pozwala innym edytować tego zestawu.");
     }
   }
+
   return (
     <>
       <MainNavbar />
@@ -157,7 +187,7 @@ const ViewSet = () => {
           onHide={() => setShowPasswordPopup(false)}
         />
       )}
-      {set && canAccess && (
+      {visible && canAccess && (
         <>
           <Popup
             show={errorText ? true : false}
@@ -209,7 +239,7 @@ const ViewSet = () => {
               <Col sm={12} md={{ span: 8, offset: 2 }}>
               <WordViewer
                 flashcards={set.flashcards}
-                lastIndex={set.lastIndex}
+                lastIndex={share ? share.lastIndex : 0}
               />
               </Col>
             </Row>

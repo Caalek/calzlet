@@ -33,21 +33,24 @@ const FlashcardViewer = ({ title, words, setId, lastIndex }) => {
   };
 
   const leaveSet = async () => {
-    if (user) {
-      const data = { lastIndex: currentWordIndex, accessed: new Date() };
-      await axios.patch(`/api/set/${setId}`, data, {
-        headers: { Authorization: `Bearer ${user.token}` },
-      });
+    const params = {
+      userId: user.userId,
+      setId: setId
     }
-    navigate(`/view-set/${setId}`);
-  };
+    const patchObject = {
+      accessed: new Date(),
+      lastIndex: currentWordIndex
+    }
+    await axios.patch("/api/share", patchObject, { params: params });
+    navigate(`/view-set/${setId}`)
+  }
 
   return (
     <>
       <ProgressBar
         title={title}
         setId={setId}
-        complete={currentWordIndex + 1}
+        complete={currentWordIndex}
         all={words.length}
       />
       <FlippingCard

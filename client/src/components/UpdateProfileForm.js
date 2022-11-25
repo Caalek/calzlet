@@ -54,8 +54,7 @@ const UpdateProfileForm = () => {
     const copyUser = user;
     copyUser.user.avatarUrl = avatarUrl;
     setUser(copyUser);
-    localStorage.setItem("user", JSON.stringify(copyUser));
-    alert("Avatar zapisany");
+    alert("Avatar zapisany. Będzie widzialny po ponownym zalogowaniu");
   };
 
   const updateUsername = async () => {
@@ -69,7 +68,6 @@ const UpdateProfileForm = () => {
     const copyUser = user;
     copyUser.username = newUsername;
     setUser(copyUser);
-    localStorage.setItem("user", JSON.stringify(copyUser));
     alert("Nazwa użytkownika zmieniona");
   };
 
