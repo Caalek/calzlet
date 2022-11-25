@@ -6,7 +6,7 @@ import MainNavbar from "./MainNavbar";
 import Popup from "./Popup";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import axios from "../utils/axios";
+import axios from "axios" // safari się psuło
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
