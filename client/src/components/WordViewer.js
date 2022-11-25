@@ -1,16 +1,16 @@
 import { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+
+import "../css/WordViewer.css";
 import arrowLeft from "../img/arrow-left.png";
 import arrowRight from "../img/arrow-right.png";
+import FlippingCard from "./FlippingCard";
+import IconButton from "./IconButton";
+import ProgressBar from "./ProgressBar";
 
 const WordViewer = ({ flashcards, lastIndex }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(lastIndex);
-  const [isViewingWord, setIsViewingWord] = useState(true);
-
-  const changeTextViewed = () => {
-    isViewingWord ? setIsViewingWord(false) : setIsViewingWord(true);
-  };
 
   const moveBackward = () => {
     if (currentWordIndex - 1 >= 0) {
@@ -25,39 +25,21 @@ const WordViewer = ({ flashcards, lastIndex }) => {
   };
 
   return (
-    <div className="word-viewer p-5 m-3">
-
-      
-      <div style={{ textAlign: "center" }}>
-        {currentWordIndex + 1 + "/" + flashcards.length}
+    <div className="viewer p-3 m-2 mb-4">
+      <div className="viewer-amount">
+        {currentWordIndex + 1} / {flashcards.length}
       </div>
-      <div
-        className="p-5"
-        style={{ fontSize: 35, textAlign: "center" }}
-        onClick={changeTextViewed}
-      >
-        {isViewingWord ? (
-          flashcards[currentWordIndex].word
-        ) : (
-          <div>
-            {flashcards[currentWordIndex].translation}
-            <br />
-            {flashcards[currentWordIndex].imageUrl && (
-              <img src={flashcards[currentWordIndex].imageUrl} height="100" alt="obrazek z fiszki"/>
-            )}
-          </div>
-        )}
-      </div>
+      <FlippingCard
+        word={flashcards[currentWordIndex].word}
+        translation={flashcards[currentWordIndex].translation}
+        imageUrls={flashcards[currentWordIndex].imageUrls}
+      />
       <Row>
         <Col>
-          <div className="next-button m-1" onClick={moveBackward}>
-            <img src={arrowLeft} height="18" alt="strzałka w lewo"></img>
-          </div>
+          <IconButton iconSrc={arrowLeft} onClick={moveBackward} />
         </Col>
         <Col>
-          <div className="next-button m-1" onClick={moveForward}>
-            <img src={arrowRight} height="18" alt="strzałka w prawo"></img>
-          </div>
+          <IconButton iconSrc={arrowRight} onClick={moveForward} />
         </Col>
       </Row>
     </div>

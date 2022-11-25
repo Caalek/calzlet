@@ -62,6 +62,7 @@ const CsvImporter = ({ show, onHide, bulkAddFlashcards }) => {
               >
                 <option value={"\t"}>tabulator</option>
                 <option value=",">przecinek</option>
+                <option value=";">średnik</option>
               </select>
             </div>
             <div style={{ display: "flex", justifyContent: "end" }}>

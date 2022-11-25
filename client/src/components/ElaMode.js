@@ -1,15 +1,14 @@
-import axios from "axios";
+import axios from "../utils/axios";
 import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import ElaAnswer from "./ElaAnswer";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Popup from "./Popup";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../context/UserContext";
-import arrowLeft from "../img/arrow-left.png";
-import Col from "react-bootstrap/Col"
-import Row from "react-bootstrap/Row"
+import useAuth from "../hooks/useAuth";
+import ProgressBar from "./ProgressBar";
+import "../css/ElaMode.css"
 
 const ElaMode = () => {
   const navigate = useNavigate();
@@ -24,18 +23,35 @@ const ElaMode = () => {
   const [errorText, setErrorText] = useState();
   const [errorCount, setErrorCount] = useState(0);
   const [hasFinished, setHasFinished] = useState(false);
+  const [share, setShare] = useState()
 
-  const { user } = useContext(UserContext)
+  const { user } = useAuth()
 
   useEffect(() => {
-    const fetchSets = async () => {
+    const fetchSet = async () => {
       const fetchedSet = await axios.get(
-        `/api/set/${setId}`, {headers: {'Authorization': `Bearer ${user.token}`}}
+        `/api/set/${setId}`
       );
       setSet(fetchedSet.data);
-      setAnswerArray(getAnswerArray(fetchedSet.data.flashcards, 0));
+      setAnswerArray(getAnswerArray(fetchedSet.data.flashcards, 0))
     };
-    fetchSets();
+
+    const fetchShare = async () => {
+      const params = {
+        userId: user.userId,
+        setId: setId
+      }
+      const response = await axios.get("/api/shares", {params: params});
+      setShare(response.data)
+      setCurrentFlashcardIndex(response.data.lastElaIndex)
+    }
+
+    fetchSet();
+    if (user) {
+      fetchShare()
+    } else {
+      setCurrentFlashcardIndex(0)
+    }
   }, []);
 
   const checkAnswer = (answer) => {
@@ -89,6 +105,19 @@ const ElaMode = () => {
     return answerArray;
   };
 
+  const leaveSet = async () => {
+    const params = {
+      userId: user.userId,
+      setId: setId
+    }
+    const patchObject = {
+      accessed: new Date(),
+      lastElaIndex: currentFlashcardIndex
+    }
+    await axios.patch("/api/share", patchObject, { params: params});
+    navigate(`/view-set/${setId}`)
+  }
+
   return (
     <>
       {errorText && (
@@ -102,32 +131,7 @@ const ElaMode = () => {
         <Container className="mt-2">
           {!hasFinished && (
             <>
-            <Row className="p-2">
-            <Col xs={1}>
-              <img
-                className="mt-2"
-                src={arrowLeft}
-                onClick={() => navigate(`/view-set/${set._id}`)}
-                height="25"
-                alt="strzałka w lewo"
-              ></img>
-            </Col>
-            <Col xs={10}>
-              <div style={{ textAlign: "center" }}>
-                <div>{currentFlashcardIndex + 1 + " / " + set.flashcards.length}</div>
-                {set.title}
-              </div>
-            </Col>
-          </Row>
-    
-          <span
-            className="progress-bar"
-            style={{
-              width: `${Math.round(
-                ((currentFlashcardIndex + 1) / set.flashcards.length) * 100
-              )}%`,
-            }}
-          ></span>
+            <ProgressBar title={set.title} setId={setId} complete={currentFlashcardIndex} all={set.flashcards.length} />
           </>
           )}
           {!hasFinished && (
@@ -153,7 +157,7 @@ const ElaMode = () => {
               ) : (
                 <div>
                   <div className="mt-5">Wybierz poprawne pojęcie</div>
-                  {answerArray.map((elem, index) => {
+                  {answerArray && answerArray.map((elem, index) => {
                     return (
                       <ElaAnswer
                         key={index}
@@ -171,7 +175,7 @@ const ElaMode = () => {
             <div style={{ textAlign: "center" }} className="mt-5">
               <h1>Gratulacje!</h1>
               <p>{`Ukończyłeś Ela mode dla zestawu ${set.title}!`}</p>
-              <Button onClick={() => navigate(`/view-set/${setId}`)}>
+              <Button onClick={leaveSet}>
                 Powrót do strony zestawu
               </Button>
             </div>

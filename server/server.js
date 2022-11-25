@@ -30,6 +30,7 @@ app.use("/api", require("./routes/sets"));
 app.use("/api", require("./routes/auth"));
 app.use("/api", require("./routes/users"));
 app.use("/api", require("./routes/image"));
+app.use("/api", require("./routes/shares"))
 
 app.get("/images/:imageId", (req, res) => {
   const imageId = req.params.imageId

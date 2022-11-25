@@ -2,11 +2,11 @@ import Form from "react-bootstrap/Form";
 import CreatePhrase from "./CreatePhrase";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import UserContext from "../context/UserContext";
-import axios from "axios";
+import useAuth from "../hooks/useAuth";
+import axios from "../utils/axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
@@ -15,7 +15,7 @@ import CsvImporter from "./CsvImporter";
 import uuid from "react-uuid";
 
 const CreateSet = ({ set }) => {
-  const { user } = useContext(UserContext);
+  const { user } = useAuth();
   const { setId } = useParams();
 
   const [flashcards, setFlashcards] = useState(set.flashcards);
@@ -81,54 +81,68 @@ const CreateSet = ({ set }) => {
   async function createSet() {
     if (!validateFlashcards()) {
       setErrorText("Wypełnij wszystkie pola.");
-      return
+      return;
     }
     const data = {
-      userId: user.user.userId, //id usera od googla
+      userId: user.userId, //id usera od googla
       title: title,
       description: description,
-      creatorUsername: user.user.username,
-      creatorAvatarUrl: user.user.avatarUrl,
+      creatorUsername: user.username,
+      creatorAvatarUrl: user.avatarUrl,
       flashcards: flashcards,
       viewAccess: viewAccess,
       editAccess: editAccess,
       viewPassword: viewPassword,
       editPassword: editPassword,
-      associatedUserIds: [user.user.userId],
     };
-    await axios.post("/api/set", data, {
-      headers: { Authorization: `Bearer ${user.token}` },
-    });
-    navigate("/your-sets")
+
+    try {
+      const result = await axios.post("/api/set", data, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      try {
+        const shareData = {
+          userId: user.userId,
+          setId: result.data.set._id,
+          title: result.data.set.title,
+          username: user.username,
+          avatarUrl: user.avatarUrl,
+        };
+        await axios.post("/api/share", shareData, {
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+      } catch (error) {
+        return setErrorText("Błąd" + error.message)
+      }
+    } catch (error) {
+      return setErrorText("Błąd: " + error.message);
+    }
+
+    navigate("/your-sets");
   }
 
   async function replaceSet() {
-
-    // let flashcardsToSend = []
-    // for (let element of flashcards) {
-    //   let copyElement = element
-    //   delete copyElement["_id"]
-    //   flashcardsToSend.push(copyElement)
-
     const data = {
-      userId: user.user.userId, //id usera od googla
+      userId: user.userId,
       title: title,
       description: description,
-      creatorUsername: user.user.username,
-      creatorAvatarUrl: user.user.avatarUrl,
+      creatorUsername: user.username,
+      creatorAvatarUrl: user.avatarUrl,
       flashcards: flashcards,
       viewAccess: viewAccess,
       editAccess: editAccess,
       viewPassword: viewPassword,
       editPassword: editPassword,
       created: set.created,
-      accessed: set.accessed,
-      associatedUserIds: set.associatedUserIds,
       edited: new Date(),
     };
-    const response = await axios.put(`/api/set/${setId}`, data, {
-      headers: { Authorization: `Bearer ${user.token}` },
-    });
+    try {
+      await axios.put(`/api/set/${setId}`, data, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+    } catch (error) {
+      return setErrorText("Błąd:" + error.message);
+    }
     navigate(`/view-set/${setId}`);
   }
 
@@ -138,9 +152,9 @@ const CreateSet = ({ set }) => {
       return;
     }
     if (setId) {
-      replaceSet()
+      replaceSet();
     } else {
-      createSet()
+      createSet();
     }
   }
 

@@ -4,12 +4,12 @@ import MainNavbar from "./MainNavbar";
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
 import { useContext, useEffect } from "react";
-import UserContext from "../context/UserContext";
-// import RegisterForm from "./RegisterForm"
+import useAuth from "../hooks/useAuth";
+import RegisterForm from "./RegisterForm"
 import Footer from "./Footer";
 
 const Home = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser } = useAuth()
   const navigate = useNavigate()
   useEffect(() => {
     if (user) {
@@ -22,7 +22,7 @@ const Home = () => {
       <Container>
         <Row className="mt-5">
           <Col sm={12} md={6}>
-            {/* <RegisterForm /> */}
+            <RegisterForm />
             <h1>Coming soon™</h1>
             <p>Aplikacja nie jest jeszcze ogólnodostępna. Jeśli chcesz zostać beta testerem, napisz na <strong>calzletapp@gmail.com</strong></p>
           </Col>

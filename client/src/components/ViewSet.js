@@ -2,25 +2,30 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import WordPair from "./WordPair";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import WordViewer from "./WordViewer";
 import elaImage from "../img/ela.png";
 import editImage from "../img/edit.png";
 import copyImage from "../img/copy.png";
+import trashImage from "../img/trash.png";
 import flashcardImage from "../img/flashcard.png";
 import { Link, useParams } from "react-router-dom";
 import MainNavbar from "./MainNavbar";
-import axios from "axios";
-import UserContext from "../context/UserContext";
+import axios from "../utils/axios";
+import useAuth from "../hooks/useAuth";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
 import ConfirmDialogue from "./ConfirmDialogue";
 import Popup from "./Popup";
 import PasswordPrompt from "./PasswordPrompt";
 import Avatar from "./Avatar";
+import FlashcardViewer from "./FlashCardViewer";
+import BlueButton from "./BlueButton";
+import "../css/ViewSet.css";
+import PhraseList from "./PhraseList";
 
 const ViewSet = () => {
-  const { user } = useContext(UserContext);
+  const { user } = useAuth();
   const { setId } = useParams();
   const [set, setSet] = useState();
   const [showDialogue, setShowDialogue] = useState();
@@ -28,58 +33,72 @@ const ViewSet = () => {
   const [errorText, setErrorText] = useState();
   const [canAccess, setCanAccess] = useState();
   const [canEdit, setCanEdit] = useState();
+  const [share, setShare] = useState();
+
+  const [visible, setVisible] = useState(false)
 
   const [showPasswordPopup, setShowPasswordPopup] = useState();
 
   useEffect(() => {
-    const addToAssociated = (set) => {
-      const data = {
-        associatedUserIds: set.associatedUserIds.concat([user.user.userId]),
+    async function fetchData() {
+    const addShare = async (userId, setId, setTitle, username, avatarUrl) => {
+      const shareData = {
+        userId: userId,
+        setId: setId,
+        title: setTitle,
+        username: username,
+        avatarUrl: avatarUrl,
       };
 
-      axios
-        .patch(`/api/set/${setId}`, data, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
-        })
-        .then((response) => {
-          {}
-        });
+      const response = await axios.post("/api/share", shareData, {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+      setShare(response.data.share)
     };
 
-    axios.get(`/api/set/${setId}`).then((response) => {
-      setSet(response.data);
+    const fetchShare = async () => {
+      const params = {
+        userId: user.userId,
+        setId: setId
+      }
+      const response = await axios.get("/api/shares", {params: params, 
+        headers: { Authorization: `Bearer ${user.token}`}});
+      return response
+    }
+
+    const fetchSet = async () => {
+      const fetchedSet = await axios.get(
+        `/api/set/${setId}`
+      );
+      setSet(fetchedSet.data);
+      return fetchedSet
+    };
+  
+    const response = await fetchSet()
+    if (user) {
+      const shareResponse = await fetchShare()
       if (
-        user &&
-        response.data.userId !== user.user.userId &&
-        !response.data.associatedUserIds.includes(user.user.userId) &&
+        response.data.userId !== user.userId &&
+        shareResponse.data.length === 0 &&
         response.data
       ) {
-        addToAssociated(response.data);
+        addShare(user.userId, setId, response.data.title, response.data.creatorUsername, response.data.creatorAvatarUrl)
+        setVisible(true)
+      } else {
+        if (user) {
+          setShare(shareResponse.data[0])
+          setVisible(true)
+        }
       }
-    });
-  }, []);
+    } else {
+      setVisible(true)
+    }
+  }
+    fetchData()
+  }, [setSet, setShare]);
 
   useEffect(() => {
     if (set) {
-      // const setIdsPasswordAuthorizedArray = JSON.parse(
-      //   sessionStorage.getItem("setIdsPasswordAuthorized")
-      // );
-      // if (user && set.userId === user.user.userId) {
-      //   console.log();
-      //   setCanAccess(true);
-      //   setCanEdit(true);
-      // } else if (
-      //   setIdsPasswordAuthorizedArray &&
-      //   setIdsPasswordAuthorizedArray.includes(set._id)
-      // ) {
-      //   setCanAccess(true);
-      // } else {
-      //   checkIfCanAccess(set);
-      // }
-      // checkIfCanEdit(set);
       checkIfCanAccess(set);
       checkIfCanEdit(set);
     }
@@ -94,9 +113,9 @@ const ViewSet = () => {
   }
 
   function navigateToEla() {
-    if (set.flashcards.length < 4) {
+    if (set.flashcards.length < 7) {
       setErrorText(
-        "Twój zestaw musi mieć minimum 4 fiszki, aby móc się go uczyć trybem Eli."
+        "Twój zestaw musi mieć minimum 7 fiszek, aby móc się go uczyć trybem Eli."
       );
     } else {
       navigate(`/ela-mode/${set._id}`);
@@ -115,13 +134,13 @@ const ViewSet = () => {
     if (setArg.viewAccess === "all") {
       setCanAccess(true);
     } else if (setArg.viewAccess === "me") {
-      if (user && user.user.userId === setArg.userId) {
+      if (user && user.userId === setArg.userId) {
         setCanAccess(true);
       } else {
         navigate("/");
       }
     } else if (setArg.viewAccess === "password") {
-      if (user && user.user.userId === setArg.userId) {
+      if (user && user.userId === setArg.userId) {
         setCanAccess(true);
       } else {
         setCanAccess(false);
@@ -132,13 +151,13 @@ const ViewSet = () => {
 
   function checkIfCanEdit(setArg) {
     if (setArg.editAccess === "me") {
-      if (user && user.user.userId === setArg.userId) {
+      if (user && user.userId === setArg.userId) {
         setCanEdit(true);
       } else {
         setCanEdit(false);
       }
     } else if (setArg.editAccess === "password") {
-      if (user && user.user.userId === setArg.userId) {
+      if (user && user.userId === setArg.userId) {
         setCanEdit(true);
       }
     }
@@ -146,9 +165,8 @@ const ViewSet = () => {
 
   function navigateToEdit() {
     if (!user) {
-      setErrorText("Musisz być zalogowany, aby edytować zestawy.")
-    }
-    else if (canEdit) {
+      setErrorText("Musisz być zalogowany, aby edytować zestawy.");
+    } else if (canEdit) {
       navigate(`/edit-set/${setId}`);
     } else if (set.editAccess === "password") {
       setShowPasswordPopup(true);
@@ -156,6 +174,7 @@ const ViewSet = () => {
       setErrorText("Autor nie pozwala innym edytować tego zestawu.");
     }
   }
+
   return (
     <>
       <MainNavbar />
@@ -168,7 +187,7 @@ const ViewSet = () => {
           onHide={() => setShowPasswordPopup(false)}
         />
       )}
-      {set && canAccess && (
+      {visible && canAccess && (
         <>
           <Popup
             show={errorText ? true : false}
@@ -190,7 +209,7 @@ const ViewSet = () => {
             onConfirm={deleteSet}
             onReject={() => setShowDialogue(false)}
           />
-          <Container className="mt-2">
+          <Container>
             <Row>
               <Col sm={12} md={{ span: 8, offset: 2 }}>
                 <h1>{set.title}</h1>
@@ -218,64 +237,48 @@ const ViewSet = () => {
             </Row>
             <Row>
               <Col sm={12} md={{ span: 8, offset: 2 }}>
-                <div>
-                  <WordViewer
-                    flashcards={set.flashcards}
-                    lastIndex={set.lastIndex}
+              <WordViewer
+                flashcards={set.flashcards}
+                lastIndex={share ? share.lastIndex : 0}
+              />
+              </Col>
+            </Row>
+            <Row className="mt-5">
+              <Col sm={12} md={{ span: 8, offset: 2 }}>
+                <div className="set-button-container mt-1">
+                  {user && user.userId === set.userId && (
+                    <BlueButton
+                      iconSrc={trashImage}
+                      onClick={() => setShowDialogue(true)}
+                      text="Usuń zestaw"
+                    />
+                  )}
+                  <BlueButton
+                    iconSrc={editImage}
+                    onClick={navigateToEdit}
+                    text="Edytuj zestaw"
+                  />
+                  <BlueButton
+                    iconSrc={copyImage}
+                    onClick={() =>
+                      navigator.clipboard.writeText(window.location.href)
+                    }
+                    text="Skopiuj link"
                   />
                 </div>
-                {user && user.userId === set.userId && (
-                  <Button className="m-1" onClick={() => setShowDialogue(true)}>
-                    Usuń zestaw
-                  </Button>
-                )}
-                <Button className="m-1" onClick={navigateToEdit}>
-                  <img
-                    src={editImage}
-                    alt=""
-                    className=""
-                    style={{ marginRight: "5px" }}
-                    height="17"
-                  ></img>
-                  Edytuj zestaw
-                </Button>
-                <Button
-                  className="m-1"
-                  onClick={() =>
-                    navigator.clipboard.writeText(window.location.href)
-                  }
-                >
-                  <img
-                    src={copyImage}
-                    alt=""
-                    className=""
-                    style={{ marginRight: "5px" }}
-                    height="17"
-                  ></img>
-                  Skopiuj link
-                </Button>
               </Col>
-              <Row className="mb-1 p-2">
-                <Col sm={12} md={{ span: 8, offset: 2 }}>
-                  <span className="font-background">Autor</span>
-                  <Avatar
-                    user={{ avatarUrl: set.creatorAvatarUrl }}
-                    size="30"
-                  />{" "}
+            </Row>
+            <Row className="mt-3 mb-3">
+              <Col sm={12} md={{ span: 8, offset: 2 }}>
+                <span className="font-background">Autor</span>
+                <div className="author">
+                  <Avatar user={{ avatarUrl: set.creatorAvatarUrl }} size="40" />
                   {set.creatorUsername}
-                </Col>
-              </Row>
+                </div>
+              </Col>
             </Row>
             <Row>
-              {set.flashcards.map((pair, index) => {
-                return (
-                  <WordPair
-                    key={index}
-                    word={pair.word}
-                    translation={pair.translation}
-                  />
-                );
-              })}
+              <PhraseList items={set.flashcards} />
             </Row>
           </Container>
         </>

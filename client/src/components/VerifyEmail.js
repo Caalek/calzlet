@@ -1,31 +1,30 @@
 import { useContext, useEffect, useState } from "react";
 import Container from "react-bootstrap/Container";
 import { useParams, Link } from "react-router-dom";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 import Button from "react-bootstrap/Button"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
-import axios from "axios"
+import axios from "../utils/axios"
 
 const VerifyEmail = () => {
   const { emailVerifyToken } = useParams();
   const [success, setSuccess] = useState();
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useAuth();
         
   useEffect(() => {
     axios.get(`/api/verify-email/${emailVerifyToken}`).then((response) => {
       if (response.status === 200) {
         setUser(null);
-        localStorage.clear();
         setSuccess(true);
       }
     });
-  }, []);
+  }, [setUser, setSuccess]);
 
   return (
     <>
       {success && (
-        <Container cla>
+        <Container>
           <Row className="text-center mt-5">
             <Col md={{span: 6, offset: 3}}>
             <h1>Sukces</h1>

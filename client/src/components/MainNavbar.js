@@ -5,14 +5,15 @@ import Nav from "react-bootstrap/Nav";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 import Avatar from "./Avatar";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useState } from "react";
 import VerifyEmailPrompt from "./VerifyEmailPrompt";
+import "../css/MainNavbar.css"
 
 const MainNavbar = () => {
-  const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useAuth();
   const [dimensions, detectHW] = useState({
     winWidth: window.innerWidth,
     winHeight: window.innerHeight,
@@ -22,13 +23,12 @@ const MainNavbar = () => {
   const logoutUser = () => {
     setUser(null);
     navigate("/");
-    localStorage.clear();
   };
 
   const expand = "sm";
   return (
     <>
-    {user && !user.user.verified && <VerifyEmailPrompt />}
+    {user && !user.verified && <VerifyEmailPrompt />}
       <Navbar
         key={expand}
         bg="dark"
@@ -82,7 +82,7 @@ const MainNavbar = () => {
                   </Nav.Link>
                   </Nav>
                   <NavDropdown
-                    title={<Avatar user={user.user} size={35} />}
+                    title={<Avatar user={user} size={35} />}
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                     align="end"
                   >
@@ -90,10 +90,10 @@ const MainNavbar = () => {
                       <div style={{ fontSize: "small" }}>Zalogowano jako</div>
                       <div style={{ display: "flex" }}>
                         <div className="p-1">
-                          <Avatar user={user.user} size={30} />
+                          <Avatar user={user} size={30} />
                         </div>
                         <div className="text-white p-1">
-                          {user.user.username}
+                          {user.username}
                         </div>
                       </div>
                     </NavDropdown.Item>
@@ -121,10 +121,10 @@ const MainNavbar = () => {
                     <div style={{ fontSize: "small" }}>Zalogowano jako</div>
                       <div style={{ display: "flex", justifyContent: "center" }}>
                         <div className="p-">
-                          <Avatar user={user.user} size={30} />
+                          <Avatar user={user} size={30} />
                         </div>
                         <div className="text-white p-1">
-                          {user.user.username}
+                          {user.username}
                         </div>
                       </div>
                   </div>

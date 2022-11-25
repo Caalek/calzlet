@@ -3,16 +3,16 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import trashImage from "../img/trash.png";
 import Button from "react-bootstrap/esm/Button";
-import { useContext, useRef, useState } from "react";
-import axios from "axios";
+import { useRef, useState } from "react";
+import axios from "../utils/axios";
 import Popup from "./Popup";
-import UserContext from "../context/UserContext";
+import useAuth from "../hooks/useAuth";
 
 const CreatePhrase = (props) => {
   const filePicker = useRef();
   const [imageUrls, setImageUrls] = useState(props.imageUrls || []);
   const [errorText, setErrorText] = useState();
-  const { user } = useContext(UserContext);
+  const { user } = useAuth()
 
   const uploadImage = async (image) => {
     if (image.size >= 2000000) {
@@ -23,6 +23,11 @@ const CreatePhrase = (props) => {
     if (!image.type.startsWith("image")) {
       setErrorText("Wstaw obraz, nie co innego.");
       return;
+    }
+
+    if (imageUrls.length === 3) {
+      setErrorText("Możesz dodać maksymalne 3 obrazy.")
+      return 
     }
 
     const formData = new FormData();

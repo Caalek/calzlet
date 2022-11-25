@@ -1,5 +1,6 @@
 @import "../../node_modules/bootstrap/scss/functions";
-// Default overrides
+
+//default overrides
 $offcanvas-bg-color: #0a092d;
 $offcanvas-color: white;
 $body-color: white;
@@ -8,8 +9,6 @@ $body-bg: #0a092d;
 .offcanvas {
    --bs-offcanvas-bg: #0a092d;
 }
-
-
 
 $btn-close-color: white;
 $theme-colors: (                    
@@ -25,4 +24,3 @@ $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
 @import "../../node_modules/bootstrap/scss/maps";
 @import "../../node_modules/bootstrap/scss/mixins";
 @import "../../node_modules/bootstrap/scss/root";
-// @import "../../node_modules/bootstrap/scss/bootstrap.scss";

@@ -82,7 +82,7 @@ router.post("/check-password", middleware.verifyToken, async (req, res) => {
       user.password
     );
     if (!passwordIsValid) {
-      return res.send(400).status({ auth: false, message: "Invalid email or password." });
+      return res.status(400).status({ auth: false, message: "Invalid email or password." });
     }
     res.send({ auth: true });
   });

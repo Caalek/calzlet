@@ -6,9 +6,9 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const hcaptcha = require("express-hcaptcha");
-const EmailVerifyToken = require("../models/emailVerifyToken")
+const EmailVerifyToken = require("../models/emailVerifyToken");
 const sendEmail = require("../utils/sendEmail");
-const crypto = require("crypto")
+const crypto = require("crypto");
 const jwtSecret = process.env.JWT_SECRET;
 
 router.post("/register", async (req, res) => {
@@ -27,8 +27,11 @@ router.post("/register", async (req, res) => {
     },
     (error, user) => {
       console.log(error);
-      if (error)
-        return res.status(500).send({ message: error.message });
+      if (error) return res.status(500).send({ message: error.message });
+
+      const token = jwt.sign({ id: user._id }, jwtSecret, {
+        expiresIn: "24h",
+      });
 
       const userData = {
         userId: user._id,
@@ -36,15 +39,14 @@ router.post("/register", async (req, res) => {
         email: user.email,
         avatarUrl: user.avatarUrl,
         verified: user.verified,
+        token: token,
       };
-      const token = jwt.sign({ user: userData }, jwtSecret, {
-        expiresIn: "24h",
-      });
 
       EmailVerifyToken.create(
-        {userId: user._id, token: crypto.randomBytes(32).toString("hex")}, (error, result) => {
+        { userId: user._id, token: crypto.randomBytes(32).toString("hex") },
+        (error, result) => {
           if (error) {
-            return res.status(500).send({ message: error.message })
+            return res.status(500).send({ message: error.message });
           }
           sendEmail({
             to: user.email,
@@ -54,16 +56,15 @@ router.post("/register", async (req, res) => {
             }`,
           });
         }
-      )
-      res.send({ message: "success", token: token });
+      );
+      res.send({ message: "success", user: userData });
     }
   );
 });
 
 router.post("/login", (req, res) => {
   User.findOne({ email: req.body.email }, (error, user) => {
-    if (error)
-      return res.send({ auth: false, message: error.message });
+    if (error) return res.send({ auth: false, message: error.message });
     if (!user)
       return res.send({ auth: false, message: "Invalid email or password." });
 
@@ -76,23 +77,19 @@ router.post("/login", (req, res) => {
       return res.send({ auth: false, message: "Invalid email or password." });
     }
 
+    const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: "24h" }); // expires in 24 hours
+
     const userData = {
       userId: user._id,
       username: user.username,
       email: user.email,
       avatarUrl: user.avatarUrl,
       verified: user.verified,
+      token: token,
     };
 
-    const token = jwt.sign({ user: userData }, jwtSecret, { expiresIn: "24h" }); // expires in 24 hours
-    res.send({ auth: true, token: token });
+    res.send({ auth: true, user: userData });
   });
 });
-
-// router.post('/change-password', middleware.verifyToken, async (req, res) => {
-//   const hashedPassword = bcrypt.hashSync(req.body.password, 8)
-//   await User.updateOne({_id: req._id}, {password: hashedPassword})
-//   res.send({message: "success"})
-// })
 
 module.exports = router;

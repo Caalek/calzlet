@@ -1,0 +1,84 @@
+.flashcard-viewer {
+    height: 100%;
+}
+
+.flashcard-clicked .flashcard-inner {
+    transform: rotateX(180deg);
+    perspective: 1000px;
+}
+
+.flashcard-clicked .flashcard-text-front {
+    visibility: hidden;
+}
+
+.flashcard-inner {
+    border-radius: 10px;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: all 0.3s; 
+    transform-style: preserve-3d;
+}
+
+.flashcard-front, .flashcard-back {
+    display: flex;
+    font-family: "HurmeGeometricSans1";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background-color: #2e3856;
+    border-radius: 10px;
+}
+
+.flashcard-text-front {
+    transition-delay: 0.1s;
+}
+
+.flashcard-back {
+    transform: rotateX(180deg);
+}
+
+.flashcard-hidden {
+    visibility: hidden;
+}
+
+.flashcard-text-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    word-wrap: break-word;
+    text-align: center;
+}
+
+.flashcard-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    margin-top: auto;
+}
+
+.flashcard-label {
+    align-items: left;
+    justify-self: left;
+}
+
+.flashcard-text {
+    font-size: 2rem;
+    /* overflow: auto; */
+    font-family: "HurmeGeometricSans1";
+}
+
+.flashcard-image {
+    margin-top: 15rem;
+    height: 10rem
+}

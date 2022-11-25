@@ -1,9 +1,8 @@
-import { useContext } from "react";
-import UserContext from "../context/UserContext";
-import axios from "axios";
+import useAuth from "../hooks/useAuth";
+import axios from "../utils/axios";
 
 const VerifyEmailPrompt = () => {
-  const { user } = useContext(UserContext);
+  const { user } = useAuth();
 
   const style = {
     backgroundColor: "#2e3856",

@@ -1,4 +1,5 @@
 import defaultAvatarImage from "../img/default_avatar.png";
+import "../css/Avatar.css"
 
 const Avatar = ({ user, size }) => {
   return (
