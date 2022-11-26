@@ -41,7 +41,7 @@ const ElaMode = () => {
         userId: user.userId,
         setId: setId
       }
-      const response = await axios.get("/api/shares", {params: params});
+      const response = await axios.get("/api/shares", {params: params, headers: { Authorization: `Bearer ${user.token}` }});
       setShare(response.data)
       setCurrentFlashcardIndex(response.data.lastElaIndex)
     }
@@ -114,7 +114,7 @@ const ElaMode = () => {
       accessed: new Date(),
       lastElaIndex: currentFlashcardIndex
     }
-    await axios.patch("/api/share", patchObject, { params: params});
+    await axios.patch("/api/share", patchObject, { params: params, headers: { Authorization: `Bearer ${user.token}` }});
     navigate(`/view-set/${setId}`)
   }
 
