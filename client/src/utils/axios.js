@@ -1,9 +1,17 @@
 import axios from "axios";
 
-const BASE_URL = "http://calzlet.adamcal.com" // prod
-
-const instance = axios.create({
+// const BASE_URL = "http://calzlet.adamcal.com" // prod
+const BASE_URL = "/"
+export const instance = axios.create({
     baseURL: BASE_URL
-})
-
-export default instance
+  });
+  
+  instance.interceptors.response.use(
+    response => response,
+    error => {
+      if (error.response.status === 401) {
+        window.location.href = '/';
+      }
+    });
+  
+export default instance;

@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const app = express();
 const path = require("path");
 const crypto = require("crypto")
+const cors = require("cors")
 const multer = require("multer")
 const sendEmail = require("./utils/sendEmail")
 const upload = multer({ dest: 'images/' })
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(express.static(path.join(__dirname, "../client/build")));
 app.use('/images', express.static('images'))
+app.use(cors())
 
 const port = 5000;
 
