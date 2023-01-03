@@ -8,7 +8,7 @@ import Popup from "./Popup";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import ProgressBar from "./ProgressBar";
-import "../css/ElaMode.css"
+import "../css/ElaMode.css";
 
 const ElaMode = () => {
   const navigate = useNavigate();
@@ -23,34 +23,38 @@ const ElaMode = () => {
   const [errorText, setErrorText] = useState();
   const [errorCount, setErrorCount] = useState(0);
   const [hasFinished, setHasFinished] = useState(false);
-  const [share, setShare] = useState()
+  const [share, setShare] = useState();
 
-  const { user } = useAuth()
+  const { user } = useAuth();
 
   useEffect(() => {
-    const fetchSet = async () => {
-      const fetchedSet = await axios.get(
-        `/api/set/${setId}`
-      );
+    const fetchData = async () => {
+      const fetchedSet = await axios.get(`/api/set/${setId}`);
       setSet(fetchedSet.data);
-      setAnswerArray(getAnswerArray(fetchedSet.data.flashcards, 0))
+      if (!user) {
+        setAnswerArray(getAnswerArray(fetchedSet.data.flashcards, 0));
+      }
+
+      if (user) {
+        const params = {
+          userId: user.userId,
+          setId: setId,
+        };
+
+        const response = await axios.get("/api/shares", {
+          params: params,
+          headers: { Authorization: `Bearer ${user.token}` },
+        });
+        setShare(response.data);
+        setCurrentFlashcardIndex(response.data[0].lastElaIndex);
+        console.log("line 50 active")
+        setAnswerArray(getAnswerArray(fetchedSet.data.flashcards, response.data[0].lastElaIndex));
+      }
     };
 
-    const fetchShare = async () => {
-      const params = {
-        userId: user.userId,
-        setId: setId
-      }
-      const response = await axios.get("/api/shares", {params: params, headers: { Authorization: `Bearer ${user.token}` }});
-      setShare(response.data)
-      setCurrentFlashcardIndex(response.data[0].lastElaIndex)
-    }
-
-    fetchSet();
-    if (user) {
-      fetchShare()
-    } else {
-      setCurrentFlashcardIndex(0)
+    fetchData();
+    if (!user) {
+      setCurrentFlashcardIndex(0);
     }
   }, []);
 
@@ -73,7 +77,7 @@ const ElaMode = () => {
         setAnswerArray(
           getAnswerArray(set.flashcards, currentFlashcardIndex + 1)
         );
-        setErrorCount(0)
+        setErrorCount(0);
         setShowInput(false);
       } else {
         if (errorCount === 3) {
@@ -90,6 +94,7 @@ const ElaMode = () => {
   };
 
   const getAnswerArray = (flashcards, currentFlashcardIndex) => {
+    console.log("current f index", currentFlashcardIndex);
     let answerArray = [];
     while (answerArray.length !== 3) {
       let answer = randomElementFromArray(flashcards).word;
@@ -108,15 +113,18 @@ const ElaMode = () => {
   const leaveSet = async () => {
     const params = {
       userId: user.userId,
-      setId: setId
-    }
+      setId: setId,
+    };
     const patchObject = {
       accessed: new Date(),
-      lastElaIndex: currentFlashcardIndex
-    }
-    await axios.patch("/api/share", patchObject, { params: params, headers: { Authorization: `Bearer ${user.token}` }});
-    navigate(`/view-set/${setId}`)
-  }
+      lastElaIndex: currentFlashcardIndex,
+    };
+    await axios.patch("/api/share", patchObject, {
+      params: params,
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
+    navigate(`/view-set/${setId}`);
+  };
 
   return (
     <>
@@ -131,8 +139,13 @@ const ElaMode = () => {
         <Container className="mt-2">
           {!hasFinished && (
             <>
-            <ProgressBar title={set.title} setId={setId} complete={currentFlashcardIndex} all={set.flashcards.length} />
-          </>
+              <ProgressBar
+                title={set.title}
+                setId={setId}
+                complete={currentFlashcardIndex}
+                all={set.flashcards.length}
+              />
+            </>
           )}
           {!hasFinished && (
             <div className="ela-mode p-3 mt-4">
@@ -158,16 +171,17 @@ const ElaMode = () => {
               ) : (
                 <div>
                   <div className="mt-5">Wybierz poprawne pojęcie</div>
-                  {answerArray && answerArray.map((elem, index) => {
-                    return (
-                      <ElaAnswer
-                        key={index}
-                        index={index}
-                        text={elem}
-                        checkAnswer={checkAnswer}
-                      ></ElaAnswer>
-                    );
-                  })}
+                  {answerArray &&
+                    answerArray.map((elem, index) => {
+                      return (
+                        <ElaAnswer
+                          key={index}
+                          index={index}
+                          text={elem}
+                          checkAnswer={checkAnswer}
+                        ></ElaAnswer>
+                      );
+                    })}
                 </div>
               )}
             </div>
@@ -176,9 +190,7 @@ const ElaMode = () => {
             <div style={{ textAlign: "center" }} className="mt-5">
               <h1>Gratulacje!</h1>
               <p>{`Ukończyłeś Ela mode dla zestawu ${set.title}!`}</p>
-              <Button onClick={leaveSet}>
-                Powrót do strony zestawu
-              </Button>
+              <Button onClick={leaveSet}>Powrót do strony zestawu</Button>
             </div>
           )}
         </Container>
