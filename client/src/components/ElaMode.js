@@ -47,7 +47,6 @@ const ElaMode = () => {
         });
         setShare(response.data);
         setCurrentFlashcardIndex(response.data[0].lastElaIndex);
-        console.log("line 50 active")
         setAnswerArray(getAnswerArray(fetchedSet.data.flashcards, response.data[0].lastElaIndex));
       }
     };
@@ -59,7 +58,7 @@ const ElaMode = () => {
   }, []);
 
   const checkAnswer = (answer) => {
-    if (answer === set.flashcards[currentFlashcardIndex].word) {
+    if (answer.toLowerCase().trim() === set.flashcards[currentFlashcardIndex].word.toLowerCase().trim()) {
       setCorrectAnswer(true);
       setShowInput(true);
     } else {
@@ -67,9 +66,14 @@ const ElaMode = () => {
     }
   };
 
-  const checkInput = () => {
+  const checkInput = async () => {
     if (currentFlashcardIndex === set.flashcards.length - 1) {
       setHasFinished(true);
+      const params = {
+        userId: user.userId,
+        setId: setId,
+      };
+      await axios.patch(`/api/share`, {lastElaIndex: 0}, {params: params, headers: { Authorization: `Bearer ${user.token}` }})
     } else {
       if (input === set.flashcards[currentFlashcardIndex].word) {
         setCurrentFlashcardIndex(currentFlashcardIndex + 1);
@@ -94,7 +98,6 @@ const ElaMode = () => {
   };
 
   const getAnswerArray = (flashcards, currentFlashcardIndex) => {
-    console.log("current f index", currentFlashcardIndex);
     let answerArray = [];
     while (answerArray.length !== 3) {
       let answer = randomElementFromArray(flashcards).word;
@@ -111,18 +114,20 @@ const ElaMode = () => {
   };
 
   const leaveSet = async () => {
-    const params = {
-      userId: user.userId,
-      setId: setId,
-    };
-    const patchObject = {
-      accessed: new Date(),
-      lastElaIndex: currentFlashcardIndex,
-    };
-    await axios.patch("/api/share", patchObject, {
-      params: params,
-      headers: { Authorization: `Bearer ${user.token}` },
-    });
+    if (!hasFinished) {
+      const params = {
+        userId: user.userId,
+        setId: setId,
+      };
+      const patchObject = {
+        accessed: new Date(),
+        lastElaIndex: currentFlashcardIndex,
+      };
+      await axios.patch("/api/share", patchObject, {
+        params: params,
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
+    }
     navigate(`/view-set/${setId}`);
   };
 
@@ -150,7 +155,6 @@ const ElaMode = () => {
           {!hasFinished && (
             <div className="ela-mode p-3 mt-4">
               <div style={{ fontSize: 30 }}>
-                {console.log(currentFlashcardIndex)}
                 {set && set.flashcards[currentFlashcardIndex].translation}
               </div>
               {showInput ? (
@@ -169,6 +173,7 @@ const ElaMode = () => {
                   </div>
                 </div>
               ) : (
+                <>
                 <div>
                   <div className="mt-5">Wybierz poprawne pojęcie</div>
                   {answerArray &&
@@ -183,6 +188,8 @@ const ElaMode = () => {
                       );
                     })}
                 </div>
+                <Button size="sm" onClick={() => setCurrentFlashcardIndex(0)}>Od nowa</Button>
+                </>
               )}
             </div>
           )}

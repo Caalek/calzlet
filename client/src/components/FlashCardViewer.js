@@ -24,48 +24,69 @@ const FlashcardViewer = ({ title, words, setId, lastIndex }) => {
     }
   };
 
-  const moveForward = () => {
+  const moveForward = async () => {
     if (currentWordIndex + 1 < words.length) {
       setCurrentWordIndex(currentWordIndex + 1);
     } else {
       setHasFinished(true);
+      const params = {
+        userId: user.userId,
+        setId: setId,
+      };
+      await axios.patch(
+        `/api/share`,
+        { lastIndex: 0 },
+        { params: params, headers: { Authorization: `Bearer ${user.token}` } }
+      );
     }
   };
 
   const leaveSet = async () => {
-    const params = {
-      userId: user.userId,
-      setId: setId
+    if (!hasFinished) {
+      const params = {
+        userId: user.userId,
+        setId: setId,
+      };
+      const patchObject = {
+        accessed: new Date(),
+        lastIndex: currentWordIndex,
+      };
+      await axios.patch("/api/share", patchObject, { params: params });
     }
-    const patchObject = {
-      accessed: new Date(),
-      lastIndex: currentWordIndex
-    }
-    await axios.patch("/api/share", patchObject, { params: params });
-    navigate(`/view-set/${setId}`)
-  }
+    navigate(`/view-set/${setId}`);
+  };
 
   return (
     <>
-      <ProgressBar
-        title={title}
-        setId={setId}
-        complete={currentWordIndex}
-        all={words.length}
-      />
-      <FlippingCard
-        word={words[currentWordIndex].word}
-        translation={words[currentWordIndex].translation}
-        imageUrls={words[currentWordIndex].imageUrls}
-      />
-      <Row>
-        <Col>
-          <IconButton iconSrc={arrowLeft} onClick={moveBackward} />
-        </Col>
-        <Col>
-          <IconButton iconSrc={arrowRight} onClick={moveForward} />
-        </Col>
-      </Row>
+      {hasFinished ? (
+        <div style={{ textAlign: "center" }} className="mt-5">
+          <h1>Gratulacje!</h1>
+          <p>{`Ukończyłeś fiszki dla zestawu ${title}!`}</p>
+          <Button onClick={leaveSet}>Powrót do strony zestawu</Button>
+        </div>
+      ) : (
+        <>
+          <ProgressBar
+            title={title}
+            setId={setId}
+            complete={currentWordIndex}
+            all={words.length}
+          />
+          <FlippingCard
+            word={words[currentWordIndex].word}
+            translation={words[currentWordIndex].translation}
+            imageUrls={words[currentWordIndex].imageUrls}
+          />
+          <Row>
+            <Col>
+              <IconButton iconSrc={arrowLeft} onClick={moveBackward} />
+            </Col>
+            <Col>
+              <IconButton iconSrc={arrowRight} onClick={moveForward} />
+            </Col>
+          </Row>
+        </>
+      )}
     </>
   );
 };

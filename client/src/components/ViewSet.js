@@ -108,6 +108,9 @@ const ViewSet = () => {
     await axios.delete(`/api/set/${setId}`, {
       headers: { Authorization: `Bearer ${user.token}` },
     });
+    await axios.delete(`/api/share/${share._id}`, {
+      headers: { Authorization: `Bearer ${user.token}` },
+    });
     setShowDialogue(false);
     navigate("/your-sets");
   }

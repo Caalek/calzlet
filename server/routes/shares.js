@@ -46,7 +46,7 @@ router.put("/share/:shareId", middleware.verifyToken, async (req, res) => {
 });
 
 router.delete("/share/:shareId", middleware.verifyToken, async (req, res) => {
-  Share.deleteOne({ _id: req.params.setId }, req.body, (error) => {
+  Share.deleteOne({ _id: req.params.shareId }, req.body, (error) => {
     if (error) {
       console.error(error);
       return res.status(500).send({ message: "Internal server errror" });

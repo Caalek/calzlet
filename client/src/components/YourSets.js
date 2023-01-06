@@ -23,7 +23,6 @@ const YourSets = () => {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setShares(response.data);
-      console.log(shares)
     };
     await fetchShares();
   }
