@@ -43,7 +43,6 @@ const ElaMode = () => {
 
         const response = await axios.get("/api/shares", {
           params: params,
-          headers: { Authorization: `Bearer ${user.token}` },
         });
         setShare(response.data);
         setCurrentFlashcardIndex(response.data[0].lastElaIndex);
@@ -140,7 +139,7 @@ const ElaMode = () => {
           onHide={() => setErrorText(null)}
         />
       )}
-      {set && share && (
+      {set && (
         <Container className="mt-2">
           {!hasFinished && (
             <>

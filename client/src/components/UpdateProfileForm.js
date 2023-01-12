@@ -52,7 +52,7 @@ const UpdateProfileForm = () => {
       });
     }
     const copyUser = user;
-    copyUser.user.avatarUrl = avatarUrl;
+    copyUser.avatarUrl = avatarUrl;
     setUser(copyUser);
     alert("Avatar zapisany. Będzie widzialny po ponownym zalogowaniu");
   };

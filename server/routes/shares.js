@@ -3,7 +3,7 @@ const middleware = require("../middleware");
 const router = express.Router();
 const Share = require("../models/share");
 
-router.get("/shares", middleware.verifyToken, async (req, res) => {
+router.get("/shares", async (req, res) => {
   query = req.query;
   Share.find(query, (error, results) => {
     if (error) {
