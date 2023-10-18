@@ -48,13 +48,13 @@ router.post("/register", async (req, res) => {
           if (error) {
             return res.status(500).send({ message: error.message });
           }
-          sendEmail({
-            to: user.email,
-            subject: "Weryfikacja adresu e-mail",
-            text: `Aby zweryfikować adres email, kliknij w link poniżej: \n\n ${
-              process.env.BASE_URL + "verify-email/" + result.token
-            }`,
-          });
+          // sendEmail({
+          //   to: user.email,
+          //   subject: "Weryfikacja adresu e-mail",
+          //   text: `Aby zweryfikować adres email, kliknij w link poniżej: \n\n ${
+          //     process.env.BASE_URL + "verify-email/" + result.token
+          //   }`,
+          // });
         }
       );
       res.send({ message: "success", user: userData });
