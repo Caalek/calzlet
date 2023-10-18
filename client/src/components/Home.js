@@ -21,10 +21,9 @@ const Home = () => {
       <MainNavbar />
       <Container>
         <Row className="mt-5">
+          <p>Calzlet to aplikacja z fiszkami do nauki języków. Nie jest kompletna i mogę pojawić się w niej błędy, ale jest używalna. Zapraszam do przetestowania.</p>
           <Col sm={12} md={6}>
             <RegisterForm />
-            <h1>Coming soon™</h1>
-            <p>Aplikacja nie jest jeszcze ogólnodostępna. Jeśli chcesz zostać beta testerem, napisz na <strong>calzletapp@gmail.com</strong></p>
           </Col>
         </Row>
         <Footer />
